@@ -34,14 +34,13 @@ export function Combobox({
         className={cn(
           "flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-sm font-medium transition-colors cursor-pointer",
           selected
-            ? "border-foreground bg-foreground text-background"
-            : "border-border text-foreground hover:border-foreground/50",
+            && " bg-muted text-muted-foreground",
           className,
         )}
       >
         <BaseCombobox.Input
           placeholder={selected ? selected.label : label}
-          className="w-28 bg-transparent outline-none placeholder:text-current truncate cursor-pointer"
+          className="w-full bg-transparent outline-none placeholder:text-muted-foreground truncate cursor-pointer"
         />
         {selected ? (
           <BaseCombobox.Clear
@@ -61,15 +60,15 @@ export function Combobox({
       <BaseCombobox.Portal>
         <BaseCombobox.Positioner sideOffset={6} align="start">
           <BaseCombobox.Popup className="z-50 min-w-56 rounded-md border border-border bg-popover shadow-lg outline-none">
-            <BaseCombobox.Empty className="px-3 py-4 text-center text-xs text-muted-foreground">
+            {/* <BaseCombobox.Empty className="px-3 py-4 text-center text-xs text-muted-foreground">
               Sin resultados
-            </BaseCombobox.Empty>
+            </BaseCombobox.Empty> */}
             <BaseCombobox.List className="max-h-60 overflow-y-auto py-1">
               {(item: ComboboxOption) => (
                 <BaseCombobox.Item
                   key={item.value}
                   value={item}
-                  className="flex cursor-pointer items-center gap-2 px-3 py-1.5 text-sm outline-none transition-colors data-[highlighted]:bg-muted"
+                  className="flex cursor-pointer items-center gap-2 px-3 py-1.5 text-sm outline-none transition-colors data-highlighted:bg-muted"
                 >
                   <BaseCombobox.ItemIndicator className="flex size-3.5 shrink-0 items-center justify-center">
                     <Check className="size-3.5" />
