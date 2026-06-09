@@ -45,7 +45,7 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
             </Avatar>
             <div className="max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-                {usuario.carrera} · {cuatrimestre}
+                {usuario.carreras.map((c) => c.nombre).join(" / ")} · {cuatrimestre}
               </p>
               <h1 className="mt-2 font-serif text-5xl leading-tight text-foreground">{usuario.nombre}</h1>
               <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">{usuario.bio}</p>

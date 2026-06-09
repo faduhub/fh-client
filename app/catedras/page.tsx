@@ -33,13 +33,13 @@ export default async function CatedrasPage() {
                 className="group flex flex-wrap items-center justify-between gap-4 border-b border-border py-5 transition-colors hover:bg-card"
               >
                 <div className="min-w-0">
-                  <p className="text-xs font-medium uppercase tracking-wider text-accent">{c.materia}</p>
+                  <p className="text-xs font-medium uppercase tracking-wider text-accent">{c.materias.join(" / ")}</p>
                   <h2 className="mt-1 flex items-center gap-1.5 font-serif text-2xl leading-tight text-foreground">
                     {c.catedra}
                     <ArrowUpRight className="size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
                   </h2>
                   <p className="mt-0.5 text-sm text-muted-foreground">
-                    {c.titular} · {c.carrera}
+                    {c.titular} · {c.carreras.join(" / ")}
                   </p>
                 </div>
                 <div className="flex items-center gap-6">

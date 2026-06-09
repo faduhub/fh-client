@@ -46,8 +46,8 @@ export type CatedraStats = {
   slug: string;
   catedra: string;
   titular: string;
-  materia: string;
-  carrera: string;
+  materias: string[];
+  carreras: string[];
   reviews: Review[];
   rating: number;
   cargaHoraria: number;
@@ -60,15 +60,14 @@ export type MateriaItem = {
   id: number;
   nombre: string;
   slug: string;
-  carrera: string;
-  carreraSlug: string;
+  carreras: Array<{ nombre: string; slug: string }>;
 };
 
 export type UsuarioPerfil = {
   slug: string;
   nombre: string;
   iniciales: string;
-  carrera: string;
+  carreras: Array<{ nombre: string; cursandoAnio: number | null }>;
   bio: string;
   reviews: Review[];
   promedioPuntaje: number;

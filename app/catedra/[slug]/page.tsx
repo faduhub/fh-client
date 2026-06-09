@@ -55,7 +55,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
           <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-                {catedra.materia} · {catedra.carrera}
+                {catedra.materias.join(" / ")} · {catedra.carreras.join(" / ")}
               </p>
               <h1 className="mt-3 text-balance font-serif text-5xl leading-[1.05] text-foreground sm:text-6xl">
                 {catedra.catedra}

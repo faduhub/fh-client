@@ -1,5 +1,6 @@
 import { getReviews, getCarreras, getMaterias } from "@/lib/api"
 import { ReviewsFeed } from "@/app/components/reviews-feed"
+import { SiteHeader } from "@/app/components/site-header"
 
 export default async function Page() {
   const [reviews, carreras, materias] = await Promise.all([
@@ -12,21 +13,7 @@ export default async function Page() {
 
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b border-border">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-bold leading-none tracking-tight text-foreground">cátedras</span>
-            <span className="font-mono text-xs uppercase tracking-widest text-accent">FADU</span>
-          </div>
-          <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex">
-            <a href="#reseñas" className="transition-colors hover:text-foreground">Reseñas</a>
-            <a href="/catedras" className="transition-colors hover:text-foreground">Cátedras</a>
-            <a href="#" className="rounded-full bg-foreground px-4 py-1.5 text-background transition-opacity hover:opacity-90">
-              Dejar reseña
-            </a>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
