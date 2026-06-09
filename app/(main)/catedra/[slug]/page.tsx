@@ -2,7 +2,6 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Check, FileIcon, Filter, ThumbsUp } from "lucide-react"
 import { departmentService } from "@/lib/api/services/department.service.server"
-import { SiteHeader } from "@/app/components/site-header"
 import { StarRating } from "@/app/components/star-rating"
 import { ReviewCard } from "@/app/components/review-card"
 import { Badge } from "@/app/components/ui/badge"
@@ -21,7 +20,6 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader />
 
             <section className="">
         <div className="mx-auto max-w-5xl px-6 pt-12">

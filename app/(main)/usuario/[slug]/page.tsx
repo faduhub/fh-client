@@ -2,7 +2,6 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, ThumbsUp, Star, Check } from "lucide-react"
 import { userService } from "@/lib/api/services/user.service.server"
-import { SiteHeader } from "@/app/components/site-header"
 import { ReviewCard } from "@/app/components/review-card"
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
 
@@ -25,12 +24,11 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader />
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
           <Link
-            href="/#reseñas"
+            href="/reseñas"
             className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
           >
             <ArrowLeft className="size-3.5" />

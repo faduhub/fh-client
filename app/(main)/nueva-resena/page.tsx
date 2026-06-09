@@ -4,7 +4,6 @@ import { departmentService } from "@/lib/api/services/department.service.server"
 import { subjectService } from "@/lib/api/services/subject.service.server"
 import { tagService } from "@/lib/api/services/tag.service.server"
 import { degreeService } from "@/lib/api/services/degree.service.server"
-import { SiteHeader } from "@/app/components/site-header"
 import { ReviewForm } from "./review-form"
 
 export default async function NuevaResenaPage() {
@@ -13,7 +12,6 @@ export default async function NuevaResenaPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader />
 
       <section className="border-b border-border">
         <div className="mx-auto max-w-3xl px-6 py-12">

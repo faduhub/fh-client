@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
 import { departmentService } from "@/lib/api/services/department.service.server"
-import { SiteHeader } from "@/app/components/site-header"
 import { StarRating } from "@/app//components/star-rating"
 
 export default async function CatedrasPage() {
@@ -9,22 +8,21 @@ export default async function CatedrasPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader />
 
-      <section className="border-b border-border">
-        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Directorio</p>
-          <h1 className="mt-3 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
-            Todas las cátedras
+                  <section className="">
+        <div className="mx-auto max-w-5xl px-6 pt-12">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Reseñas de cursadas · escritas por estudiantes</p>
+          <h1 className="mt-2.5 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-3xl">
+            Cátedras 
           </h1>
-          <p className="mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
             Explorá las cátedras reseñadas por estudiantes. Tocá cualquiera para ver su detalle, sus
             métricas y todas las opiniones.
           </p>
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mx-auto max-w-5xl px-6 py-10">
         <ul className="flex flex-col">
           {catedras.map((c) => (
             <li key={c.slug}>

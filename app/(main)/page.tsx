@@ -2,7 +2,6 @@ import { reviewService } from "@/lib/api/services/review.service.server"
 import { degreeService } from "@/lib/api/services/degree.service.server"
 import { subjectService } from "@/lib/api/services/subject.service.server"
 import { ReviewsFeed } from "@/app/components/reviews-feed"
-import { SiteHeader } from "@/app/components/site-header"
 
 export default async function Page() {
   const [reviews, degrees, subjects] = await Promise.all([
@@ -13,7 +12,6 @@ export default async function Page() {
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader />
 
             <section className="">
         <div className="mx-auto max-w-5xl px-6 pt-12">

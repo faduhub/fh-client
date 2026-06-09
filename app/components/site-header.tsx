@@ -29,7 +29,7 @@ export function SiteHeader() {
           </span>
         </Link>
           <div className="flex gap-x-5"><Link
-            href="/#reseñas"
+            href="/"
             className="transition-colors hover:text-foreground"
           >
             Home
