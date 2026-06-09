@@ -1,11 +1,11 @@
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
-import { getCatedras } from "@/lib/api"
+import { departmentService } from "@/lib/api/services/department.service.server"
 import { SiteHeader } from "@/app/components/site-header"
 import { StarRating } from "@/app//components/star-rating"
 
 export default async function CatedrasPage() {
-  const catedras = await getCatedras()
+  const catedras = await departmentService.getAll()
 
   return (
     <main className="min-h-screen bg-background">

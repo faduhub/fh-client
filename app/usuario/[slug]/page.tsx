@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, ThumbsUp, Star, Check } from "lucide-react"
-import { getUsuario } from "@/lib/api"
+import { userService } from "@/lib/api/services/user.service.server"
 import { SiteHeader } from "@/app/components/site-header"
 import { ReviewCard } from "@/app/components/review-card"
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
@@ -18,7 +18,7 @@ function StatBox({ icon, value, label }: { icon: React.ReactNode; value: string;
 
 export default async function UsuarioPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const usuario = await getUsuario(slug)
+  const usuario = await userService.getBySlug(slug)
   if (!usuario) notFound()
 
   const cuatrimestre = usuario.reviews[0]?.term ?? ""

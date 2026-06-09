@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { ThumbsUp, Check, X, ArrowUpRight, MessageSquareQuoteIcon } from "lucide-react"
-import type { Review } from "@/lib/api"
+import type { Review } from "@/lib/api/dtos/responses/review"
 import { StarRating } from "@/app/components/star-rating"
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
 import { Badge } from "@/app/components/ui/badge"

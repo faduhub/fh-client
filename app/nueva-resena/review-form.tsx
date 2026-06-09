@@ -3,8 +3,11 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Star, Check, X } from "lucide-react"
-import type { DepartmentStats, SubjectItem, TagItem, DegreeItem } from "@/lib/api"
-import { createReview } from "@/lib/api"
+import type { DepartmentStats } from "@/lib/api/dtos/responses/department"
+import type { SubjectItem } from "@/lib/api/dtos/responses/subject"
+import type { TagItem } from "@/lib/api/dtos/responses/tag"
+import type { DegreeItem } from "@/lib/api/dtos/responses/degree"
+import { createReviewAction } from "@/lib/api/actions/review.actions"
 import { useSession } from "@/lib/auth-client"
 import { Button } from "@/app/components/ui/button"
 import { Input } from "@/app/components/ui/input"
@@ -108,7 +111,7 @@ export function ReviewForm({
     if (!body.trim()) return setError("Escribí una reseña")
 
     setLoading(true)
-    const result = await createReview({
+    const result = await createReviewAction({
       departmentId,
       subjectId,
       degreeId,

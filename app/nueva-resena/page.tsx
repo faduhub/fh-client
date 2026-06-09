@@ -1,12 +1,15 @@
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
-import { getCatedras, getMaterias, getTags, getCarreras } from "@/lib/api"
+import { departmentService } from "@/lib/api/services/department.service.server"
+import { subjectService } from "@/lib/api/services/subject.service.server"
+import { tagService } from "@/lib/api/services/tag.service.server"
+import { degreeService } from "@/lib/api/services/degree.service.server"
 import { SiteHeader } from "@/app/components/site-header"
 import { ReviewForm } from "./review-form"
 
 export default async function NuevaResenaPage() {
 
-  const [departments, subjects, tags, degrees] = await Promise.all([getCatedras(), getMaterias(), getTags(), getCarreras()])
+  const [departments, subjects, tags, degrees] = await Promise.all([departmentService.getAll(), subjectService.getAll(), tagService.getAll(), degreeService.getAll()])
 
   return (
     <main className="min-h-screen bg-background">

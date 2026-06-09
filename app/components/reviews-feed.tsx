@@ -2,7 +2,9 @@
 
 import { useMemo, useState } from "react"
 import { Search, Check, SlidersHorizontal, FilterIcon } from "lucide-react"
-import type { Review, DegreeItem, SubjectItem } from "@/lib/api"
+import type { Review } from "@/lib/api/dtos/responses/review"
+import type { DegreeItem } from "@/lib/api/dtos/responses/degree"
+import type { SubjectItem } from "@/lib/api/dtos/responses/subject"
 import { ReviewCard } from "@/app/components/review-card"
 import { Input } from "@/app/components/ui/input"
 import { Combobox } from "@/app/components/ui/combobox"
