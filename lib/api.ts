@@ -32,6 +32,8 @@ export type Review = {
   catedraSlug: string;
   titular: string;
   cuatrimestre: string;
+  anioCursado: number;
+  periodo: "PRIMERO" | "SEGUNDO" | "VERANO";
   rating: number;
   cargaHoraria: number;
   dificultad: number;
@@ -60,7 +62,9 @@ export type MateriaItem = {
   id: number;
   nombre: string;
   slug: string;
+  anio: number | null;
   carreras: Array<{ nombre: string; slug: string }>;
+  catedras: Array<{ nombre: string; slug: string }>;
 };
 
 export type UsuarioPerfil = {

@@ -12,7 +12,7 @@ export default async function CatedrasPage() {
       <SiteHeader />
 
       <section className="border-b border-border">
-        <div className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Directorio</p>
           <h1 className="mt-3 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-6xl">
             Todas las cátedras
@@ -24,7 +24,7 @@ export default async function CatedrasPage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-6 py-10">
         <ul className="flex flex-col">
           {catedras.map((c) => (
             <li key={c.slug}>

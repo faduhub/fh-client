@@ -28,7 +28,7 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
       <SiteHeader />
 
       <section className="border-b border-border">
-        <div className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
           <Link
             href="/#reseñas"
             className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
@@ -61,7 +61,7 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <h2 className="mb-6 border-b border-border pb-4 font-serif text-2xl text-foreground">
           Reseñas de {usuario.nombre.split(" ")[0]}
         </h2>

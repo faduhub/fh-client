@@ -43,7 +43,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
       <SiteHeader />
 
       <section className="border-b border-border">
-        <div className="mx-auto max-w-5xl px-6 py-12 sm:py-16">
+        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
           <Link
             href="/#reseñas"
             className="inline-flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground transition-colors hover:text-foreground"
@@ -85,7 +85,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 py-12">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[280px_1fr]">
           <aside className="lg:sticky lg:top-8 lg:self-start">
             <div className="flex flex-col gap-6 border border-border bg-card p-6">
