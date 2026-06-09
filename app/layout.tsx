@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Reseñas de Cátedras — FADU',
+  title: 'faduHub — UBA',
   description:
     'Reseñas de cursadas escritas por estudiantes de la FADU. Filtrá por carrera, materia y cátedra antes de inscribirte.',
   generator: 'v0.app',

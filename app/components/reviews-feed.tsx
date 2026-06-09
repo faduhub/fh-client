@@ -122,15 +122,14 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar por cátedra, materia, docente o texto..."
+            placeholder="Search"
             className="pl-9"
             aria-label="Buscar"
           />
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <SlidersHorizontal className="size-3.5 shrink-0 text-muted-foreground" />
-
+      
           <Combobox
             label="Carrera"
             placeholder="Filtrar carreras..."
