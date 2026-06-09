@@ -9,6 +9,7 @@ import type { TagItem } from "@/lib/api/dtos/responses/tag"
 import type { DegreeItem } from "@/lib/api/dtos/responses/degree"
 import { createReviewAction } from "@/lib/api/actions/review.actions"
 import { useSession } from "@/lib/auth-client"
+import { Toast } from "@/app/components/ui/toast"
 import { Button } from "@/app/components/ui/button"
 import { Input } from "@/app/components/ui/input"
 import { cn } from "@/lib/utils"
@@ -103,6 +104,7 @@ export function ReviewForm({
   const [tagIds, setTagIds] = useState<number[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const toastManager = Toast.useToastManager()
 
   function toggleTag(id: number) {
     setTagIds((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
@@ -138,10 +140,12 @@ export function ReviewForm({
     setLoading(false)
 
     if (!result.success) {
+      toastManager.add({ title: "Error", description: result.error ?? "Error al crear la reseña", type: "error" })
       setError(result.error ?? "Error al crear la reseña")
       return
     }
 
+    toastManager.add({ title: "Reseña publicada", description: "¡Gracias por tu aporte!", type: "success" })
     router.push("/")
     router.refresh()
   }

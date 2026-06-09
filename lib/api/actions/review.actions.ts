@@ -13,7 +13,7 @@ export async function createReviewAction(
 ): Promise<ActionResult<Review>> {
   const cookie = (await headers()).get("cookie") ?? ""
 
-  const res = await fetch(`${BASE}/reviews`, {
+  const res = await fetch(`${BASE()}/reviews`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
