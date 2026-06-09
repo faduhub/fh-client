@@ -77,9 +77,9 @@ export function ReviewForm({
   }, [session, isPending, router])
 
   const [catedraSlug, setCatedraSlug] = useState("")
-  const [departmentId, setDepartmentId] = useState<number | null>(null)
-  const [subjectId, setSubjectId] = useState<number | null>(null)
-  const [degreeId, setDegreeId] = useState<number | null>(null)
+  const [departmentId, setDepartmentId] = useState<string | null>(null)
+  const [subjectId, setSubjectId] = useState<string | null>(null)
+  const [degreeId, setDegreeId] = useState<string | null>(null)
   const [rating, setRating] = useState(0)
   const [workload, setWorkload] = useState(3)
   const [difficulty, setDifficulty] = useState(3)
@@ -165,7 +165,7 @@ export function ReviewForm({
           </label>
           <select
             value={subjectId ?? ""}
-            onChange={(e) => setSubjectId(e.target.value ? Number(e.target.value) : null)}
+            onChange={(e) => setSubjectId(e.target.value ? e.target.value : null)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
           >
             <option value="">Seleccioná una materia</option>
@@ -181,7 +181,7 @@ export function ReviewForm({
           </label>
           <select
             value={degreeId ?? ""}
-            onChange={(e) => setDegreeId(e.target.value ? Number(e.target.value) : null)}
+            onChange={(e) => setDegreeId(e.target.value ? e.target.value : null)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
           >
             <option value="">Seleccioná una carrera</option>

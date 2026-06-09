@@ -49,7 +49,7 @@ export type Review = {
 };
 
 export type DepartmentStats = {
-  id: number;
+  id: string;
   slug: string;
   name: string;
   head: string;
@@ -72,9 +72,9 @@ export type TagItem = {
 };
 
 export type CreateReviewBody = {
-  departmentId: number;
-  subjectId?: number;
-  degreeId?: number;
+  departmentId: string;
+  subjectId?: string;
+  degreeId?: string;
   rating: number;
   workload: number;
   difficulty: number;
