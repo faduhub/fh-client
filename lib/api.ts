@@ -45,6 +45,7 @@ export type Review = {
 };
 
 export type CatedraStats = {
+  id: number;
   slug: string;
   catedra: string;
   titular: string;
@@ -56,6 +57,25 @@ export type CatedraStats = {
   dificultad: number;
   recomiendaPct: number;
   totalLikes: number;
+};
+
+export type TagItem = {
+  id: number;
+  nombre: string;
+};
+
+export type CreateReviewBody = {
+  catedraId: number;
+  materiaId?: number;
+  carreraId?: number;
+  rating: number;
+  cargaHoraria: number;
+  dificultad: number;
+  recomienda: boolean;
+  texto: string;
+  anio: number;
+  periodo: "PRIMERO" | "SEGUNDO" | "VERANO";
+  tagIds?: number[];
 };
 
 export type MateriaItem = {
@@ -132,4 +152,26 @@ export async function getUsuario(slug: string): Promise<UsuarioPerfil | null> {
   } catch {
     return null;
   }
+}
+
+export async function getTags(): Promise<TagItem[]> {
+  try {
+    const result = await apiFetch<ListResult<TagItem>>("/v1/tags");
+    return result.data;
+  } catch {
+    return [];
+  }
+}
+
+export async function createReview(body: CreateReviewBody): Promise<{ success: boolean; data?: Review; error?: string }> {
+  const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:4000";
+  const res = await fetch(`${API}/v1/reviews`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify(body),
+  });
+  const json = await res.json();
+  if (!res.ok) return { success: false, error: json?.message ?? "Error al crear la reseña" };
+  return { success: true, data: json.data };
 }

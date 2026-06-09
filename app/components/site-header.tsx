@@ -41,6 +41,12 @@ export function SiteHeader() {
 
           {session ? (
             <>
+              <Link
+                href="/nueva-resena"
+                className="rounded-full bg-foreground px-4 py-1.5 text-background transition-opacity hover:opacity-90"
+              >
+                Nueva reseña
+              </Link>
               <span className="text-foreground">{session.user.name}</span>
               <button
                 onClick={handleSignOut}
@@ -58,7 +64,7 @@ export function SiteHeader() {
                 Ingresar
               </Link>
               <Link
-                href="/#reseñas"
+                href="/nueva-resena"
                 className="rounded-full bg-foreground px-4 py-1.5 text-background transition-opacity hover:opacity-90"
               >
                 Dejar reseña
