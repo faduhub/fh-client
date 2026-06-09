@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { RegisterForm } from "./register-form";
+import Link from "next/link"
+import { RegisterForm } from "./register-form"
 
 export default function RegistroPage() {
   return (
@@ -9,30 +9,21 @@ export default function RegistroPage() {
       <div className="w-full max-w-sm space-y-6">
         <div className="space-y-1 text-center">
           <Link href="/" className="inline-flex items-baseline gap-2">
-            <span className="text-2xl font-bold tracking-tight text-foreground">
-              cátedras
-            </span>
-            <span className="font-mono text-xs uppercase tracking-widest text-accent">
-              FADU
-            </span>
+            <span className="text-foreground text-2xl font-bold tracking-tight">cátedras</span>
+            <span className="text-accent font-mono text-xs tracking-widest uppercase">FADU</span>
           </Link>
-          <p className="text-sm text-muted-foreground">
-            Creá tu cuenta para dejar reseñas
-          </p>
+          <p className="text-muted-foreground text-sm">Creá tu cuenta para dejar reseñas</p>
         </div>
 
         <RegisterForm />
 
-        <p className="text-center text-xs text-muted-foreground">
+        <p className="text-muted-foreground text-center text-xs">
           ¿Ya tenés cuenta?{" "}
-          <Link
-            href="/login"
-            className="text-foreground underline-offset-4 hover:underline"
-          >
+          <Link href="/login" className="text-foreground underline-offset-4 hover:underline">
             Iniciá sesión
           </Link>
         </p>
       </div>
     </div>
-  );
+  )
 }

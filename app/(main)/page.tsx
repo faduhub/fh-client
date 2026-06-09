@@ -11,27 +11,28 @@ export default async function Page() {
   ])
 
   return (
-    <main className="min-h-screen bg-background">
-
-            <section className="">
+    <main className="bg-background min-h-screen">
+      <section className="">
         <div className="mx-auto max-w-5xl px-6 pt-12">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Reseñas de cursadas · escritas por estudiantes</p>
-          <h1 className="mt-2.5 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-3xl">
-            Home 
+          <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
+            Reseñas de cursadas · escritas por estudiantes
+          </p>
+          <h1 className="text-foreground mt-2.5 text-4xl leading-[1.05] font-bold tracking-tight text-balance sm:text-3xl">
+            Home
           </h1>
-          
         </div>
       </section>
-
 
       <section id="reseñas" className="mx-auto max-w-5xl px-6 py-12">
         <ReviewsFeed reviews={reviews} degrees={degrees} subjects={subjects} />
       </section>
 
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 py-8 text-xs text-muted-foreground sm:flex-row">
+      <footer className="border-border border-t">
+        <div className="text-muted-foreground mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 py-8 text-xs sm:flex-row">
           <p>Reseñas de Cátedras · FADU — proyecto de ejemplo.</p>
-          <p className="font-mono uppercase tracking-wider">Hecho por estudiantes, para estudiantes</p>
+          <p className="font-mono tracking-wider uppercase">
+            Hecho por estudiantes, para estudiantes
+          </p>
         </div>
       </footer>
     </main>

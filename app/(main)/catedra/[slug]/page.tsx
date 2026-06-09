@@ -19,70 +19,82 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
   const tags = Array.from(new Set(catedra.reviews.flatMap((r) => r.tags)))
 
   return (
-    <main className="min-h-screen bg-background">
-
-            <section className="">
+    <main className="bg-background min-h-screen">
+      <section className="">
         <div className="mx-auto max-w-5xl px-6 pt-12">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">{catedra.subjects.join(" / ")} · {catedra.degrees.join(" / ")}</p>
-          <h1 className="mt-2.5 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-3xl">
+          <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
+            {catedra.subjects.join(" / ")} · {catedra.degrees.join(" / ")}
+          </p>
+          <h1 className="text-foreground mt-2.5 text-4xl leading-[1.05] font-bold tracking-tight text-balance sm:text-3xl">
             {catedra.name}
           </h1>
-          
         </div>
       </section>
-      
 
       <section className="mx-auto max-w-5xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[280px_1fr]">
-          <aside className="hidden lg:flex flex-col gap-5 sticky top-6 bg-card border-border border p-5 rounded-md">
-            
-          <div className="flex items-center gap-x-1.5 text-sm font-medium text-foreground">
-            <FileIcon className="size-3.5" />
-            Detalle
-          
-        </div>
+          <aside className="bg-card border-border sticky top-6 hidden flex-col gap-5 rounded-md border p-5 lg:flex">
+            <div className="text-foreground flex items-center gap-x-1.5 text-sm font-medium">
+              <FileIcon className="size-3.5" />
+              Detalle
+            </div>
 
-              <div className="flex items-center justify-between border-t border-border pt-4">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">La recomiendan</span>
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-                  <Check className="size-4 text-accent" />
-                  {catedra.recommendPct}%
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Likes totales</span>
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
-                  <ThumbsUp className="size-4" />
-                  {catedra.totalLikes}
-                </span>
-              </div>
-              <div className="flex flex-col gap-2 border-t border-border pt-4">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tags</span>
-                {tags.length > 0 && (
+            <div className="border-border flex items-center justify-between border-t pt-4">
+              <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                La recomiendan
+              </span>
+              <span className="text-foreground inline-flex items-center gap-1.5 text-sm font-medium">
+                <Check className="text-accent size-4" />
+                {catedra.recommendPct}%
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                Likes totales
+              </span>
+              <span className="text-foreground inline-flex items-center gap-1.5 text-sm font-medium">
+                <ThumbsUp className="size-4" />
+                {catedra.totalLikes}
+              </span>
+            </div>
+            <div className="border-border flex flex-col gap-2 border-t pt-4">
+              <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                Tags
+              </span>
+              {tags.length > 0 && (
                 <div className="flex flex-wrap gap-2">
                   {tags.map((t) => (
-                    <Badge key={t} variant="secondary" className="rounded-full font-normal">{t}</Badge>
+                    <Badge key={t} variant="secondary" className="rounded-full font-normal">
+                      {t}
+                    </Badge>
                   ))}
                 </div>
               )}
+            </div>
+            <div className="border-border flex flex-col gap-2 border-t pt-4">
+              <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                Links
+              </span>
+
+              <div className="flex flex-wrap gap-2">
+                <Badge variant="secondary" className="rounded-full font-normal">
+                  Instagram
+                </Badge>
+                <Badge variant="secondary" className="rounded-full font-normal">
+                  Web
+                </Badge>
               </div>
-              <div className="flex flex-col gap-2 border-t border-border pt-4">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Links</span>
-                
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="rounded-full font-normal">Instagram</Badge>
-                  <Badge variant="secondary" className="rounded-full font-normal">Web</Badge>
-                </div>
-              
-              </div>
+            </div>
           </aside>
 
           <div>
-            <h2 className="mb-6 border-b border-border pb-4 font-serif text-2xl text-foreground">
+            <h2 className="border-border text-foreground mb-6 border-b pb-4 font-serif text-2xl">
               Reseñas de estudiantes
             </h2>
             <div className="flex flex-col gap-4">
-              {catedra.reviews.map((r) => <ReviewCard key={r.id} review={r} />)}
+              {catedra.reviews.map((r) => (
+                <ReviewCard key={r.id} review={r} />
+              ))}
             </div>
           </div>
         </div>

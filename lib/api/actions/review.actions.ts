@@ -6,9 +6,7 @@ import { BASE } from "@/lib/api/fetcher.server"
 import type { CreateReviewPayload } from "@/lib/api/dtos/payloads/review"
 import type { Review } from "@/lib/api/dtos/responses/review"
 
-type ActionResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string }
+type ActionResult<T> = { success: true; data: T } | { success: false; error: string }
 
 export async function createReviewAction(
   payload: CreateReviewPayload,

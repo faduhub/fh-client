@@ -1,47 +1,47 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn } from "@/lib/auth-client";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { GoogleIcon } from "@/app/components/icons/google-icon";
-import { cn } from "@/lib/utils";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { signIn } from "@/lib/auth-client"
+import { Button } from "@/app/components/ui/button"
+import { Input } from "@/app/components/ui/input"
+import { GoogleIcon } from "@/app/components/icons/google-icon"
+import { cn } from "@/lib/utils"
 
 export function LoginForm() {
-  const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleEmailLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
 
     const { error } = await signIn.email({
       email,
       password,
       callbackURL: `${window.location.origin}/`,
-    });
+    })
 
     if (error) {
-      setError("Email o contraseña incorrectos");
-      setLoading(false);
-      return;
+      setError("Email o contraseña incorrectos")
+      setLoading(false)
+      return
     }
 
-    router.push("/");
+    router.push("/")
   }
 
   async function handleGoogleLogin() {
-    setGoogleLoading(true);
+    setGoogleLoading(true)
     await signIn.social({
       provider: "google",
       callbackURL: `${window.location.origin}/`,
-    });
+    })
   }
 
   return (
@@ -57,9 +57,9 @@ export function LoginForm() {
       </Button>
 
       <div className="relative flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">o</span>
-        <div className="h-px flex-1 bg-border" />
+        <div className="bg-border h-px flex-1" />
+        <span className="text-muted-foreground text-xs">o</span>
+        <div className="bg-border h-px flex-1" />
       </div>
 
       <form onSubmit={handleEmailLogin} className="space-y-3">
@@ -80,18 +80,12 @@ export function LoginForm() {
           className="h-10"
         />
 
-        {error && (
-          <p className="text-xs text-destructive">{error}</p>
-        )}
+        {error && <p className="text-destructive text-xs">{error}</p>}
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className={cn("h-10 w-full")}
-        >
+        <Button type="submit" disabled={loading} className={cn("h-10 w-full")}>
           {loading ? "Ingresando..." : "Ingresar"}
         </Button>
       </form>
     </div>
-  );
+  )
 }

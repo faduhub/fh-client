@@ -178,9 +178,7 @@ import { headers } from "next/headers"
 import type { CreateReviewPayload } from "@/api/dtos/payloads/review"
 import type { Review } from "@/api/dtos/review"
 
-type ActionResult<T> =
-  | { success: true; data: T }
-  | { success: false; error: string }
+type ActionResult<T> = { success: true; data: T } | { success: false; error: string }
 
 export async function createReviewAction(
   payload: CreateReviewPayload,
@@ -192,7 +190,7 @@ export async function createReviewAction(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      cookie,                         // forwards session to Express
+      cookie, // forwards session to Express
     },
     body: JSON.stringify(payload),
   })
@@ -203,7 +201,7 @@ export async function createReviewAction(
     return { success: false, error: json.message ?? "Error al crear la reseña" }
   }
 
-  revalidateTag("reviews")            // busts the SSR cache for the reviews feed
+  revalidateTag("reviews") // busts the SSR cache for the reviews feed
   revalidateTag(`catedra-${payload.catedraId}`)
 
   return { success: true, data: json.data }
@@ -232,6 +230,7 @@ async function handleSubmit(payload: CreateReviewPayload) {
 ## 4. Client Services
 
 Used **only** when Server Actions are not enough:
+
 - Real-time polling
 - Optimistic updates with React Query
 - Interactions that need immediate client-side response before server confirmation
@@ -264,13 +263,13 @@ export const reviewClientService = {
 
 Use React Query **only** for these cases:
 
-| Case | Solution |
-|---|---|
-| Initial page data | Server Component + server service |
-| Form submission / mutation | Server Action |
-| Real-time data / polling | React Query `refetchInterval` |
-| Complex optimistic updates | React Query mutation + client service |
-| Data that changes without user interaction | React Query |
+| Case                                       | Solution                              |
+| ------------------------------------------ | ------------------------------------- |
+| Initial page data                          | Server Component + server service     |
+| Form submission / mutation                 | Server Action                         |
+| Real-time data / polling                   | React Query `refetchInterval`         |
+| Complex optimistic updates                 | React Query mutation + client service |
+| Data that changes without user interaction | React Query                           |
 
 When React Query is needed, create hooks in `/hooks/`:
 
@@ -319,7 +318,7 @@ Tag server fetches and invalidate by tag after mutations:
 ```typescript
 // Tagging on fetch (server service)
 fetch(`${API}/v1/reviews`, {
-  next: { tags: ["reviews"] }
+  next: { tags: ["reviews"] },
 })
 
 // Invalidating after mutation (server action)
@@ -329,7 +328,9 @@ revalidateTag("reviews")
 Granular tags avoid over-invalidation:
 
 ```typescript
-next: { tags: ["reviews", `catedra-${slug}-reviews`] }
+next: {
+  tags: ["reviews", `catedra-${slug}-reviews`]
+}
 
 // Then invalidate only what changed:
 revalidateTag(`catedra-${slug}-reviews`)
@@ -339,7 +340,7 @@ revalidateTag(`catedra-${slug}-reviews`)
 
 ## Environment Variables
 
-| Variable | Where used |
-|---|---|
-| `API_URL` | Server services, Server Actions — never exposed to the client |
-| `NEXT_PUBLIC_API_URL` | Client services only — visible in the browser bundle |
+| Variable              | Where used                                                    |
+| --------------------- | ------------------------------------------------------------- |
+| `API_URL`             | Server services, Server Actions — never exposed to the client |
+| `NEXT_PUBLIC_API_URL` | Client services only — visible in the browser bundle          |

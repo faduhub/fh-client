@@ -1,61 +1,56 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useSession, signOut } from "@/lib/auth-client";
-import AppMenu from "./ui/menu";
-import { Avatar, AvatarFallback } from "./ui/avatar";
+import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useSession, signOut } from "@/lib/auth-client"
+import AppMenu from "./ui/menu"
+import { Avatar, AvatarFallback } from "./ui/avatar"
 
 export function SiteHeader() {
-  const { data: session } = useSession();
-  const router = useRouter();
+  const { data: session } = useSession()
+  const router = useRouter()
 
   async function handleSignOut() {
-    await signOut();
-    router.push("/");
-    router.refresh();
+    await signOut()
+    router.push("/")
+    router.refresh()
   }
 
   return (
-    <header className="border-b border-border">
+    <header className="border-border border-b">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-        <nav className="hidden items-center gap-6 text-sm text-muted-foreground sm:flex sm:justify-between w-full">
-                  <Link href="/" className="flex items-baseline gap-2">
-          <span className="text-2xl font-bold leading-none tracking-tight text-foreground">
-            faduHub
-          </span>
-          <span className="font-mono text-xs uppercase tracking-widest text-accent">
-            UBA
-          </span>
-        </Link>
-          <div className="flex gap-x-5"><Link
-            href="/"
-            className="transition-colors hover:text-foreground"
-          >
-            Home
+        <nav className="text-muted-foreground hidden w-full items-center gap-6 text-sm sm:flex sm:justify-between">
+          <Link href="/" className="flex items-baseline gap-2">
+            <span className="text-foreground text-2xl leading-none font-bold tracking-tight">
+              faduHub
+            </span>
+            <span className="text-accent font-mono text-xs tracking-widest uppercase">UBA</span>
           </Link>
-          <Link
-            href="/catedras"
-            className="transition-colors hover:text-foreground"
-          >
-            Cátedras
-          </Link></div>
+          <div className="flex gap-x-5">
+            <Link href="/" className="hover:text-foreground transition-colors">
+              Home
+            </Link>
+            <Link href="/catedras" className="hover:text-foreground transition-colors">
+              Cátedras
+            </Link>
+          </div>
 
           {session ? (
-            <div className="flex gap-x-5 items-center">
+            <div className="flex items-center gap-x-5">
               <Link
                 href="/nueva-resena"
-                className="rounded-full bg-foreground px-4 py-1.5 text-background transition-opacity hover:opacity-90"
+                className="bg-foreground text-background rounded-full px-4 py-1.5 transition-opacity hover:opacity-90"
               >
                 Nueva reseña
               </Link>
               <AppMenu
-              
-                trigger={<Avatar className="size-8">
-            <AvatarFallback className="bg-secondary text-xs font-medium text-secondary-foreground">
-              {session.user.name[0]}
-            </AvatarFallback>
-          </Avatar>}
+                trigger={
+                  <Avatar className="size-8">
+                    <AvatarFallback className="bg-secondary text-secondary-foreground text-xs font-medium">
+                      {session.user.name[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                }
                 options={[
                   { label: "Perfil", onClick: () => router.push("/perfil/" + session.user.slug) },
                   // { label: "Configuración", onClick: () => router.push("/configuracion") },
@@ -64,16 +59,13 @@ export function SiteHeader() {
               />
             </div>
           ) : (
-            <div className="flex gap-x-5 items-center">
-              <Link
-                href="/login"
-                className="transition-colors hover:text-foreground"
-              >
+            <div className="flex items-center gap-x-5">
+              <Link href="/login" className="hover:text-foreground transition-colors">
                 Login
               </Link>
               <Link
                 href="/registro"
-                className="rounded-full bg-foreground px-4 py-1.5 text-background transition-opacity hover:opacity-90"
+                className="bg-foreground text-background rounded-full px-4 py-1.5 transition-opacity hover:opacity-90"
               >
                 Sign in
               </Link>
@@ -82,5 +74,5 @@ export function SiteHeader() {
         </nav>
       </div>
     </header>
-  );
+  )
 }

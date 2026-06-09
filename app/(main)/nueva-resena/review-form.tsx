@@ -13,10 +13,20 @@ import { Button } from "@/app/components/ui/button"
 import { Input } from "@/app/components/ui/input"
 import { cn } from "@/lib/utils"
 
-function BarPicker({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
+function BarPicker({
+  label,
+  value,
+  onChange,
+}: {
+  label: string
+  value: number
+  onChange: (v: number) => void
+}) {
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">{label}</span>
+      <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+        {label}
+      </span>
       <div className="flex items-center gap-1.5">
         {[1, 2, 3, 4, 5].map((i) => (
           <button
@@ -30,7 +40,7 @@ function BarPicker({ label, value, onChange }: { label: string; value: number; o
             aria-label={`${i} de 5`}
           />
         ))}
-        <span className="ml-1 w-4 font-mono text-xs text-muted-foreground">{value}</span>
+        <span className="text-muted-foreground ml-1 w-4 font-mono text-xs">{value}</span>
       </div>
     </div>
   )
@@ -52,7 +62,7 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
           <Star
             className={cn(
               "size-7 transition-colors",
-              i <= (hovered || value) ? "fill-accent text-accent" : "fill-transparent text-border",
+              i <= (hovered || value) ? "fill-accent text-accent" : "text-border fill-transparent",
             )}
           />
         </button>
@@ -95,7 +105,7 @@ export function ReviewForm({
   const [loading, setLoading] = useState(false)
 
   function toggleTag(id: number) {
-    setTagIds((prev) => prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id])
+    setTagIds((prev) => (prev.includes(id) ? prev.filter((t) => t !== id) : [...prev, id]))
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -103,7 +113,8 @@ export function ReviewForm({
     setError(null)
 
     if (!catedraSlug) return setError("Seleccioná una cátedra")
-    if (!departmentId) return setError("No se pudo resolver el ID de la cátedra — reiniciá el servidor")
+    if (!departmentId)
+      return setError("No se pudo resolver el ID de la cátedra — reiniciá el servidor")
     if (!subjectId) return setError("Seleccioná una materia")
     if (!degreeId) return setError("Seleccioná una carrera")
     if (rating === 0) return setError("Seleccioná una calificación")
@@ -142,7 +153,7 @@ export function ReviewForm({
       {/* Cátedra, materia y carrera */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
             Cátedra <span className="text-destructive">*</span>
           </label>
           <select
@@ -153,43 +164,49 @@ export function ReviewForm({
               const found = departments.find((c) => c.slug === slug)
               setDepartmentId(found?.id ?? null)
             }}
-            className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
+            className="border-input focus:border-ring h-10 w-full rounded-md border bg-transparent px-3 text-sm outline-none"
           >
             <option value="">Seleccioná una cátedra</option>
             {departments.map((c) => (
-              <option key={c.slug} value={c.slug}>{c.name}</option>
+              <option key={c.slug} value={c.slug}>
+                {c.name}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
             Materia <span className="text-destructive">*</span>
           </label>
           <select
             value={subjectId ?? ""}
             onChange={(e) => setSubjectId(e.target.value ? e.target.value : null)}
-            className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
+            className="border-input focus:border-ring h-10 w-full rounded-md border bg-transparent px-3 text-sm outline-none"
           >
             <option value="">Seleccioná una materia</option>
             {subjects.map((m) => (
-              <option key={m.slug} value={m.id}>{m.name}</option>
+              <option key={m.slug} value={m.id}>
+                {m.name}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+          <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
             Carrera <span className="text-destructive">*</span>
           </label>
           <select
             value={degreeId ?? ""}
             onChange={(e) => setDegreeId(e.target.value ? e.target.value : null)}
-            className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
+            className="border-input focus:border-ring h-10 w-full rounded-md border bg-transparent px-3 text-sm outline-none"
           >
             <option value="">Seleccioná una carrera</option>
             {degrees.map((c) => (
-              <option key={c.slug} value={c.id}>{c.name}</option>
+              <option key={c.slug} value={c.id}>
+                {c.name}
+              </option>
             ))}
           </select>
         </div>
@@ -197,7 +214,7 @@ export function ReviewForm({
 
       {/* Calificación */}
       <div className="flex flex-col gap-3">
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
           Calificación general <span className="text-destructive">*</span>
         </span>
         <StarPicker value={rating} onChange={setRating} />
@@ -211,7 +228,7 @@ export function ReviewForm({
 
       {/* Recomienda */}
       <div className="flex flex-col gap-3">
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
           ¿Recomendás la cátedra? <span className="text-destructive">*</span>
         </span>
         <div className="flex gap-3">
@@ -246,7 +263,7 @@ export function ReviewForm({
 
       {/* Texto */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
           Reseña <span className="text-destructive">*</span>
         </label>
         <textarea
@@ -254,14 +271,16 @@ export function ReviewForm({
           onChange={(e) => setBody(e.target.value)}
           placeholder="Contá tu experiencia con la cátedra..."
           rows={5}
-          className="w-full resize-none rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus:border-ring placeholder:text-muted-foreground"
+          className="border-input focus:border-ring placeholder:text-muted-foreground w-full resize-none rounded-md border bg-transparent px-3 py-2 text-sm outline-none"
         />
       </div>
 
       {/* Año y período */}
       <div className="grid gap-6 sm:grid-cols-2">
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Año cursado</label>
+          <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+            Año cursado
+          </label>
           <Input
             type="number"
             min={2000}
@@ -272,11 +291,13 @@ export function ReviewForm({
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Período</label>
+          <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+            Período
+          </label>
           <select
             value={period}
             onChange={(e) => setPeriod(e.target.value as typeof period)}
-            className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
+            className="border-input focus:border-ring h-10 w-full rounded-md border bg-transparent px-3 text-sm outline-none"
           >
             <option value="FIRST">Primer cuatrimestre</option>
             <option value="SECOND">Segundo cuatrimestre</option>
@@ -288,7 +309,9 @@ export function ReviewForm({
       {/* Tags */}
       {tags.length > 0 && (
         <div className="flex flex-col gap-3">
-          <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Tags</span>
+          <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+            Tags
+          </span>
           <div className="flex flex-wrap gap-2">
             {tags.map((t) => (
               <button
@@ -309,16 +332,16 @@ export function ReviewForm({
         </div>
       )}
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-destructive text-sm">{error}</p>}
 
-      <div className="flex items-center gap-4 border-t border-border pt-6">
+      <div className="border-border flex items-center gap-4 border-t pt-6">
         <Button type="submit" disabled={loading} className="px-8">
           {loading ? "Publicando..." : "Publicar reseña"}
         </Button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="text-muted-foreground hover:text-foreground text-sm transition-colors"
         >
           Cancelar
         </button>

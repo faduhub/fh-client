@@ -32,7 +32,7 @@ const PERIODOS = [
   { value: "SUMMER", label: "Verano" },
 ] as const
 
-type Periodo = typeof PERIODOS[number]["value"]
+type Periodo = (typeof PERIODOS)[number]["value"]
 // ─── Feed ────────────────────────────────────────────────────────────────────
 
 type Props = {
@@ -56,23 +56,25 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
     return years.map((y) => ({ value: String(y), label: String(y) }))
   }, [reviews])
 
-  const filteredSubjects = useMemo(() =>
-    subjects.filter((m) =>
-      degree === ALL || m.degrees.some((c) => c.name === degree)
-    )
-  , [subjects, degree])
+  const filteredSubjects = useMemo(
+    () => subjects.filter((m) => degree === ALL || m.degrees.some((c) => c.name === degree)),
+    [subjects, degree],
+  )
 
   const activeSubject = filteredSubjects.some((m) => m.name === subject) ? subject : ALL
 
   const availableDepartments = useMemo(() => {
-    const source = activeSubject !== ALL
-      ? filteredSubjects.filter((m) => m.name === activeSubject)
-      : filteredSubjects
+    const source =
+      activeSubject !== ALL
+        ? filteredSubjects.filter((m) => m.name === activeSubject)
+        : filteredSubjects
     const nombres = source.flatMap((m) => m.departments.map((c) => c.name))
     return [...new Set(nombres)].sort().map((c) => ({ value: c, label: c }))
   }, [filteredSubjects, activeSubject])
 
-  const activeDepartment = availableDepartments.some((c) => c.value === department) ? department : ALL
+  const activeDepartment = availableDepartments.some((c) => c.value === department)
+    ? department
+    : ALL
 
   const filtered = useMemo(() => {
     const result = reviews.filter((r) => {
@@ -88,18 +90,40 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
       const matchPeriodo = period === ALL || r.period === period
       const matchAnio = yearFilter === ALL || r.year === Number(yearFilter)
       const matchRecomendada = !soloRecomendadas || r.recommends
-      return matchQuery && matchCarrera && matchMateria && matchCatedra && matchPeriodo && matchAnio && matchRecomendada
+      return (
+        matchQuery &&
+        matchCarrera &&
+        matchMateria &&
+        matchCatedra &&
+        matchPeriodo &&
+        matchAnio &&
+        matchRecomendada
+      )
     })
 
     return result.sort((a, b) => {
       switch (orden) {
-        case "mejores": return (b.rating ?? 0) - (a.rating ?? 0) || b.likes - a.likes
-        case "peores": return (a.rating ?? 0) - (b.rating ?? 0)
-        case "recientes": return b.year - a.year
-        default: return b.likes - a.likes
+        case "mejores":
+          return (b.rating ?? 0) - (a.rating ?? 0) || b.likes - a.likes
+        case "peores":
+          return (a.rating ?? 0) - (b.rating ?? 0)
+        case "recientes":
+          return b.year - a.year
+        default:
+          return b.likes - a.likes
       }
     })
-  }, [query, degree, activeSubject, activeDepartment, period, yearFilter, soloRecomendadas, orden, reviews])
+  }, [
+    query,
+    degree,
+    activeSubject,
+    activeDepartment,
+    period,
+    yearFilter,
+    soloRecomendadas,
+    orden,
+    reviews,
+  ])
 
   function reset() {
     setQuery("")
@@ -113,22 +137,27 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
   }
 
   const hasFilters =
-    query !== "" || degree !== ALL || subject !== ALL || department !== ALL ||
-    period !== ALL || yearFilter !== ALL || soloRecomendadas
+    query !== "" ||
+    degree !== ALL ||
+    subject !== ALL ||
+    department !== ALL ||
+    period !== ALL ||
+    yearFilter !== ALL ||
+    soloRecomendadas
 
   return (
-    <div className="flex gap-8 items-start">
+    <div className="flex items-start gap-8">
       {/* Sidebar de filtros — sticky en desktop */}
-      <aside className="hidden lg:flex flex-col gap-5 w-64 shrink-0 sticky top-6 bg-card border-border border p-5 rounded-md">
+      <aside className="bg-card border-border sticky top-6 hidden w-64 shrink-0 flex-col gap-5 rounded-md border p-5 lg:flex">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-x-1.5 text-sm font-medium text-foreground">
+          <div className="text-foreground flex items-center gap-x-1.5 text-sm font-medium">
             <FilterIcon className="size-3.5" />
             Filtros
           </div>
           {hasFilters && (
             <button
               onClick={reset}
-              className="text-xs font-medium text-accent underline underline-offset-4 hover:opacity-80"
+              className="text-accent text-xs font-medium underline underline-offset-4 hover:opacity-80"
             >
               Limpiar
             </button>
@@ -136,7 +165,7 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
         </div>
 
         <div className="relative">
-          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -152,7 +181,11 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
             placeholder="Filtrar carreras..."
             options={degrees.map((c) => ({ value: c.name, label: c.name }))}
             value={degree}
-            onChange={(v) => { setDegree(v); setSubject(ALL); setDepartment(ALL) }}
+            onChange={(v) => {
+              setDegree(v)
+              setSubject(ALL)
+              setDepartment(ALL)
+            }}
           />
 
           <Combobox
@@ -160,7 +193,10 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
             placeholder="Filtrar materias..."
             options={filteredSubjects.map((m) => ({ value: m.name, label: m.name }))}
             value={activeSubject}
-            onChange={(v) => { setSubject(v); setDepartment(ALL) }}
+            onChange={(v) => {
+              setSubject(v)
+              setDepartment(ALL)
+            }}
           />
 
           <Combobox
@@ -193,7 +229,7 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
         <button
           onClick={() => setSoloRecomendadas((v) => !v)}
           className={cn(
-            "flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors w-full justify-center",
+            "flex w-full items-center justify-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
             soloRecomendadas
               ? "border-foreground bg-foreground text-background"
               : "border-border text-foreground hover:border-foreground/50",
@@ -205,11 +241,11 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
       </aside>
 
       {/* Columna principal */}
-      <div className="flex flex-col gap-6 flex-1 min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col gap-6">
         {/* Filtros mobile */}
-        <div className="flex flex-col gap-3 border-b border-border pb-5 lg:hidden">
+        <div className="border-border flex flex-col gap-3 border-b pb-5 lg:hidden">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -224,14 +260,21 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
               placeholder="Filtrar carreras..."
               options={degrees.map((c) => ({ value: c.name, label: c.name }))}
               value={degree}
-              onChange={(v) => { setDegree(v); setSubject(ALL); setDepartment(ALL) }}
+              onChange={(v) => {
+                setDegree(v)
+                setSubject(ALL)
+                setDepartment(ALL)
+              }}
             />
             <Combobox
               label="Materia"
               placeholder="Filtrar materias..."
               options={filteredSubjects.map((m) => ({ value: m.name, label: m.name }))}
               value={activeSubject}
-              onChange={(v) => { setSubject(v); setDepartment(ALL) }}
+              onChange={(v) => {
+                setSubject(v)
+                setDepartment(ALL)
+              }}
             />
             <Combobox
               label="Cátedra"
@@ -272,25 +315,29 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
         </div>
 
         {/* Header con contador y orden */}
-        <div className="flex items-center justify-between  border-border border-b pb-4">
-          <p className="text-sm text-muted-foreground">
-            <span className="font-medium text-foreground">{filtered.length}</span>{" "}
+        <div className="border-border flex items-center justify-between border-b pb-4">
+          <p className="text-muted-foreground text-sm">
+            <span className="text-foreground font-medium">{filtered.length}</span>{" "}
             {filtered.length === 1 ? "reseña" : "reseñas"}
           </p>
           <div className="flex">
             {hasFilters && (
               <button
                 onClick={reset}
-                className="text-xs font-medium text-accent underline underline-offset-4 hover:opacity-80 lg:hidden"
+                className="text-accent text-xs font-medium underline underline-offset-4 hover:opacity-80 lg:hidden"
               >
                 Limpiar filtros
               </button>
             )}
             <Select value={orden} onValueChange={(v) => v && setOrden(v)}>
-              <SelectTrigger ><SelectValue /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
               <SelectContent>
                 {orderOptions.map((o) => (
-                  <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  <SelectItem key={o.value} value={o.value}>
+                    {o.label}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -299,17 +346,19 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
 
         {filtered.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {filtered.map((r) => <ReviewCard key={r.id} review={r} />)}
+            {filtered.map((r) => (
+              <ReviewCard key={r.id} review={r} />
+            ))}
           </div>
         ) : (
-          <div className="border border-dashed border-border py-20 text-center">
-            <p className="text-2xl font-semibold tracking-tight text-foreground">Sin resultados</p>
-            <p className="mt-2 text-sm text-muted-foreground">
+          <div className="border-border border border-dashed py-20 text-center">
+            <p className="text-foreground text-2xl font-semibold tracking-tight">Sin resultados</p>
+            <p className="text-muted-foreground mt-2 text-sm">
               Probá ajustar los filtros o limpiar la búsqueda.
             </p>
             <button
               onClick={reset}
-              className="mt-4 text-sm font-medium text-accent underline underline-offset-4"
+              className="text-accent mt-4 text-sm font-medium underline underline-offset-4"
             >
               Limpiar filtros
             </button>

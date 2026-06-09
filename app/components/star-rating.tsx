@@ -11,14 +11,17 @@ export function StarRating({
   className?: string
 }) {
   return (
-    <div className={cn("flex items-center gap-0.5", className)} aria-label={`${value} de 5 estrellas`}>
+    <div
+      className={cn("flex items-center gap-0.5", className)}
+      aria-label={`${value} de 5 estrellas`}
+    >
       {[1, 2, 3, 4, 5].map((i) => (
         <Star
           key={i}
           width={size}
           height={size}
           className={cn(
-            i <= Math.round(value) ? "fill-accent text-accent" : "fill-transparent text-border",
+            i <= Math.round(value) ? "fill-accent text-accent" : "text-border fill-transparent",
           )}
         />
       ))}

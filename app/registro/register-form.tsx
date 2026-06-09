@@ -1,53 +1,53 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn, signUp } from "@/lib/auth-client";
-import { Button } from "@/app/components/ui/button";
-import { Input } from "@/app/components/ui/input";
-import { GoogleIcon } from "@/app/components/icons/google-icon";
-import { cn } from "@/lib/utils";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { signIn, signUp } from "@/lib/auth-client"
+import { Button } from "@/app/components/ui/button"
+import { Input } from "@/app/components/ui/input"
+import { GoogleIcon } from "@/app/components/icons/google-icon"
+import { cn } from "@/lib/utils"
 
 export function RegisterForm() {
-  const router = useRouter();
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [googleLoading, setGoogleLoading] = useState(false);
+  const router = useRouter()
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleRegister(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
 
     const { error } = await signUp.email({
       name,
       email,
       password,
       callbackURL: `${window.location.origin}/`,
-    });
+    })
 
     if (error) {
       setError(
         error.code === "USER_ALREADY_EXISTS"
           ? "Ya existe una cuenta con ese email"
-          : "Ocurrió un error al registrarte"
-      );
-      setLoading(false);
-      return;
+          : "Ocurrió un error al registrarte",
+      )
+      setLoading(false)
+      return
     }
 
-    router.push("/");
+    router.push("/")
   }
 
   async function handleGoogleLogin() {
-    setGoogleLoading(true);
+    setGoogleLoading(true)
     await signIn.social({
       provider: "google",
       callbackURL: `${window.location.origin}/`,
-    });
+    })
   }
 
   return (
@@ -63,9 +63,9 @@ export function RegisterForm() {
       </Button>
 
       <div className="relative flex items-center gap-3">
-        <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">o</span>
-        <div className="h-px flex-1 bg-border" />
+        <div className="bg-border h-px flex-1" />
+        <span className="text-muted-foreground text-xs">o</span>
+        <div className="bg-border h-px flex-1" />
       </div>
 
       <form onSubmit={handleRegister} className="space-y-3">
@@ -95,18 +95,12 @@ export function RegisterForm() {
           className="h-10"
         />
 
-        {error && (
-          <p className="text-xs text-destructive">{error}</p>
-        )}
+        {error && <p className="text-destructive text-xs">{error}</p>}
 
-        <Button
-          type="submit"
-          disabled={loading}
-          className={cn("h-10 w-full")}
-        >
+        <Button type="submit" disabled={loading} className={cn("h-10 w-full")}>
           {loading ? "Creando cuenta..." : "Crear cuenta"}
         </Button>
       </form>
     </div>
-  );
+  )
 }

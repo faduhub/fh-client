@@ -7,15 +7,16 @@ export default async function CatedrasPage() {
   const catedras = await departmentService.getAll()
 
   return (
-    <main className="min-h-screen bg-background">
-
-                  <section className="">
+    <main className="bg-background min-h-screen">
+      <section className="">
         <div className="mx-auto max-w-5xl px-6 pt-12">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">Reseñas de cursadas · escritas por estudiantes</p>
-          <h1 className="mt-2.5 text-balance text-4xl font-bold leading-[1.05] tracking-tight text-foreground sm:text-3xl">
-            Cátedras 
+          <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
+            Reseñas de cursadas · escritas por estudiantes
+          </p>
+          <h1 className="text-foreground mt-2.5 text-4xl leading-[1.05] font-bold tracking-tight text-balance sm:text-3xl">
+            Cátedras
           </h1>
-            <p className="mt-4 max-w-xl text-pretty leading-relaxed text-muted-foreground">
+          <p className="text-muted-foreground mt-4 max-w-xl leading-relaxed text-pretty">
             Explorá las cátedras reseñadas por estudiantes. Tocá cualquiera para ver su detalle, sus
             métricas y todas las opiniones.
           </p>
@@ -28,26 +29,32 @@ export default async function CatedrasPage() {
             <li key={c.slug}>
               <Link
                 href={`/catedra/${c.slug}`}
-                className="group flex flex-wrap items-center justify-between gap-4 border-b border-border py-5 transition-colors hover:bg-card"
+                className="group border-border hover:bg-card flex flex-wrap items-center justify-between gap-4 border-b py-5 transition-colors"
               >
                 <div className="min-w-0">
-                  <p className="text-xs font-medium uppercase tracking-wider text-accent">{c.subjects.join(" / ")}</p>
-                  <h2 className="mt-1 flex items-center gap-1.5 font-serif text-2xl leading-tight text-foreground">
+                  <p className="text-accent text-xs font-medium tracking-wider uppercase">
+                    {c.subjects.join(" / ")}
+                  </p>
+                  <h2 className="text-foreground mt-1 flex items-center gap-1.5 font-serif text-2xl leading-tight">
                     {c.name}
-                    <ArrowUpRight className="size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                    <ArrowUpRight className="text-muted-foreground size-4 opacity-0 transition-opacity group-hover:opacity-100" />
                   </h2>
-                  <p className="mt-0.5 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground mt-0.5 text-sm">
                     {c.head} · {c.degrees.join(" / ")}
                   </p>
                 </div>
                 <div className="flex items-center gap-6">
                   <div className="hidden text-right sm:block">
-                    <p className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Reseñas</p>
-                    <p className="font-serif text-2xl text-foreground">{c.reviews.length}</p>
+                    <p className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
+                      Reseñas
+                    </p>
+                    <p className="text-foreground font-serif text-2xl">{c.reviews.length}</p>
                   </div>
                   <div className="flex flex-col items-end gap-1">
                     <StarRating value={c.rating} size={16} />
-                    <span className="font-mono text-xs text-muted-foreground">{c.rating.toFixed(1)} / 5</span>
+                    <span className="text-muted-foreground font-mono text-xs">
+                      {c.rating.toFixed(1)} / 5
+                    </span>
                   </div>
                 </div>
               </Link>

@@ -22,7 +22,7 @@ export function Combobox({
   className?: string
 }) {
   const ALL = ""
-  const selected = value ? options.find((o) => o.value === value) ?? null : null
+  const selected = value ? (options.find((o) => o.value === value) ?? null) : null
 
   return (
     <BaseCombobox.Root
@@ -32,15 +32,14 @@ export function Combobox({
     >
       <BaseCombobox.InputGroup
         className={cn(
-          "flex items-center gap-1 rounded-md border px-2.5 py-1.5 text-sm font-medium transition-colors cursor-pointer",
-          selected
-            && " bg-muted text-muted-foreground",
+          "flex cursor-pointer items-center gap-1 rounded-md border px-2.5 py-1.5 text-sm font-medium transition-colors",
+          selected && "bg-muted text-muted-foreground",
           className,
         )}
       >
         <BaseCombobox.Input
           placeholder={selected ? selected.label : label}
-          className="w-full bg-transparent outline-none placeholder:text-muted-foreground truncate cursor-pointer"
+          className="placeholder:text-muted-foreground w-full cursor-pointer truncate bg-transparent outline-none"
         />
         {selected ? (
           <BaseCombobox.Clear
@@ -59,7 +58,7 @@ export function Combobox({
 
       <BaseCombobox.Portal>
         <BaseCombobox.Positioner sideOffset={6} align="start">
-          <BaseCombobox.Popup className="z-50 min-w-56 rounded-md border border-border bg-popover shadow-lg outline-none">
+          <BaseCombobox.Popup className="border-border bg-popover z-50 min-w-56 rounded-md border shadow-lg outline-none">
             {/* <BaseCombobox.Empty className="px-3 py-4 text-center text-xs text-muted-foreground">
               Sin resultados
             </BaseCombobox.Empty> */}
@@ -68,7 +67,7 @@ export function Combobox({
                 <BaseCombobox.Item
                   key={item.value}
                   value={item}
-                  className="flex cursor-pointer items-center gap-2 px-3 py-1.5 text-sm outline-none transition-colors data-highlighted:bg-muted"
+                  className="data-highlighted:bg-muted flex cursor-pointer items-center gap-2 px-3 py-1.5 text-sm transition-colors outline-none"
                 >
                   <BaseCombobox.ItemIndicator className="flex size-3.5 shrink-0 items-center justify-center">
                     <Check className="size-3.5" />
