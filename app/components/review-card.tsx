@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { ThumbsUp, Check, X, ArrowUpRight } from "lucide-react"
-import { slugify, type Review } from "@/lib/data"
+import type { Review } from "@/lib/api"
 import { StarRating } from "@/app/components/star-rating"
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
 import { Badge } from "@/app/components/ui/badge"
@@ -40,7 +40,7 @@ export function ReviewCard({ review }: { review: Review }) {
         <div className="min-w-0">
           <p className="text-xs font-medium uppercase tracking-wider text-accent">{review.materia}</p>
           <Link
-            href={`/catedra/${slugify(review.catedra)}`}
+            href={`/catedra/${review.catedraSlug}`}
             className="mt-1 inline-flex items-center gap-1.5 text-2xl font-semibold leading-tight tracking-tight text-foreground transition-colors hover:text-accent"
           >
             {review.catedra}
@@ -96,7 +96,7 @@ export function ReviewCard({ review }: { review: Review }) {
           </Avatar>
           <div className="leading-tight">
             <Link
-              href={`/usuario/${slugify(review.autor)}`}
+              href={`/usuario/${review.autorSlug}`}
               className="text-sm font-medium text-foreground transition-colors hover:text-accent"
             >
               {review.autor}

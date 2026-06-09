@@ -1,15 +1,11 @@
-import Link from "next/link"
 import { notFound } from "next/navigation"
+import Link from "next/link"
 import { ArrowLeft, Check, ThumbsUp } from "lucide-react"
-import { getCatedra, getCatedras } from "@/lib/data"
+import { getCatedra } from "@/lib/api"
 import { SiteHeader } from "@/app/components/site-header"
 import { StarRating } from "@/app/components/star-rating"
 import { ReviewCard } from "@/app/components/review-card"
 import { Badge } from "@/app/components/ui/badge"
-
-export function generateStaticParams() {
-  return getCatedras().map((c) => ({ slug: c.slug }))
-}
 
 function BarStat({ label, value }: { label: string; value: number }) {
   return (
@@ -32,16 +28,14 @@ function BarStat({ label, value }: { label: string; value: number }) {
 
 export default async function CatedraPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  const catedra = getCatedra(slug)
+  const catedra = await getCatedra(slug)
   if (!catedra) notFound()
 
-  // Distribución de puntajes 5..1
   const dist = [5, 4, 3, 2, 1].map((star) => ({
     star,
     count: catedra.reviews.filter((r) => Math.round(r.rating) === star).length,
   }))
   const maxCount = Math.max(1, ...dist.map((d) => d.count))
-
   const tags = Array.from(new Set(catedra.reviews.flatMap((r) => r.tags)))
 
   return (
@@ -67,13 +61,10 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
                 {catedra.catedra}
               </h1>
               <p className="mt-3 text-muted-foreground">A cargo de {catedra.titular}</p>
-
               {tags.length > 0 && (
                 <div className="mt-6 flex flex-wrap gap-2">
                   {tags.map((t) => (
-                    <Badge key={t} variant="secondary" className="rounded-full font-normal">
-                      {t}
-                    </Badge>
+                    <Badge key={t} variant="secondary" className="rounded-full font-normal">{t}</Badge>
                   ))}
                 </div>
               )}
@@ -81,9 +72,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
 
             <div className="flex shrink-0 items-center gap-6 border border-border bg-card p-6">
               <div className="text-center">
-                <p className="font-serif text-6xl leading-none text-foreground">
-                  {catedra.rating.toFixed(1)}
-                </p>
+                <p className="font-serif text-6xl leading-none text-foreground">{catedra.rating.toFixed(1)}</p>
                 <div className="mt-2 flex justify-center">
                   <StarRating value={catedra.rating} size={16} />
                 </div>
@@ -98,46 +87,32 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
 
       <section className="mx-auto max-w-5xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[280px_1fr]">
-          {/* Stats */}
           <aside className="lg:sticky lg:top-8 lg:self-start">
             <div className="flex flex-col gap-6 border border-border bg-card p-6">
               <h2 className="font-serif text-2xl text-foreground">Resumen</h2>
-
               <BarStat label="Carga horaria" value={catedra.cargaHoraria} />
               <BarStat label="Dificultad" value={catedra.dificultad} />
-
               <div className="flex items-center justify-between border-t border-border pt-4">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  La recomiendan
-                </span>
+                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">La recomiendan</span>
                 <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
                   <Check className="size-4 text-accent" />
                   {catedra.recomiendaPct}%
                 </span>
               </div>
-
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Likes totales
-                </span>
+                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Likes totales</span>
                 <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
                   <ThumbsUp className="size-4" />
                   {catedra.totalLikes}
                 </span>
               </div>
-
               <div className="flex flex-col gap-2 border-t border-border pt-4">
-                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                  Distribución
-                </span>
+                <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Distribución</span>
                 {dist.map((d) => (
                   <div key={d.star} className="flex items-center gap-2">
                     <span className="w-3 font-mono text-xs text-muted-foreground">{d.star}</span>
                     <div className="h-2 flex-1 overflow-hidden rounded-full bg-border">
-                      <div
-                        className="h-full rounded-full bg-accent"
-                        style={{ width: `${(d.count / maxCount) * 100}%` }}
-                      />
+                      <div className="h-full rounded-full bg-accent" style={{ width: `${(d.count / maxCount) * 100}%` }} />
                     </div>
                     <span className="w-4 text-right font-mono text-xs text-muted-foreground">{d.count}</span>
                   </div>
@@ -146,15 +121,12 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
             </div>
           </aside>
 
-          {/* Reviews */}
           <div>
             <h2 className="mb-6 border-b border-border pb-4 font-serif text-2xl text-foreground">
               Reseñas de estudiantes
             </h2>
             <div className="flex flex-col gap-4">
-              {catedra.reviews.map((r) => (
-                <ReviewCard key={r.id} review={r} />
-              ))}
+              {catedra.reviews.map((r) => <ReviewCard key={r.id} review={r} />)}
             </div>
           </div>
         </div>
