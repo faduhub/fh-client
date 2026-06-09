@@ -6,7 +6,7 @@ import { ReviewForm } from "./review-form"
 
 export default async function NuevaResenaPage() {
 
-  const [catedras, materias, tags, carreras] = await Promise.all([getCatedras(), getMaterias(), getTags(), getCarreras()])
+  const [departments, subjects, tags, degrees] = await Promise.all([getCatedras(), getMaterias(), getTags(), getCarreras()])
 
   return (
     <main className="min-h-screen bg-background">
@@ -32,7 +32,7 @@ export default async function NuevaResenaPage() {
       </section>
 
       <section className="mx-auto max-w-3xl px-6 py-12">
-        <ReviewForm catedras={catedras} materias={materias} tags={tags} carreras={carreras} />
+        <ReviewForm departments={departments} subjects={subjects} tags={tags} degrees={degrees} />
       </section>
     </main>
   )

@@ -3,13 +3,13 @@ import { ReviewsFeed } from "@/app/components/reviews-feed"
 import { SiteHeader } from "@/app/components/site-header"
 
 export default async function Page() {
-  const [reviews, carreras, materias] = await Promise.all([
+  const [reviews, degrees, subjects] = await Promise.all([
     getReviews(),
     getCarreras(),
     getMaterias(),
   ])
 
-  const promedio = reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length
+  const promedio = reviews.reduce((acc, r) => acc + (r.rating ?? 0), 0) / (reviews.length || 1)
 
   return (
     <main className="min-h-screen bg-background">
@@ -34,7 +34,7 @@ export default async function Page() {
             </div>
             <div>
               <dt className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Cátedras</dt>
-              <dd className="text-4xl font-bold tracking-tight text-foreground">{materias.length}</dd>
+              <dd className="text-4xl font-bold tracking-tight text-foreground">{subjects.length}</dd>
             </div>
             <div>
               <dt className="font-mono text-xs uppercase tracking-wider text-muted-foreground">Promedio</dt>
@@ -45,7 +45,7 @@ export default async function Page() {
       </section>
 
       <section id="reseñas" className="mx-auto max-w-7xl px-6 py-12">
-        <ReviewsFeed reviews={reviews} carreras={carreras} materias={materias} />
+        <ReviewsFeed reviews={reviews} degrees={degrees} subjects={subjects} />
       </section>
 
       <footer className="border-t border-border">

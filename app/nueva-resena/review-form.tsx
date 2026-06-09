@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Star, Check, X } from "lucide-react"
-import type { CatedraStats, MateriaItem, TagItem, CarreraItem } from "@/lib/api"
+import type { DepartmentStats, SubjectItem, TagItem, DegreeItem } from "@/lib/api"
 import { createReview } from "@/lib/api"
 import { useSession } from "@/lib/auth-client"
 import { Button } from "@/app/components/ui/button"
@@ -59,15 +59,15 @@ function StarPicker({ value, onChange }: { value: number; onChange: (v: number) 
 }
 
 export function ReviewForm({
-  catedras,
-  materias,
+  departments,
+  subjects,
   tags,
-  carreras,
+  degrees,
 }: {
-  catedras: CatedraStats[]
-  materias: MateriaItem[]
+  departments: DepartmentStats[]
+  subjects: SubjectItem[]
   tags: TagItem[]
-  carreras: CarreraItem[]
+  degrees: DegreeItem[]
 }) {
   const router = useRouter()
   const { data: session, isPending } = useSession()
@@ -77,16 +77,16 @@ export function ReviewForm({
   }, [session, isPending, router])
 
   const [catedraSlug, setCatedraSlug] = useState("")
-  const [catedraId, setCatedraId] = useState<number | null>(null)
-  const [materiaId, setMateriaId] = useState<number | null>(null)
-  const [carreraId, setCarreraId] = useState<number | null>(null)
+  const [departmentId, setDepartmentId] = useState<number | null>(null)
+  const [subjectId, setSubjectId] = useState<number | null>(null)
+  const [degreeId, setDegreeId] = useState<number | null>(null)
   const [rating, setRating] = useState(0)
-  const [cargaHoraria, setCargaHoraria] = useState(3)
-  const [dificultad, setDificultad] = useState(3)
-  const [recomienda, setRecomienda] = useState<boolean | null>(null)
-  const [texto, setTexto] = useState("")
-  const [anio, setAnio] = useState(new Date().getFullYear())
-  const [periodo, setPeriodo] = useState<"PRIMERO" | "SEGUNDO" | "VERANO">("PRIMERO")
+  const [workload, setWorkload] = useState(3)
+  const [difficulty, setDifficulty] = useState(3)
+  const [recommends, setRecommends] = useState<boolean | null>(null)
+  const [body, setBody] = useState("")
+  const [year, setYear] = useState(new Date().getFullYear())
+  const [period, setPeriod] = useState<"FIRST" | "SECOND" | "SUMMER">("FIRST")
   const [tagIds, setTagIds] = useState<number[]>([])
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -100,25 +100,25 @@ export function ReviewForm({
     setError(null)
 
     if (!catedraSlug) return setError("Seleccioná una cátedra")
-    if (!catedraId) return setError("No se pudo resolver el ID de la cátedra — reiniciá el servidor")
-    if (!materiaId) return setError("Seleccioná una materia")
-    if (!carreraId) return setError("Seleccioná una carrera")
+    if (!departmentId) return setError("No se pudo resolver el ID de la cátedra — reiniciá el servidor")
+    if (!subjectId) return setError("Seleccioná una materia")
+    if (!degreeId) return setError("Seleccioná una carrera")
     if (rating === 0) return setError("Seleccioná una calificación")
-    if (recomienda === null) return setError("Indicá si recomendás la cátedra")
-    if (!texto.trim()) return setError("Escribí una reseña")
+    if (recommends === null) return setError("Indicá si recomendás la cátedra")
+    if (!body.trim()) return setError("Escribí una reseña")
 
     setLoading(true)
     const result = await createReview({
-      catedraId,
-      materiaId,
-      carreraId,
+      departmentId,
+      subjectId,
+      degreeId,
       rating,
-      cargaHoraria,
-      dificultad,
-      recomienda,
-      texto: texto.trim(),
-      anio,
-      periodo,
+      workload,
+      difficulty,
+      recommends,
+      body: body.trim(),
+      year,
+      period,
       tagIds,
     })
     setLoading(false)
@@ -147,15 +147,14 @@ export function ReviewForm({
             onChange={(e) => {
               const slug = e.target.value
               setCatedraSlug(slug)
-              const found = catedras.find((c) => c.slug === slug)
-              console.log("[catedra found]", found)
-              setCatedraId(found?.id ?? null)
+              const found = departments.find((c) => c.slug === slug)
+              setDepartmentId(found?.id ?? null)
             }}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
           >
             <option value="">Seleccioná una cátedra</option>
-            {catedras.map((c) => (
-              <option key={c.slug} value={c.slug}>{c.catedra}</option>
+            {departments.map((c) => (
+              <option key={c.slug} value={c.slug}>{c.name}</option>
             ))}
           </select>
         </div>
@@ -165,13 +164,13 @@ export function ReviewForm({
             Materia <span className="text-destructive">*</span>
           </label>
           <select
-            value={materiaId ?? ""}
-            onChange={(e) => setMateriaId(e.target.value ? Number(e.target.value) : null)}
+            value={subjectId ?? ""}
+            onChange={(e) => setSubjectId(e.target.value ? Number(e.target.value) : null)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
           >
             <option value="">Seleccioná una materia</option>
-            {materias.map((m) => (
-              <option key={m.slug} value={m.id}>{m.nombre}</option>
+            {subjects.map((m) => (
+              <option key={m.slug} value={m.id}>{m.name}</option>
             ))}
           </select>
         </div>
@@ -181,13 +180,13 @@ export function ReviewForm({
             Carrera <span className="text-destructive">*</span>
           </label>
           <select
-            value={carreraId ?? ""}
-            onChange={(e) => setCarreraId(e.target.value ? Number(e.target.value) : null)}
+            value={degreeId ?? ""}
+            onChange={(e) => setDegreeId(e.target.value ? Number(e.target.value) : null)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
           >
             <option value="">Seleccioná una carrera</option>
-            {carreras.map((c) => (
-              <option key={c.slug} value={c.id}>{c.nombre}</option>
+            {degrees.map((c) => (
+              <option key={c.slug} value={c.id}>{c.name}</option>
             ))}
           </select>
         </div>
@@ -203,8 +202,8 @@ export function ReviewForm({
 
       {/* Métricas */}
       <div className="grid gap-6 sm:grid-cols-2">
-        <BarPicker label="Carga horaria" value={cargaHoraria} onChange={setCargaHoraria} />
-        <BarPicker label="Dificultad" value={dificultad} onChange={setDificultad} />
+        <BarPicker label="Carga horaria" value={workload} onChange={setWorkload} />
+        <BarPicker label="Dificultad" value={difficulty} onChange={setDifficulty} />
       </div>
 
       {/* Recomienda */}
@@ -215,10 +214,10 @@ export function ReviewForm({
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => setRecomienda(true)}
+            onClick={() => setRecommends(true)}
             className={cn(
               "inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors",
-              recomienda === true
+              recommends === true
                 ? "border-foreground bg-foreground text-background"
                 : "border-border text-muted-foreground hover:border-foreground/50 hover:text-foreground",
             )}
@@ -228,10 +227,10 @@ export function ReviewForm({
           </button>
           <button
             type="button"
-            onClick={() => setRecomienda(false)}
+            onClick={() => setRecommends(false)}
             className={cn(
               "inline-flex items-center gap-2 rounded-md border px-4 py-2 text-sm font-medium transition-colors",
-              recomienda === false
+              recommends === false
                 ? "border-foreground bg-foreground text-background"
                 : "border-border text-muted-foreground hover:border-foreground/50 hover:text-foreground",
             )}
@@ -248,8 +247,8 @@ export function ReviewForm({
           Reseña <span className="text-destructive">*</span>
         </label>
         <textarea
-          value={texto}
-          onChange={(e) => setTexto(e.target.value)}
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
           placeholder="Contá tu experiencia con la cátedra..."
           rows={5}
           className="w-full resize-none rounded-md border border-input bg-transparent px-3 py-2 text-sm outline-none focus:border-ring placeholder:text-muted-foreground"
@@ -264,21 +263,21 @@ export function ReviewForm({
             type="number"
             min={2000}
             max={currentYear}
-            value={anio}
-            onChange={(e) => setAnio(Number(e.target.value))}
+            value={year}
+            onChange={(e) => setYear(Number(e.target.value))}
             className="h-10"
           />
         </div>
         <div className="flex flex-col gap-2">
           <label className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Período</label>
           <select
-            value={periodo}
-            onChange={(e) => setPeriodo(e.target.value as typeof periodo)}
+            value={period}
+            onChange={(e) => setPeriod(e.target.value as typeof period)}
             className="h-10 w-full rounded-md border border-input bg-transparent px-3 text-sm outline-none focus:border-ring"
           >
-            <option value="PRIMERO">Primer cuatrimestre</option>
-            <option value="SEGUNDO">Segundo cuatrimestre</option>
-            <option value="VERANO">Verano</option>
+            <option value="FIRST">Primer cuatrimestre</option>
+            <option value="SECOND">Segundo cuatrimestre</option>
+            <option value="SUMMER">Verano</option>
           </select>
         </div>
       </div>
@@ -300,7 +299,7 @@ export function ReviewForm({
                     : "border-border text-muted-foreground hover:border-foreground/50 hover:text-foreground",
                 )}
               >
-                {t.nombre}
+                {t.name}
               </button>
             ))}
           </div>

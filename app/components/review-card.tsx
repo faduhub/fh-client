@@ -38,25 +38,27 @@ export function ReviewCard({ review }: { review: Review }) {
     <article className="group flex flex-col gap-5 border border-border bg-card p-6 transition-colors hover:border-foreground/30">
       <header className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0">
-          <p className="text-xs font-medium uppercase tracking-wider text-accent">{review.materia}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-accent">{review.subject}</p>
           <Link
-            href={`/catedra/${review.catedraSlug}`}
+            href={`/catedra/${review.departmentSlug}`}
             className="mt-1 inline-flex items-center gap-1.5 text-2xl font-semibold leading-tight tracking-tight text-foreground transition-colors hover:text-accent"
           >
-            {review.catedra}
+            {review.department}
             <ArrowUpRight className="size-4 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
           </Link>
           <p className="mt-0.5 text-sm text-muted-foreground">
-            {review.titular} · {review.carrera}
+            {review.head} · {review.degree}
           </p>
         </div>
-        <div className="flex flex-col items-end gap-1">
-          <StarRating value={review.rating} size={16} />
-          <span className="font-mono text-xs text-muted-foreground">{review.rating.toFixed(1)} / 5</span>
-        </div>
+        {review.rating != null && (
+          <div className="flex flex-col items-end gap-1">
+            <StarRating value={review.rating} size={16} />
+            <span className="font-mono text-xs text-muted-foreground">{review.rating.toFixed(1)} / 5</span>
+          </div>
+        )}
       </header>
 
-      <p className="text-pretty text-sm leading-relaxed text-foreground/90">{review.texto}</p>
+      <p className="text-pretty text-sm leading-relaxed text-foreground/90">{review.body}</p>
 
       {review.tags.length > 0 && (
         <div className="flex flex-wrap gap-2">
@@ -69,8 +71,8 @@ export function ReviewCard({ review }: { review: Review }) {
       )}
 
       <div className="grid grid-cols-2 gap-x-8 gap-y-4 border-y border-border py-4 sm:grid-cols-3">
-        <Metric label="Carga horaria" value={review.cargaHoraria} />
-        <Metric label="Dificultad" value={review.dificultad} />
+        {review.workload != null && <Metric label="Carga horaria" value={review.workload} />}
+        {review.difficulty != null && <Metric label="Dificultad" value={review.difficulty} />}
         <div className="flex flex-col gap-1.5">
           <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
             ¿La recomienda?
@@ -78,11 +80,11 @@ export function ReviewCard({ review }: { review: Review }) {
           <span
             className={cn(
               "inline-flex w-fit items-center gap-1 text-sm font-medium",
-              review.recomienda ? "text-foreground" : "text-muted-foreground",
+              review.recommends ? "text-foreground" : "text-muted-foreground",
             )}
           >
-            {review.recomienda ? <Check className="size-4 text-accent" /> : <X className="size-4" />}
-            {review.recomienda ? "Sí" : "No"}
+            {review.recommends ? <Check className="size-4 text-accent" /> : <X className="size-4" />}
+            {review.recommends ? "Sí" : "No"}
           </span>
         </div>
       </div>
@@ -91,18 +93,18 @@ export function ReviewCard({ review }: { review: Review }) {
         <div className="flex items-center gap-2.5">
           <Avatar className="size-8">
             <AvatarFallback className="bg-secondary text-xs font-medium text-secondary-foreground">
-              {review.iniciales}
+              {review.initials}
             </AvatarFallback>
           </Avatar>
           <div className="leading-tight">
             <Link
-              href={`/usuario/${review.autorSlug}`}
+              href={`/usuario/${review.authorSlug}`}
               className="text-sm font-medium text-foreground transition-colors hover:text-accent"
             >
-              {review.autor}
+              {review.author}
             </Link>
             <p className="text-xs text-muted-foreground">
-              {review.cuatrimestre} · {review.fecha}
+              {review.term} · {review.date}
             </p>
           </div>
         </div>

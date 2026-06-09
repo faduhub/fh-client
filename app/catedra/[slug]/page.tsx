@@ -33,7 +33,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
 
   const dist = [5, 4, 3, 2, 1].map((star) => ({
     star,
-    count: catedra.reviews.filter((r) => Math.round(r.rating) === star).length,
+    count: catedra.reviews.filter((r) => r.rating != null && Math.round(r.rating) === star).length,
   }))
   const maxCount = Math.max(1, ...dist.map((d) => d.count))
   const tags = Array.from(new Set(catedra.reviews.flatMap((r) => r.tags)))
@@ -55,12 +55,12 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
           <div className="mt-6 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-                {catedra.materias.join(" / ")} · {catedra.carreras.join(" / ")}
+                {catedra.subjects.join(" / ")} · {catedra.degrees.join(" / ")}
               </p>
               <h1 className="mt-3 text-balance font-serif text-5xl leading-[1.05] text-foreground sm:text-6xl">
-                {catedra.catedra}
+                {catedra.name}
               </h1>
-              <p className="mt-3 text-muted-foreground">A cargo de {catedra.titular}</p>
+              <p className="mt-3 text-muted-foreground">A cargo de {catedra.head}</p>
               {tags.length > 0 && (
                 <div className="mt-6 flex flex-wrap gap-2">
                   {tags.map((t) => (
@@ -90,13 +90,13 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
           <aside className="lg:sticky lg:top-8 lg:self-start">
             <div className="flex flex-col gap-6 border border-border bg-card p-6">
               <h2 className="font-serif text-2xl text-foreground">Resumen</h2>
-              <BarStat label="Carga horaria" value={catedra.cargaHoraria} />
-              <BarStat label="Dificultad" value={catedra.dificultad} />
+              <BarStat label="Carga horaria" value={catedra.workload} />
+              <BarStat label="Dificultad" value={catedra.difficulty} />
               <div className="flex items-center justify-between border-t border-border pt-4">
                 <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">La recomiendan</span>
                 <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground">
                   <Check className="size-4 text-accent" />
-                  {catedra.recomiendaPct}%
+                  {catedra.recommendPct}%
                 </span>
               </div>
               <div className="flex items-center justify-between">

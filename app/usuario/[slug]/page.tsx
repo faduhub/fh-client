@@ -21,7 +21,7 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
   const usuario = await getUsuario(slug)
   if (!usuario) notFound()
 
-  const cuatrimestre = usuario.reviews[0]?.cuatrimestre ?? ""
+  const cuatrimestre = usuario.reviews[0]?.term ?? ""
 
   return (
     <main className="min-h-screen bg-background">
@@ -40,30 +40,30 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
           <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center">
             <Avatar className="size-20 border border-border">
               <AvatarFallback className="bg-secondary font-serif text-2xl text-secondary-foreground">
-                {usuario.iniciales}
+                {usuario.initials}
               </AvatarFallback>
             </Avatar>
             <div className="max-w-2xl">
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-                {usuario.carreras.map((c) => c.nombre).join(" / ")} · {cuatrimestre}
+                {usuario.degrees.map((c) => c.name).join(" / ")} · {cuatrimestre}
               </p>
-              <h1 className="mt-2 font-serif text-5xl leading-tight text-foreground">{usuario.nombre}</h1>
+              <h1 className="mt-2 font-serif text-5xl leading-tight text-foreground">{usuario.name}</h1>
               <p className="mt-3 text-pretty leading-relaxed text-muted-foreground">{usuario.bio}</p>
             </div>
           </div>
 
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <StatBox icon={<Star className="size-4" />} value={String(usuario.reviews.length)} label="Reseñas" />
-            <StatBox icon={<Star className="size-4" />} value={usuario.promedioPuntaje.toFixed(1)} label="Puntaje medio" />
+            <StatBox icon={<Star className="size-4" />} value={usuario.avgRating.toFixed(1)} label="Puntaje medio" />
             <StatBox icon={<ThumbsUp className="size-4" />} value={String(usuario.totalLikes)} label="Likes recibidos" />
-            <StatBox icon={<Check className="size-4" />} value={`${usuario.recomiendaPct}%`} label="Recomienda" />
+            <StatBox icon={<Check className="size-4" />} value={`${usuario.recommendPct}%`} label="Recomienda" />
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-7xl px-6 py-12">
         <h2 className="mb-6 border-b border-border pb-4 font-serif text-2xl text-foreground">
-          Reseñas de {usuario.nombre.split(" ")[0]}
+          Reseñas de {usuario.name.split(" ")[0]}
         </h2>
         <div className="mx-auto flex max-w-2xl flex-col gap-4">
           {usuario.reviews.map((r) => <ReviewCard key={r.id} review={r} />)}

@@ -15,139 +15,152 @@ async function apiFetch<T>(path: string): Promise<T> {
 type ListResult<T> = { success: boolean; total: number; data: T[] };
 type SingleResult<T> = { success: boolean; data: T };
 
-export type CarreraItem = {
+export type DegreeItem = {
   id: number;
-  nombre: string;
+  name: string;
   slug: string;
 };
+
+/** @deprecated use DegreeItem */
+export type CarreraItem = DegreeItem;
 
 export type Review = {
   id: string;
-  autor: string;
-  autorSlug: string;
-  iniciales: string;
-  carrera: string;
-  materia: string;
-  catedra: string;
-  catedraSlug: string;
-  titular: string;
-  cuatrimestre: string;
-  anioCursado: number;
-  periodo: "PRIMERO" | "SEGUNDO" | "VERANO";
-  rating: number;
-  cargaHoraria: number;
-  dificultad: number;
-  recomienda: boolean;
-  texto: string;
+  author: string;
+  authorSlug: string;
+  initials: string;
+  degree: string;
+  degreeSlug: string | null;
+  subject: string;
+  department: string;
+  departmentSlug: string;
+  head: string;
+  term: string;
+  year: number;
+  period: "FIRST" | "SECOND" | "SUMMER";
+  rating: number | null;
+  workload: number | null;
+  difficulty: number | null;
+  recommends: boolean;
+  body: string;
   likes: number;
-  fecha: string;
+  date: string;
   tags: string[];
 };
 
-export type CatedraStats = {
+export type DepartmentStats = {
   id: number;
   slug: string;
-  catedra: string;
-  titular: string;
-  materias: string[];
-  carreras: string[];
+  name: string;
+  head: string;
+  subjects: string[];
+  degrees: string[];
   reviews: Review[];
   rating: number;
-  cargaHoraria: number;
-  dificultad: number;
-  recomiendaPct: number;
+  workload: number;
+  difficulty: number;
+  recommendPct: number;
   totalLikes: number;
 };
+
+/** @deprecated use DepartmentStats */
+export type CatedraStats = DepartmentStats;
 
 export type TagItem = {
   id: number;
-  nombre: string;
+  name: string;
 };
 
 export type CreateReviewBody = {
-  catedraId: number;
-  materiaId?: number;
-  carreraId?: number;
+  departmentId: number;
+  subjectId?: number;
+  degreeId?: number;
   rating: number;
-  cargaHoraria: number;
-  dificultad: number;
-  recomienda: boolean;
-  texto: string;
-  anio: number;
-  periodo: "PRIMERO" | "SEGUNDO" | "VERANO";
+  workload: number;
+  difficulty: number;
+  recommends: boolean;
+  body: string;
+  year: number;
+  period: "FIRST" | "SECOND" | "SUMMER";
   tagIds?: number[];
 };
 
-export type MateriaItem = {
+export type SubjectItem = {
   id: number;
-  nombre: string;
+  name: string;
   slug: string;
   anio: number | null;
-  carreras: Array<{ nombre: string; slug: string }>;
-  catedras: Array<{ nombre: string; slug: string }>;
+  degrees: Array<{ name: string; slug: string }>;
+  departments: Array<{ name: string; slug: string }>;
 };
 
-export type UsuarioPerfil = {
+/** @deprecated use SubjectItem */
+export type MateriaItem = SubjectItem;
+
+export type UserProfile = {
   slug: string;
-  nombre: string;
-  iniciales: string;
-  carreras: Array<{ nombre: string; cursandoAnio: number | null }>;
+  name: string;
+  initials: string;
+  degrees: Array<{ name: string; currentYear: number | null }>;
   bio: string;
   reviews: Review[];
-  promedioPuntaje: number;
+  avgRating: number;
   totalLikes: number;
-  recomiendaPct: number;
+  recommendPct: number;
 };
 
-export async function getCarreras(): Promise<CarreraItem[]> {
-  const result = await apiFetch<ListResult<CarreraItem>>("/v1/carreras");
+/** @deprecated use UserProfile */
+export type UsuarioPerfil = UserProfile;
+
+export async function getCarreras(): Promise<DegreeItem[]> {
+  const result = await apiFetch<ListResult<DegreeItem>>("/v1/carreras");
   return result.data;
 }
 
 export async function getReviews(params?: {
   search?: string;
-  carreraSlug?: string;
-  catedraSlug?: string;
+  degreeSlug?: string;
+  departmentSlug?: string;
   orderBy?: string;
   order?: "ASC" | "DESC";
 }): Promise<Review[]> {
   const qs = new URLSearchParams();
   if (params?.search) qs.set("search", params.search);
-  if (params?.carreraSlug) qs.set("carreraSlug", params.carreraSlug);
-  if (params?.catedraSlug) qs.set("catedraSlug", params.catedraSlug);
+  if (params?.degreeSlug) qs.set("degreeSlug", params.degreeSlug);
+  if (params?.departmentSlug) qs.set("departmentSlug", params.departmentSlug);
   if (params?.orderBy) qs.set("orderBy", params.orderBy);
   if (params?.order) qs.set("order", params.order);
   const result = await apiFetch<ListResult<Review>>(`/v1/reviews?${qs}`);
   return result.data;
 }
 
-export async function getCatedras(): Promise<CatedraStats[]> {
-  const result = await apiFetch<ListResult<CatedraStats>>("/v1/catedras");
+export async function getCatedras(): Promise<DepartmentStats[]> {
+  const result = await apiFetch<ListResult<DepartmentStats>>("/v1/catedras");
   return result.data;
 }
 
-export async function getCatedra(slug: string): Promise<CatedraStats | null> {
+export async function getCatedra(slug: string): Promise<DepartmentStats | null> {
   try {
-    const result = await apiFetch<SingleResult<CatedraStats>>(`/v1/catedras/${slug}`);
+    const result = await apiFetch<SingleResult<DepartmentStats>>(`/v1/catedras/${slug}`);
     return result.data;
   } catch {
     return null;
   }
 }
 
-export async function getMaterias(): Promise<MateriaItem[]> {
-  const result = await apiFetch<ListResult<MateriaItem>>("/v1/materias");
+export async function getMaterias(): Promise<SubjectItem[]> {
+  const result = await apiFetch<ListResult<SubjectItem>>("/v1/materias");
   return result.data;
 }
 
-export async function getUsuarios(): Promise<UsuarioPerfil[]> {
-  const result = await apiFetch<ListResult<UsuarioPerfil>>("/v1/usuarios");
+export async function getUsuarios(): Promise<UserProfile[]> {
+  const result = await apiFetch<ListResult<UserProfile>>("/v1/usuarios");
   return result.data;
 }
 
-export async function getUsuario(slug: string): Promise<UsuarioPerfil | null> {
+export async function getUsuario(slug: string): Promise<UserProfile | null> {
   try {
-    const result = await apiFetch<SingleResult<UsuarioPerfil>>(`/v1/usuarios/${slug}`);
+    const result = await apiFetch<SingleResult<UserProfile>>(`/v1/usuarios/${slug}`);
     return result.data;
   } catch {
     return null;

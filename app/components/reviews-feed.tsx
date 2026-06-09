@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { Search, Check, SlidersHorizontal } from "lucide-react"
-import type { Review, CarreraItem, MateriaItem } from "@/lib/api"
+import type { Review, DegreeItem, SubjectItem } from "@/lib/api"
 import { ReviewCard } from "@/app/components/review-card"
 import { Input } from "@/app/components/ui/input"
 import { Combobox } from "@/app/components/ui/combobox"
@@ -25,9 +25,9 @@ const orderOptions = [
 ]
 
 const PERIODOS = [
-  { value: "PRIMERO", label: "1er Cuatrimestre" },
-  { value: "SEGUNDO", label: "2do Cuatrimestre" },
-  { value: "VERANO", label: "Verano" },
+  { value: "FIRST", label: "1er Cuatrimestre" },
+  { value: "SECOND", label: "2do Cuatrimestre" },
+  { value: "SUMMER", label: "Verano" },
 ] as const
 
 type Periodo = typeof PERIODOS[number]["value"]
@@ -35,84 +35,84 @@ type Periodo = typeof PERIODOS[number]["value"]
 
 type Props = {
   reviews: Review[]
-  carreras: CarreraItem[]
-  materias: MateriaItem[]
+  degrees: DegreeItem[]
+  subjects: SubjectItem[]
 }
 
-export function ReviewsFeed({ reviews, carreras, materias }: Props) {
+export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
   const [query, setQuery] = useState("")
-  const [carrera, setCarrera] = useState<string>(ALL)
-  const [materia, setMateria] = useState<string>(ALL)
-  const [catedra, setCatedra] = useState<string>(ALL)
-  const [periodo, setPeriodo] = useState<Periodo | typeof ALL>(ALL)
-  const [anioCursado, setAnioCursado] = useState<string>(ALL)
+  const [degree, setDegree] = useState<string>(ALL)
+  const [subject, setSubject] = useState<string>(ALL)
+  const [department, setDepartment] = useState<string>(ALL)
+  const [period, setPeriod] = useState<Periodo | typeof ALL>(ALL)
+  const [yearFilter, setYearFilter] = useState<string>(ALL)
   const [soloRecomendadas, setSoloRecomendadas] = useState(false)
   const [orden, setOrden] = useState("relevantes")
 
   const anosCursados = useMemo(() => {
-    const years = [...new Set(reviews.map((r) => r.anioCursado))].sort((a, b) => b - a)
+    const years = [...new Set(reviews.map((r) => r.year))].sort((a, b) => b - a)
     return years.map((y) => ({ value: String(y), label: String(y) }))
   }, [reviews])
 
-  const materiasFiltradas = useMemo(() =>
-    materias.filter((m) =>
-      carrera === ALL || m.carreras.some((c) => c.nombre === carrera)
+  const filteredSubjects = useMemo(() =>
+    subjects.filter((m) =>
+      degree === ALL || m.degrees.some((c) => c.name === degree)
     )
-  , [materias, carrera])
+  , [subjects, degree])
 
-  const materiaActiva = materiasFiltradas.some((m) => m.nombre === materia) ? materia : ALL
+  const activeSubject = filteredSubjects.some((m) => m.name === subject) ? subject : ALL
 
-  const catedrasDisponibles = useMemo(() => {
-    const source = materiaActiva !== ALL
-      ? materiasFiltradas.filter((m) => m.nombre === materiaActiva)
-      : materiasFiltradas
-    const nombres = source.flatMap((m) => m.catedras.map((c) => c.nombre))
+  const availableDepartments = useMemo(() => {
+    const source = activeSubject !== ALL
+      ? filteredSubjects.filter((m) => m.name === activeSubject)
+      : filteredSubjects
+    const nombres = source.flatMap((m) => m.departments.map((c) => c.name))
     return [...new Set(nombres)].sort().map((c) => ({ value: c, label: c }))
-  }, [materiasFiltradas, materiaActiva])
+  }, [filteredSubjects, activeSubject])
 
-  const catedraActiva = catedrasDisponibles.some((c) => c.value === catedra) ? catedra : ALL
+  const activeDepartment = availableDepartments.some((c) => c.value === department) ? department : ALL
 
   const filtered = useMemo(() => {
     const result = reviews.filter((r) => {
       const matchQuery =
         query.trim() === "" ||
-        [r.catedra, r.materia, r.titular, r.texto, r.autor]
+        [r.department, r.subject, r.head, r.body, r.author]
           .join(" ")
           .toLowerCase()
           .includes(query.toLowerCase())
-      const matchCarrera = carrera === ALL || r.carrera === carrera
-      const matchMateria = materiaActiva === ALL || r.materia === materiaActiva
-      const matchCatedra = catedraActiva === ALL || r.catedra === catedraActiva
-      const matchPeriodo = periodo === ALL || r.periodo === periodo
-      const matchAnio = anioCursado === ALL || r.anioCursado === Number(anioCursado)
-      const matchRecomendada = !soloRecomendadas || r.recomienda
+      const matchCarrera = degree === ALL || r.degree === degree
+      const matchMateria = activeSubject === ALL || r.subject === activeSubject
+      const matchCatedra = activeDepartment === ALL || r.department === activeDepartment
+      const matchPeriodo = period === ALL || r.period === period
+      const matchAnio = yearFilter === ALL || r.year === Number(yearFilter)
+      const matchRecomendada = !soloRecomendadas || r.recommends
       return matchQuery && matchCarrera && matchMateria && matchCatedra && matchPeriodo && matchAnio && matchRecomendada
     })
 
     return result.sort((a, b) => {
       switch (orden) {
-        case "mejores": return b.rating - a.rating || b.likes - a.likes
-        case "peores": return a.rating - b.rating
-        case "recientes": return b.anioCursado - a.anioCursado
+        case "mejores": return (b.rating ?? 0) - (a.rating ?? 0) || b.likes - a.likes
+        case "peores": return (a.rating ?? 0) - (b.rating ?? 0)
+        case "recientes": return b.year - a.year
         default: return b.likes - a.likes
       }
     })
-  }, [query, carrera, materiaActiva, catedraActiva, periodo, anioCursado, soloRecomendadas, orden, reviews])
+  }, [query, degree, activeSubject, activeDepartment, period, yearFilter, soloRecomendadas, orden, reviews])
 
   function reset() {
     setQuery("")
-    setCarrera(ALL)
-    setMateria(ALL)
-    setCatedra(ALL)
-    setPeriodo(ALL)
-    setAnioCursado(ALL)
+    setDegree(ALL)
+    setSubject(ALL)
+    setDepartment(ALL)
+    setPeriod(ALL)
+    setYearFilter(ALL)
     setSoloRecomendadas(false)
     setOrden("relevantes")
   }
 
   const hasFilters =
-    query !== "" || carrera !== ALL || materia !== ALL || catedra !== ALL ||
-    periodo !== ALL || anioCursado !== ALL || soloRecomendadas
+    query !== "" || degree !== ALL || subject !== ALL || department !== ALL ||
+    period !== ALL || yearFilter !== ALL || soloRecomendadas
 
   return (
     <div className="flex flex-col gap-6">
@@ -134,33 +134,33 @@ export function ReviewsFeed({ reviews, carreras, materias }: Props) {
           <Combobox
             label="Carrera"
             placeholder="Filtrar carreras..."
-            options={carreras.map((c) => ({ value: c.nombre, label: c.nombre }))}
-            value={carrera}
-            onChange={(v) => { setCarrera(v); setMateria(ALL); setCatedra(ALL) }}
+            options={degrees.map((c) => ({ value: c.name, label: c.name }))}
+            value={degree}
+            onChange={(v) => { setDegree(v); setSubject(ALL); setDepartment(ALL) }}
           />
 
           <Combobox
             label="Materia"
             placeholder="Filtrar materias..."
-            options={materiasFiltradas.map((m) => ({ value: m.nombre, label: m.nombre }))}
-            value={materiaActiva}
-            onChange={(v) => { setMateria(v); setCatedra(ALL) }}
+            options={filteredSubjects.map((m) => ({ value: m.name, label: m.name }))}
+            value={activeSubject}
+            onChange={(v) => { setSubject(v); setDepartment(ALL) }}
           />
 
           <Combobox
             label="Cátedra"
             placeholder="Filtrar cátedras..."
-            options={catedrasDisponibles}
-            value={catedraActiva}
-            onChange={setCatedra}
+            options={availableDepartments}
+            value={activeDepartment}
+            onChange={setDepartment}
           />
 
           <Combobox
             label="Período"
             placeholder="Filtrar período..."
             options={[...PERIODOS]}
-            value={periodo}
-            onChange={(v) => setPeriodo(v as Periodo | typeof ALL)}
+            value={period}
+            onChange={(v) => setPeriod(v as Periodo | typeof ALL)}
           />
 
           {anosCursados.length > 1 && (
@@ -168,8 +168,8 @@ export function ReviewsFeed({ reviews, carreras, materias }: Props) {
               label="Año cursado"
               placeholder="Filtrar año..."
               options={anosCursados}
-              value={anioCursado}
-              onChange={setAnioCursado}
+              value={yearFilter}
+              onChange={setYearFilter}
             />
           )}
 
@@ -199,7 +199,7 @@ export function ReviewsFeed({ reviews, carreras, materias }: Props) {
               <span className="font-medium text-foreground">{filtered.length}</span>{" "}
               {filtered.length === 1 ? "reseña" : "reseñas"}
             </p>
-            <Select value={orden} onValueChange={setOrden}>
+            <Select value={orden} onValueChange={(v) => v && setOrden(v)}>
               <SelectTrigger className="h-8 w-[150px] text-xs"><SelectValue /></SelectTrigger>
               <SelectContent>
                 {orderOptions.map((o) => (
