@@ -4,7 +4,6 @@ import { SiteHeader } from "@/app/components/site-header"
 import { Toast } from '@base-ui/react/toast';
 import { Toaster } from "../components/ui/toast";
 import { accountService } from "@/lib/api/services/account.service.server"
-import { ONBOARDING_SKIP_COOKIE } from "@/lib/api/actions/account.actions"
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
   // Guard de onboarding: solo afecta a usuarios logueados que todavía no eligieron
@@ -12,7 +11,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   // fuera de `(main)`, así que no se loopea. Salteable vía cookie de sesión.
   const me = await accountService.getMe()
   if (me?.needsOnboarding) {
-    const skipped = (await cookies()).get(ONBOARDING_SKIP_COOKIE)
+    const skipped = (await cookies()).get("fh_onboarding_skipped")
     if (!skipped) redirect("/onboarding")
   }
 

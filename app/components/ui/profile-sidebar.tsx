@@ -28,7 +28,7 @@ const badges: UserBadge[] = [
 
 const SEED = 'martina-ferreyra'
 
-export function Sidebar() {
+export function ProfileSidebar() {
   return (
     <div className="overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm">
       {/* Encabezado con gradiente */}

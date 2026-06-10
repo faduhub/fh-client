@@ -1,5 +1,5 @@
 import { Star, ThumbsUp, MessageSquareQuote } from 'lucide-react'
-import { GradientAvatar } from '@/components/gradient-avatar'
+import { GradientAvatar } from './gradient-avatar'
 
 export type Review = {
   id: string
