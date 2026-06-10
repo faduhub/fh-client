@@ -11,8 +11,9 @@ import {
   Loader2,
   Check,
 } from 'lucide-react'
-import { GradientAvatar } from '@/components/gradient-avatar'
-import { AuthSuccess } from '@/components/auth-success'
+import { GradientAvatar } from '../ui/gradient-avatar'
+import { AuthSuccess } from './auth-success'
+import { useRouter } from "next/navigation"
 
 type Mode = 'login' | 'register'
 type Status = 'idle' | 'loading' | 'success'
@@ -36,6 +37,7 @@ const GithubIcon = () => (
 )
 
 export function AuthForm() {
+  const router = useRouter()
   const [mode, setMode] = useState<Mode>('login')
   const [status, setStatus] = useState<Status>('idle')
   const [showPw, setShowPw] = useState(false)
@@ -83,12 +85,12 @@ export function AuthForm() {
             {isRegister ? 'USR_NEW / Registro' : 'USR_01 / Acceso'}
           </span>
           <h1 className="mt-2 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-            {isRegister ? 'Sumate a FADU Reviews' : 'Bienvenida de vuelta'}
+            {isRegister ? 'Sumate a FADU Reviews' : 'Bienvenidx de vuelta'}
           </h1>
           <p className="mt-2 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
             {isRegister
               ? 'Compartí experiencias y ayudá a otros a elegir mejor sus cátedras.'
-              : 'Entrá para seguir compartiendo reseñas honestas.'}
+              : 'Entrá para seguir compartiendo reseñas Orgullo de pertenecer.'}
           </p>
         </div>
 
@@ -197,8 +199,10 @@ export function AuthForm() {
           )}
 
           <button
-            type="submit"
+            type="button"
             disabled={loading}
+            onClick={() => isRegister ?? 
+    router.push("/registro")}
             className="group mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_0_30px_-8px] shadow-primary/60 transition-all hover:shadow-primary/80 disabled:opacity-70"
           >
             {loading ? (

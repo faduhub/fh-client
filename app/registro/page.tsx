@@ -1,29 +1,28 @@
-"use client"
+import type { Metadata } from 'next'
+import { RegisterForm } from '../components/register.form'
+import { RegisterHero } from '../components/register-hero'
 
-import Link from "next/link"
-import { RegisterForm } from "./register-form"
+export const metadata: Metadata = {
+  title: 'FADU Reviews — Creá tu cuenta',
+  description: 'Registrate en FADU Reviews y compartí reseñas honestas.',
+}
 
 export default function RegistroPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center px-4">
-      <div className="w-full max-w-sm space-y-6">
-        <div className="space-y-1 text-center">
-          <Link href="/" className="inline-flex items-baseline gap-2">
-            <span className="text-foreground text-2xl font-bold tracking-tight">cátedras</span>
-            <span className="text-accent font-mono text-xs tracking-widest uppercase">FADU</span>
-          </Link>
-          <p className="text-muted-foreground text-sm">Creá tu cuenta para dejar reseñas</p>
-        </div>
+    <main className="relative min-h-screen bg-background lg:grid lg:grid-cols-2">
+      {/* Panel de marca (oculto en mobile) */}
+      <section className="relative hidden border-r border-border bg-card/40 lg:block">
+        <RegisterHero />
+      </section>
 
+      {/* Panel del formulario */}
+      <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-5 py-12 sm:px-8">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-32 top-0 size-[28rem] rounded-full bg-primary/10 blur-3xl lg:hidden"
+        />
         <RegisterForm />
-
-        <p className="text-muted-foreground text-center text-xs">
-          ¿Ya tenés cuenta?{" "}
-          <Link href="/login" className="text-foreground underline-offset-4 hover:underline">
-            Iniciá sesión
-          </Link>
-        </p>
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }
