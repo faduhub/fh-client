@@ -1,29 +1,59 @@
-import { notFound } from "next/navigation"
-import { userService } from "@/lib/api/services/user.service.server"
-import { ReviewCard } from "@/app/components/review-card"
-import { ProfileHeader } from "@/app/components/ui/profile-headbar"
-import { Sidebar } from "@/app/components/ui/profile-sidebar"
-import { CurrentCourses } from "@/app/components/ui/current-courses"
-import { Achievements } from "@/app/components/ui/achievements"
-import { ReviewFilters } from "@/app/components/ui/review-filters"
+import { ProfileSidebar } from "../../../components/ui/profile-sidebar"
+import { ProfileHeader } from "../../../components/ui/profile-headbar"
+import { ReviewCard, type Review } from '../../../components/ui/review-card'
+import { ReviewFilters } from '../../../components/ui/review-filters'
+import { Achievements } from '../../../components/ui/achievements'
+import { CurrentCourses } from '../../../components/ui/current-courses'
 
-function StatBox({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
-  return (
-    <div className="border-border bg-card flex flex-col gap-1 border p-5">
-      <div className="text-muted-foreground flex items-center gap-1.5">{icon}</div>
-      <p className="text-foreground font-serif text-3xl leading-none">{value}</p>
-      <p className="text-muted-foreground text-xs tracking-wider uppercase">{label}</p>
-    </div>
-  )
-}
+const reviews: Review[] = [
+  {
+    id: '1',
+    subject: 'Diseño Gráfico III',
+    catedra: 'Cátedra Gabriele',
+    professor: 'Gabriele',
+    career: 'Diseño Gráfico',
+    rating: 5,
+    body: 'La mejor cursada que tuve. Las correcciones son durísimas pero te hacen crecer un montón. Muy recomendable si bancás el ritmo.',
+    tags: ['Mucho trabajo', 'Buenas correcciones', 'Exigente'],
+    recommended: true,
+    author: 'martina-ferreyra',
+    period: '2° Cuat. 2025',
+    time: 'hoy',
+    likes: 142,
+  },
+  {
+    id: '2',
+    subject: 'Tipografía II',
+    catedra: 'Cátedra Cosgaya',
+    professor: 'Cosgaya',
+    career: 'Diseño Gráfico',
+    rating: 4,
+    body: 'Muy completa en lo técnico. Te vas con una base de tipografía sólida, aunque el ritmo de entregas es intenso sobre el final.',
+    tags: ['Bien organizada', 'Mucha teoría'],
+    recommended: true,
+    author: 'martina-ferreyra',
+    period: '1° Cuat. 2025',
+    time: 'hace 2 meses',
+    likes: 87,
+  },
+  {
+    id: '3',
+    subject: 'Morfología I',
+    catedra: 'Cátedra Wolkowicz',
+    professor: 'Wolkowicz',
+    career: 'Diseño Gráfico',
+    rating: 3,
+    body: 'Buenos contenidos pero la cursada se siente desordenada. Si te enganchás con los trabajos prácticos la pasás bien.',
+    tags: ['Trabajos grupales', 'Variable'],
+    recommended: false,
+    author: 'martina-ferreyra',
+    period: '1° Cuat. 2024',
+    time: 'hace 1 año',
+    likes: 31,
+  },
+]
 
-export default async function UsuarioPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const usuario = await userService.getBySlug(slug)
-  if (!usuario) notFound()
-
-  const cuatrimestre = usuario.reviews[0]?.term ?? ""
-
+export default function Page() {
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
       {/* Gradientes de fondo sutiles */}
@@ -41,7 +71,7 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
         <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
           {/* Sidebar sticky */}
           <aside className="flex flex-col gap-6 lg:sticky lg:top-8 lg:w-[20rem] lg:shrink-0">
-            <Sidebar />
+            <ProfileSidebar />
             <CurrentCourses />
             <Achievements />
           </aside>
@@ -71,10 +101,10 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
             </div>
 
             <div className="mt-7 flex flex-col gap-5">
-             {usuario.reviews.length && usuario.reviews?.map((review) => (
+              {reviews.map((review) => (
                 <ReviewCard key={review.id} review={review} />
               ))}
-            </div>              
+            </div>
           </section>
         </div>
       </main>

@@ -10,4 +10,5 @@ export type UserProfile = {
   avgRating: number
   totalLikes: number
   recommendPct: number
+  displayName: string
 }
