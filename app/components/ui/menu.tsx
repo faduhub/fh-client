@@ -1,11 +1,13 @@
 import * as React from "react"
 import { Menu } from "@base-ui/react/menu"
+import { cn } from "@/lib/utils"
 
 export interface MenuOption {
   label: string
   onClick?: () => void
   disabled?: boolean
   separator?: boolean
+  destructive?: boolean
 }
 
 interface AppMenuProps {
@@ -19,15 +21,13 @@ export default function AppMenu({ trigger, options, openOnHover = false }: AppMe
     <Menu.Root>
       <Menu.Trigger openOnHover={openOnHover}>{trigger}</Menu.Trigger>
       <Menu.Portal>
-        <Menu.Positioner className="outline-hidden" alignOffset={0}>
-          <Menu.Popup className="dark:border-border relative origin-[var(--transform-origin)] border border-neutral-950 bg-white py-1 text-neutral-950 shadow-[0.25rem_0.25rem_0] shadow-black/12 outline-hidden transition-[scale,opacity] duration-100 ease-out data-ending-style:scale-[0.98] data-ending-style:opacity-0 data-starting-style:scale-[0.98] data-starting-style:opacity-0 dark:bg-neutral-950 dark:text-white dark:shadow-none">
+        <Menu.Positioner className="outline-hidden" sideOffset={6} alignOffset={0}>
+          <Menu.Popup className="bg-popover text-popover-foreground border-border min-w-36 origin-[var(--transform-origin)] rounded-md border p-1 shadow-md outline-hidden transition-[scale,opacity] duration-100 ease-out data-ending-style:scale-[0.98] data-ending-style:opacity-0 data-starting-style:scale-[0.98] data-starting-style:opacity-0">
             {options.map((option, index) => (
               <React.Fragment key={index}>
-                {option.separator && (
-                  <Menu.Separator className="mx-1 my-1 h-px bg-neutral-950 dark:bg-neutral-600" />
-                )}
+                {option.separator && <Menu.Separator className="bg-border my-1 h-px" />}
                 <Menu.Item
-                  className={itemClass}
+                  className={cn(itemClass, option.destructive && destructiveClass)}
                   disabled={option.disabled}
                   onClick={option.onClick}
                 >
@@ -43,19 +43,7 @@ export default function AppMenu({ trigger, options, openOnHover = false }: AppMe
 }
 
 const itemClass =
-  "flex cursor-default py-2 pr-8 pl-4 text-sm leading-4 outline-hidden select-none data-highlighted:relative data-highlighted:z-0 data-highlighted:text-white data-highlighted:before:absolute data-highlighted:before:inset-x-1 data-highlighted:before:inset-y-0 data-highlighted:before:z-[-1] data-highlighted:before:bg-neutral-950 data-highlighted:before:content-[''] data-disabled:text-neutral-500 dark:data-highlighted:text-neutral-950 dark:data-highlighted:before:bg-white dark:data-disabled:text-neutral-400"
+  "flex cursor-default items-center rounded-sm px-3 py-1.5 text-sm leading-5 outline-hidden select-none data-highlighted:bg-muted data-highlighted:text-foreground data-disabled:pointer-events-none data-disabled:opacity-50"
 
-function CaretDownIcon(props: React.ComponentProps<"svg">) {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="currentColor"
-      {...props}
-      style={{ display: "block", ...props.style }}
-    >
-      <path d="M12 6H4l4 4.5z" />
-    </svg>
-  )
-}
+const destructiveClass =
+  "text-destructive data-highlighted:bg-destructive/10 data-highlighted:text-destructive"

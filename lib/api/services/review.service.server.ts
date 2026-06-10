@@ -22,4 +22,9 @@ export const reviewService = {
       next: { tags: ["reviews"], revalidate: 60 },
     })
   },
+
+  async getById(id: string): Promise<Review | null> {
+    const reviews = await this.getAll()
+    return reviews.find((r) => r.id === id) ?? null
+  },
 }
