@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
 import { cn } from "@/lib/utils"
 
 type Props = {
+  reviewId: string
   author: string
   authorSlug: string
   initials: string
@@ -17,6 +18,7 @@ type Props = {
 }
 
 export function ReviewCardFooter({
+  reviewId,
   author,
   authorSlug,
   initials,
@@ -37,7 +39,7 @@ export function ReviewCardFooter({
         <div className="leading-tight">
           <Link
             href={`/usuario/${authorSlug}`}
-            className="text-foreground hover:text-accent text-sm font-medium transition-colors"
+            className="text-foreground hover:text-accent relative z-10 text-sm font-medium transition-colors"
           >
             {author}
           </Link>
@@ -50,7 +52,7 @@ export function ReviewCardFooter({
         <button
           onClick={onToggleLike}
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+            "relative z-10 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
             liked
               ? "border-accent bg-accent text-accent-foreground"
               : "border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground",
@@ -60,14 +62,16 @@ export function ReviewCardFooter({
           <ThumbsUp className="size-3.5" />
           {likes}
         </button>
-        <button
+        <Link
+          href={`/resena/${reviewId}#comentarios`}
+          aria-label="Ver comentarios"
           className={cn(
-            "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
+            "relative z-10 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",
             "border-border text-muted-foreground hover:border-foreground/40 hover:text-foreground",
           )}
         >
           <MessageSquareQuoteIcon className="size-3.5" />
-        </button>
+        </Link>
       </div>
     </footer>
   )
