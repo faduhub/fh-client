@@ -1,3 +1,4 @@
+import { cache } from "react"
 import { http } from "@/lib/api/http.server"
 import type { Me } from "@/lib/api/dtos/responses/me"
 
@@ -7,14 +8,18 @@ import type { Me } from "@/lib/api/dtos/responses/me"
 const READ = { auth: true, cache: "no-store" } as const
 
 export const accountService = {
-  /** Identidad + preferencias del usuario logueado. null si no hay sesión (401). */
-  async getMe(): Promise<Me | null> {
+  /**
+   * Identidad + preferencias del usuario logueado. null si no hay sesión (401).
+   * `cache()` (de React) deduplica la llamada dentro de un mismo request: el guard
+   * del layout y la página la comparten sin doble fetch.
+   */
+  getMe: cache(async (): Promise<Me | null> => {
     try {
       return await http.get<Me>("/users/me", READ)
     } catch {
       return null
     }
-  },
+  }),
 
   /** Disponibilidad de un username. Formato inválido o error => false. */
   async isUsernameAvailable(username: string): Promise<boolean> {
