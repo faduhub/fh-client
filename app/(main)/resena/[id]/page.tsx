@@ -2,35 +2,16 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { reviewService } from "@/lib/api/services/review.service.server"
-import type { Comment } from "@/lib/api/dtos/responses/comment"
+import { commentService } from "@/lib/api/services/comment.service.server"
 import { ReviewCard } from "@/app/components/review-card"
 import { CommentSection } from "./comment-section"
 
-// Mock para visualizar el detalle hasta que exista el backend de comentarios.
-const MOCK_COMMENTS: Comment[] = [
-  {
-    id: "c1",
-    author: "Lucía Fernández",
-    authorSlug: "lucia-fernandez",
-    initials: "LF",
-    date: "hace 2 días",
-    body: "Coincido totalmente, la cursada fue muy llevadera y los TPs súper claros.",
-    likes: 4,
-  },
-  {
-    id: "c2",
-    author: "Martín Gómez",
-    authorSlug: "martin-gomez",
-    initials: "MG",
-    date: "hace 5 horas",
-    body: "A mí me costó un poco más la parte teórica, pero los docentes siempre estuvieron disponibles para consultas.",
-    likes: 1,
-  },
-]
-
 export default async function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const review = await reviewService.getById(id)
+  const [review, comments] = await Promise.all([
+    reviewService.getById(id),
+    commentService.getByReview(id),
+  ])
   if (!review) notFound()
 
   return (
@@ -47,7 +28,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
 
       <section className="mx-auto flex max-w-3xl flex-col gap-10 px-6 py-8">
         <ReviewCard review={review} linked={false} />
-        <CommentSection initialComments={MOCK_COMMENTS} />
+        <CommentSection reviewId={id} initialComments={comments.data} />
       </section>
     </main>
   )

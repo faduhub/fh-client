@@ -5,6 +5,12 @@ export type Comment = {
   initials: string
   body: string
   date: string
+  edited: boolean
+  deleted: boolean
   likes: number
-  edited?: boolean
+  /** Si el usuario logueado ya likeó (false sin sesión). */
+  likedByMe: boolean
+  /** Cantidad de respuestas; se cargan on-demand con `?parentId=`. */
+  repliesCount: number
+  parentId: string | null
 }
