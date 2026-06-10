@@ -1,13 +1,11 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Search, Check, SlidersHorizontal, FilterIcon } from "lucide-react"
 import type { Review } from "@/lib/api/dtos/responses/review"
 import type { DegreeItem } from "@/lib/api/dtos/responses/degree"
 import type { SubjectItem } from "@/lib/api/dtos/responses/subject"
 import { ReviewCard } from "@/app/components/review-card"
-import { Input } from "@/app/components/ui/input"
-import { Combobox } from "@/app/components/ui/combobox"
+import { FilterCard } from "@/app/components/filter-card"
 import {
   Select,
   SelectContent,
@@ -15,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select"
-import { cn } from "@/lib/utils"
 
 const ALL = "todas"
 
@@ -147,173 +144,27 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
 
   return (
     <div className="flex items-start gap-8">
-      {/* Sidebar de filtros — sticky en desktop */}
-      <aside className="bg-card border-border sticky top-6 hidden w-64 shrink-0 flex-col gap-5 rounded-md border p-5 lg:flex">
-        <div className="flex items-center justify-between">
-          <div className="text-foreground flex items-center gap-x-1.5 text-sm font-medium">
-            <FilterIcon className="size-3.5" />
-            Filtros
-          </div>
-          {hasFilters && (
-            <button
-              onClick={reset}
-              className="text-accent text-xs font-medium underline underline-offset-4 hover:opacity-80"
-            >
-              Limpiar
-            </button>
-          )}
-        </div>
-
-        <div className="relative">
-          <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-          <Input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Buscar"
-            className="pl-9"
-            aria-label="Buscar"
-          />
-        </div>
-
-        <div className="flex flex-col gap-y-5">
-          <Combobox
-            label="Carrera"
-            placeholder="Filtrar carreras..."
-            options={degrees.map((c) => ({ value: c.name, label: c.name }))}
-            value={degree}
-            onChange={(v) => {
-              setDegree(v)
-              setSubject(ALL)
-              setDepartment(ALL)
-            }}
-          />
-
-          <Combobox
-            label="Materia"
-            placeholder="Filtrar materias..."
-            options={filteredSubjects.map((m) => ({ value: m.name, label: m.name }))}
-            value={activeSubject}
-            onChange={(v) => {
-              setSubject(v)
-              setDepartment(ALL)
-            }}
-          />
-
-          <Combobox
-            label="Cátedra"
-            placeholder="Filtrar cátedras..."
-            options={availableDepartments}
-            value={activeDepartment}
-            onChange={setDepartment}
-          />
-
-          <Combobox
-            label="Período"
-            placeholder="Filtrar período..."
-            options={[...PERIODOS]}
-            value={period}
-            onChange={(v) => setPeriod(v as Periodo | typeof ALL)}
-          />
-
-          {anosCursados.length > 1 && (
-            <Combobox
-              label="Año cursado"
-              placeholder="Filtrar año..."
-              options={anosCursados}
-              value={yearFilter}
-              onChange={setYearFilter}
-            />
-          )}
-        </div>
-
-        <button
-          onClick={() => setSoloRecomendadas((v) => !v)}
-          className={cn(
-            "flex w-full items-center justify-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
-            soloRecomendadas
-              ? "border-foreground bg-foreground text-background"
-              : "border-border text-foreground hover:border-foreground/50",
-          )}
-        >
-          {soloRecomendadas && <Check className="size-3.5" />}
-          Solo recomendadas
-        </button>
-      </aside>
+      <FilterCard
+        filters={{ query, degree, activeSubject, activeDepartment, period, yearFilter, soloRecomendadas }}
+        handlers={{
+          setQuery,
+          onDegreeChange: (v) => { setDegree(v); setSubject(ALL); setDepartment(ALL) },
+          onSubjectChange: (v) => { setSubject(v); setDepartment(ALL) },
+          setDepartment,
+          setPeriod,
+          setYearFilter,
+          setSoloRecomendadas,
+          reset,
+        }}
+        degrees={degrees}
+        filteredSubjects={filteredSubjects}
+        availableDepartments={availableDepartments}
+        anosCursados={anosCursados}
+        hasFilters={hasFilters}
+      />
 
       {/* Columna principal */}
       <div className="flex min-w-0 flex-1 flex-col gap-6">
-        {/* Filtros mobile */}
-        <div className="border-border flex flex-col gap-3 border-b pb-5 lg:hidden">
-          <div className="relative">
-            <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar"
-              className="pl-9"
-              aria-label="Buscar"
-            />
-          </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <Combobox
-              label="Carrera"
-              placeholder="Filtrar carreras..."
-              options={degrees.map((c) => ({ value: c.name, label: c.name }))}
-              value={degree}
-              onChange={(v) => {
-                setDegree(v)
-                setSubject(ALL)
-                setDepartment(ALL)
-              }}
-            />
-            <Combobox
-              label="Materia"
-              placeholder="Filtrar materias..."
-              options={filteredSubjects.map((m) => ({ value: m.name, label: m.name }))}
-              value={activeSubject}
-              onChange={(v) => {
-                setSubject(v)
-                setDepartment(ALL)
-              }}
-            />
-            <Combobox
-              label="Cátedra"
-              placeholder="Filtrar cátedras..."
-              options={availableDepartments}
-              value={activeDepartment}
-              onChange={setDepartment}
-            />
-            <Combobox
-              label="Período"
-              placeholder="Filtrar período..."
-              options={[...PERIODOS]}
-              value={period}
-              onChange={(v) => setPeriod(v as Periodo | typeof ALL)}
-            />
-            {anosCursados.length > 1 && (
-              <Combobox
-                label="Año cursado"
-                placeholder="Filtrar año..."
-                options={anosCursados}
-                value={yearFilter}
-                onChange={setYearFilter}
-              />
-            )}
-            <button
-              onClick={() => setSoloRecomendadas((v) => !v)}
-              className={cn(
-                "flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-sm font-medium transition-colors",
-                soloRecomendadas
-                  ? "border-foreground bg-foreground text-background"
-                  : "border-border text-foreground hover:border-foreground/50",
-              )}
-            >
-              {soloRecomendadas && <Check className="size-3.5" />}
-              Solo recomendadas
-            </button>
-          </div>
-        </div>
-
         {/* Header con contador y orden */}
         <div className="border-border flex items-center justify-between border-b pb-4">
           <p className="text-muted-foreground text-sm">
@@ -321,14 +172,6 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
             {filtered.length === 1 ? "reseña" : "reseñas"}
           </p>
           <div className="flex">
-            {hasFilters && (
-              <button
-                onClick={reset}
-                className="text-accent text-xs font-medium underline underline-offset-4 hover:opacity-80 lg:hidden"
-              >
-                Limpiar filtros
-              </button>
-            )}
             <Select value={orden} onValueChange={(v) => v && setOrden(v)}>
               <SelectTrigger>
                 <SelectValue />
