@@ -1,4 +1,3 @@
-import { StrictMode } from "react"
 import { Analytics } from "@vercel/analytics/next"
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono, Newsreader } from 'next/font/google'
