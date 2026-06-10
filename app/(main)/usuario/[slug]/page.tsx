@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, ThumbsUp, Star, Check } from "lucide-react"
 import { userService } from "@/lib/api/services/user.service.server"
 import { ReviewCard } from "@/app/components/review-card"
-import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
+import { ProfileHeader } from "@/app/components/ui/profile-headbar"
+import { Sidebar } from "@/app/components/ui/profile-sidebar"
+import { CurrentCourses } from "@/app/components/ui/current-courses"
+import { Achievements } from "@/app/components/ui/achievements"
+import { ReviewFilters } from "@/app/components/ui/review-filters"
 
 function StatBox({ icon, value, label }: { icon: React.ReactNode; value: string; label: string }) {
   return (
@@ -23,71 +25,59 @@ export default async function UsuarioPage({ params }: { params: Promise<{ slug: 
   const cuatrimestre = usuario.reviews[0]?.term ?? ""
 
   return (
-    <main className="bg-background min-h-screen">
-      <section className="border-border border-b">
-        <div className="mx-auto max-w-7xl px-6 py-12 sm:py-16">
-          <Link
-            href="/reseñas"
-            className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-xs font-medium tracking-wider uppercase transition-colors"
-          >
-            <ArrowLeft className="size-3.5" />
-            Volver a reseñas
-          </Link>
+    <div className="relative min-h-screen w-full overflow-x-hidden">
+      {/* Gradientes de fondo sutiles */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 -z-10"
+      >
+        <div className="absolute -left-40 -top-40 size-[36rem] rounded-full bg-primary/15 blur-[120px]" />
+        <div className="absolute -right-40 top-1/3 size-[32rem] rounded-full bg-accent/15 blur-[120px]" />
+      </div>
 
-          <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center">
-            <Avatar className="border-border size-20 border">
-              <AvatarFallback className="bg-secondary text-secondary-foreground font-serif text-2xl">
-                {usuario.initials}
-              </AvatarFallback>
-            </Avatar>
-            <div className="max-w-2xl">
-              <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
-                {usuario.degrees.map((c) => c.name).join(" / ")} · {cuatrimestre}
-              </p>
-              <h1 className="text-foreground mt-2 font-serif text-5xl leading-tight">
-                {usuario.name}
-              </h1>
-              <p className="text-muted-foreground mt-3 leading-relaxed text-pretty">
-                {usuario.bio}
-              </p>
+      <main className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:py-12">
+        <ProfileHeader />
+
+        <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
+          {/* Sidebar sticky */}
+          <aside className="flex flex-col gap-6 lg:sticky lg:top-8 lg:w-[20rem] lg:shrink-0">
+            <Sidebar />
+            <CurrentCourses />
+            <Achievements />
+          </aside>
+
+          {/* Reseñas */}
+          <section className="min-w-0 flex-1">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-primary">
+                  USR_01 / Reseñas
+                </span>
+                <h2 className="mt-1 font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
+                  Reseñas de Martina
+                </h2>
+              </div>
+              <span
+                aria-hidden="true"
+                className="hidden font-serif text-5xl font-medium leading-none text-primary/30 sm:block"
+              >
+                01
+              </span>
             </div>
-          </div>
+            <div className="mt-5 h-px w-full bg-gradient-to-r from-primary/60 via-border to-transparent" />
 
-          <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <StatBox
-              icon={<Star className="size-4" />}
-              value={String(usuario.reviews.length)}
-              label="Reseñas"
-            />
-            <StatBox
-              icon={<Star className="size-4" />}
-              value={usuario.avgRating.toFixed(1)}
-              label="Puntaje medio"
-            />
-            <StatBox
-              icon={<ThumbsUp className="size-4" />}
-              value={String(usuario.totalLikes)}
-              label="Likes recibidos"
-            />
-            <StatBox
-              icon={<Check className="size-4" />}
-              value={`${usuario.recommendPct}%`}
-              label="Recomienda"
-            />
-          </div>
-        </div>
-      </section>
+            <div className="mt-6">
+              <ReviewFilters />
+            </div>
 
-      <section className="mx-auto max-w-7xl px-6 py-12">
-        <h2 className="border-border text-foreground mb-6 border-b pb-4 font-serif text-2xl">
-          Reseñas de {usuario.name.split(" ")[0]}
-        </h2>
-        <div className="mx-auto flex max-w-2xl flex-col gap-4">
-          {usuario.reviews.map((r) => (
-            <ReviewCard key={r.id} review={r} />
-          ))}
+            <div className="mt-7 flex flex-col gap-5">
+             {usuario.reviews.length && usuario.reviews?.map((review) => (
+                <ReviewCard key={review.id} review={review} />
+              ))}
+            </div>              
+          </section>
         </div>
-      </section>
-    </main>
+      </main>
+    </div>
   )
 }

@@ -1,20 +1,24 @@
 import { StrictMode } from "react"
 import { Analytics } from "@vercel/analytics/next"
-import type { Metadata } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
-import "./globals.css"
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono, Newsreader } from 'next/font/google'
+import './globals.css'
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] })
+const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+const newsreader = Newsreader({
+  variable: '--font-newsreader',
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
 })
 
 export const metadata: Metadata = {
   title: "faduHub — UBA",
   description:
     "Reseñas de cursadas escritas por estudiantes de la FADU. Filtrá por carrera, materia y cátedra antes de inscribirte.",
-  generator: "v0.app",
   icons: {
     icon: [
       {
@@ -40,12 +44,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className={`dark ${geistSans.variable} ${geistMono.variable} bg-background`}>
+        <html
+      lang="es"
+      className={`dark ${geistSans.variable} ${geistMono.variable} ${newsreader.variable} bg-background`}
+    >
       <body className="font-sans antialiased">
-        <StrictMode>
           {children}
           {process.env.NODE_ENV === "production" && <Analytics />}
-        </StrictMode>
       </body>
     </html>
   )

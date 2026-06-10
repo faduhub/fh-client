@@ -11,6 +11,8 @@ export class ApiError extends Error {
   constructor(
     public status: number,
     message: string,
+    /** Código estable del backend (ej. "USERNAME_COOLDOWN"). Ramificá por acá, no por `message`. */
+    public code?: string,
   ) {
     super(message)
     this.name = "ApiError"
@@ -42,7 +44,7 @@ async function rawRequest(method: string, path: string, opts: RequestOptions = {
 
   const json = await res.json().catch(() => ({}))
   if (!res.ok) {
-    throw new ApiError(res.status, json.message ?? `API error ${res.status}`)
+    throw new ApiError(res.status, json.message ?? `API error ${res.status}`, json.code)
   }
   return json as Record<string, unknown>
 }
@@ -64,4 +66,12 @@ export const http = {
     const json = await rawRequest("GET", path, opts)
     return json as unknown as Paginated<T>
   },
+
+  /**
+   * GET que devuelve el envelope completo, para respuestas que NO viajan bajo
+   * `data` (ej. `/username-available` → `{ success, available }`). Si el backend
+   * normaliza esos endpoints bajo `data`, esto queda como red de seguridad.
+   */
+  getRaw: <T>(path: string, opts?: RequestOptions) =>
+    rawRequest("GET", path, opts) as Promise<T>,
 }
