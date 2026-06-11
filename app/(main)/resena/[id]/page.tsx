@@ -4,7 +4,7 @@ import { ArrowLeft } from "lucide-react"
 import { reviewService } from "@/lib/api/services/review.service.server"
 import { commentService } from "@/lib/api/services/comment.service.server"
 import { ReviewCard } from "@/app/components/review-card"
-import { CommentSection } from "./comment-section"
+import { CommentSection } from "./_components/comment-section"
 
 export default async function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params

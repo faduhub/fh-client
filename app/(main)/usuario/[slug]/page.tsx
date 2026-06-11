@@ -1,9 +1,9 @@
-import { ProfileSidebar } from "../../../components/ui/profile-sidebar"
-import { ProfileHeader } from "../../../components/ui/profile-headbar"
-import { ReviewCard, type Review } from "../../../components/ui/review-card"
-import { ReviewFilters } from "../../../components/ui/review-filters"
-import { Achievements } from "../../../components/ui/achievements"
-import { CurrentCourses } from "../../../components/ui/current-courses"
+import { ProfileHeader } from "@/app/components/profile-headbar"
+import { ProfileSidebar } from "./_components/profile-sidebar"
+import { ReviewCard, type Review } from "./_components/review-card"
+import { ReviewFilters } from "./_components/review-filters"
+import { Achievements } from "./_components/achievements"
+import { CurrentCourses } from "./_components/current-courses"
 
 const reviews: Review[] = [
   {

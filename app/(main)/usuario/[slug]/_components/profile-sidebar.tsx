@@ -1,6 +1,6 @@
 import { Star, ThumbsUp, Check, BadgeCheck, Flame, Award } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
-import { GradientAvatar } from "./gradient-avatar"
+import { GradientAvatar } from "@/app/components/ui/gradient-avatar"
 
 type Stat = {
   icon: LucideIcon

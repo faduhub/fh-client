@@ -1,12 +1,18 @@
-import { ProfileHeader } from "@/app/components/ui/profile-headbar"
-import { SettingsLayout } from "@/app/components/ui/settings-layout"
+import { redirect } from "next/navigation"
+import { ProfileHeader } from "@/app/components/profile-headbar"
+import { accountService } from "@/lib/api/services/account.service.server"
+import { ProfileForm } from "./_components/profile-form"
+import { UsernameForm } from "./_components/username-form"
 
 export const metadata = {
   title: "Ajustes · FADU Reviews",
   description: "Configurá tu perfil, carrera, materias y apariencia.",
 }
 
-export default function SettingsPage() {
+export default async function SettingsPage() {
+  const me = await accountService.getMe()
+  if (!me) redirect("/login")
+
   return (
     <main className="bg-background relative min-h-screen overflow-hidden">
       {/* Glows de fondo */}
@@ -33,7 +39,10 @@ export default function SettingsPage() {
         </div>
 
         <div className="mt-8">
-          <SettingsLayout />
+          <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
+            <ProfileForm me={me} />
+            <UsernameForm me={me} />
+          </div>
         </div>
       </div>
     </main>

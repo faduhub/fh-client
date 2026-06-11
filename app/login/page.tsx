@@ -1,5 +1,5 @@
 import type { Metadata } from "next"
-import { AuthForm } from "../components/ui/auth-form"
+import { AuthForm } from "./_components/auth-form"
 
 export const metadata: Metadata = {
   title: "FADU Reviews — Acceso",

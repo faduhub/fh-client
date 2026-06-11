@@ -8,12 +8,14 @@ export type ComboboxOption = { value: string; label: string }
 
 export function Combobox({
   label,
+  placeholder,
   options,
   value,
   onChange,
   className,
 }: {
   label: string
+  placeholder?: string
   options: ComboboxOption[]
   value: string
   onChange: (v: string) => void
@@ -36,7 +38,7 @@ export function Combobox({
         )}
       >
         <BaseCombobox.Input
-          placeholder={selected ? selected.label : label}
+          placeholder={selected ? selected.label : (placeholder ?? label)}
           className="placeholder:text-muted-foreground w-full cursor-pointer truncate bg-transparent outline-none"
         />
         {selected ? (

@@ -4,7 +4,7 @@ import { departmentService } from "@/lib/api/services/department.service.server"
 import { subjectService } from "@/lib/api/services/subject.service.server"
 import { tagService } from "@/lib/api/services/tag.service.server"
 import { degreeService } from "@/lib/api/services/degree.service.server"
-import { ReviewForm } from "./review-form"
+import { ReviewForm } from "./_components/review-form"
 
 export default async function NuevaResenaPage() {
   const [departments, subjects, tags, degrees] = await Promise.all([
