@@ -2,6 +2,7 @@
 export type Me = {
   id: string
   username: string | null // null => needsOnboarding
+  slug: string | null
   firstName: string | null
   lastName: string | null
   bio: string

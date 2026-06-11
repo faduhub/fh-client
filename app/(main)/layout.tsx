@@ -10,6 +10,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   // username. El browsing público (sin sesión) sigue intacto. `/onboarding` vive
   // fuera de `(main)`, así que no se loopea. Salteable vía cookie de sesión.
   const me = await accountService.getMe()
+
   if (me?.needsOnboarding) {
     const skipped = (await cookies()).get("fh_onboarding_skipped")
     if (!skipped) redirect("/onboarding")
@@ -18,7 +19,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
   return (
     <>
       <Toast.Provider>
-        <SiteHeader />
+        <SiteHeader me={me} />
         {children}
         <Toaster />
       </Toast.Provider>

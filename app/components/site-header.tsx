@@ -2,12 +2,12 @@
 
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useSession, signOut } from "@/lib/auth-client"
+import { signOut } from "@/lib/auth-client"
 import AppMenu from "./ui/menu"
 import { Avatar, AvatarFallback } from "./ui/avatar"
+import type { Me } from "@/lib/api/dtos/responses/me"
 
-export function SiteHeader() {
-  const { data: session } = useSession()
+export function SiteHeader({ me }: { me: Me | null }) {
   const router = useRouter()
 
   async function handleSignOut() {
@@ -15,6 +15,8 @@ export function SiteHeader() {
     router.push("/")
     router.refresh()
   }
+
+  const avatarInitial = me?.username?.[0] ?? me?.firstName?.[0] ?? "?"
 
   return (
     <header className="border-border border-b">
@@ -35,7 +37,7 @@ export function SiteHeader() {
             </Link>
           </div>
 
-          {session ? (
+          {me ? (
             <div className="flex items-center gap-x-5">
               <Link
                 href="/nueva-resena"
@@ -47,12 +49,12 @@ export function SiteHeader() {
                 trigger={
                   <Avatar className="size-8">
                     <AvatarFallback className="bg-secondary text-secondary-foreground text-xs font-medium">
-                      {session.user.name[0]}
+                      {avatarInitial}
                     </AvatarFallback>
                   </Avatar>
                 }
                 options={[
-                  { label: "Perfil", onClick: () => router.push("/perfil/" + session.user.slug) },
+                  { label: "Perfil", onClick: () => router.push("/usuario/" + me.slug) },
                   { label: "Configuración", onClick: () => router.push("/configuracion") },
                   { label: "Logout", onClick: handleSignOut, separator: true },
                 ]}
