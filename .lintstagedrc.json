@@ -1,6 +1,6 @@
 {
   "*.{js,jsx,ts,tsx}": [
-      "prettier --check",
+    "prettier --check",
     "eslint"
   ]
 }
