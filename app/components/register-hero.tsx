@@ -30,7 +30,7 @@ export function RegisterHero() {
       {/* grilla sutil */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,var(--color-foreground)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-foreground)_1px,transparent_1px)] [background-size:48px_48px]"
+        className="pointer-events-none absolute inset-0 opacity-[0.07] bg-[linear-gradient(to_right,var(--color-foreground)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-foreground)_1px,transparent_1px)] bg-size-[48px_48px]"
       />
 
       {/* constelación de avatares */}

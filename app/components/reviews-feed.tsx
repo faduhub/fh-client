@@ -23,13 +23,8 @@ const orderOptions = [
   { value: "recientes", label: "Más recientes" },
 ]
 
-const PERIODOS = [
-  { value: "FIRST", label: "1er Cuatrimestre" },
-  { value: "SECOND", label: "2do Cuatrimestre" },
-  { value: "SUMMER", label: "Verano" },
-] as const
 
-type Periodo = (typeof PERIODOS)[number]["value"]
+type Periodo = "FIRST" | "SECOND" | "SUMMER"
 // ─── Feed ────────────────────────────────────────────────────────────────────
 
 type Props = {

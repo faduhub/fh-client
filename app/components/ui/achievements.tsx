@@ -48,7 +48,7 @@ export function Achievements() {
             key={title}
             className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-secondary/60"
           >
-            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-gradient-to-br from-primary/25 to-accent/15">
+            <span className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-linear-to-br from-primary/25 to-accent/15">
               <Icon className="size-4 text-primary" strokeWidth={1.5} />
             </span>
             <div className="leading-tight">
@@ -67,7 +67,7 @@ export function Achievements() {
         </div>
         <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-secondary">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+            className="h-full rounded-full bg-linear-to-r from-primary to-accent"
             style={{ width: '48%' }}
           />
         </div>

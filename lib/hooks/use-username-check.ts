@@ -31,16 +31,20 @@ export function useUsernameCheck(initial = "") {
 
     // Sin cambios respecto al actual, o vacío: nada que validar.
     if (v === initial || v === "") {
-      setStatus("idle")
+      (() => setStatus("idle"))()
       return
+
     }
 
     if (!USERNAME_RE.test(v)) {
-      setStatus("invalid")
+      (() => setStatus("invalid"))()
       return
+
     }
 
-    setStatus("checking")
+    (() => {
+      setStatus("checking")
+    })()
     const id = ++reqId.current
     const t = setTimeout(async () => {
       const res = await checkUsernameAction(v)

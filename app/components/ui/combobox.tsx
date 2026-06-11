@@ -11,14 +11,12 @@ export function Combobox({
   options,
   value,
   onChange,
-  placeholder = "Filtrar...",
   className,
 }: {
   label: string
   options: ComboboxOption[]
   value: string
   onChange: (v: string) => void
-  placeholder?: string
   className?: string
 }) {
   const ALL = ""

@@ -2,14 +2,13 @@
 
 import { useState, SubmitEvent } from 'react'
 import Link from 'next/link'
-import { Mail, Lock, User, AtSign, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { AuthSuccess } from './ui/auth-success'
+import { Mail, Lock, AtSign, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
+// import { AuthSuccess } from './ui/auth-success'
 import { GoogleIcon, GithubIcon, AuthField } from './auth-shared'
 import { useRouter } from "next/navigation"
 import { signIn, signUp } from "@/lib/auth-client"
 
 export function RegisterForm() {
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
     const router = useRouter()
   const [showPw, setShowPw] = useState(false)
     const [email, setEmail] = useState("")
@@ -41,6 +40,10 @@ export function RegisterForm() {
       return
     }
 
+    
+    // return <AuthSuccess mode="register" name={name || 'estudiante'} />
+  
+
     router.push("/")
   }
 
@@ -50,10 +53,6 @@ export function RegisterForm() {
       provider: "google",
       callbackURL: `${window.location.origin}/`,
     })
-  }
-
-  if (status === 'success') {
-    return <AuthSuccess mode="register" name={name || 'estudiante'} />
   }
 
   return (

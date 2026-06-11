@@ -4,19 +4,18 @@ import { useState, type SubmitEvent} from 'react'
 import {
   Mail,
   Lock,
-  User,
+  
   ArrowRight,
   Eye,
   EyeOff,
   Loader2,
-  Check,
+  
 } from 'lucide-react'
 import { GradientAvatar } from '../ui/gradient-avatar'
 // import { AuthSuccess } from './auth-success'
 import { useRouter } from "next/navigation"
 import { signIn } from '@/lib/auth-client'
 
-type Status = 'idle' | 'loading' | 'success'
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
@@ -39,16 +38,15 @@ const GithubIcon = () => (
 export function AuthForm() {
   const router = useRouter()
   const [showPw, setShowPw] = useState(false)
-  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
+  // const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleEmailLogin(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    setError(null)
+    // setError(null)
     setLoading(true)
 
     const { error } = await signIn.email({
@@ -58,7 +56,7 @@ export function AuthForm() {
     })
 
     if (error) {
-      setError("Email o contraseña incorrectos")
+      // setError(error.message || "Email o contraseña incorrectos")
       setLoading(false)
       return
     }

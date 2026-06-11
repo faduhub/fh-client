@@ -1,6 +1,6 @@
 "use client"
 
-import { Toast } from "@base-ui/react/toast"
+import { Toast, type ToastObject } from "@base-ui/react/toast"
 import { X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -11,11 +11,14 @@ function ToastList() {
   return (
     <>
       {manager.toasts.map((toast) => (
-        <ToastItem key={toast.id} toast={toast as any} />
+        <ToastItem key={toast.id} toast={toast} />
       ))}
     </>
   )
 }
+
+
+
 
 export function Toaster() {
   return (
@@ -29,25 +32,14 @@ export function Toaster() {
   )
 }
 
-type ToastType = "default" | "success" | "error"
-
-type ToastItemProps = {
-  toast: {
-    id: string
-    title?: string
-    description?: string
-    type?: ToastType
-  }
-}
-
-export function ToastItem({ toast }: ToastItemProps) {
+export function ToastItem({ toast }: {toast: ToastObject<object>}) {
   return (
     <Toast.Root
       toast={toast}
       className={cn(
         "flex items-start justify-between gap-3 rounded-md border bg-card p-4 shadow-lg",
-        "data-[ending-style]:translate-x-4 data-[ending-style]:opacity-0",
-        "data-[starting-style]:translate-x-4 data-[starting-style]:opacity-0",
+        "data-ending-style:translate-x-4 data-ending-style:opacity-0",
+        "data-starting-style:translate-x-4 data-starting-style:opacity-0",
         "transition-all duration-200",
         toast.type === "error" && "border-destructive/40",
         toast.type === "success" && "border-accent/40",

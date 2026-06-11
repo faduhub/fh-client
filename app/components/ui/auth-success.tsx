@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Check, ArrowRight, Sparkles } from 'lucide-react'
 import { GradientAvatar } from './gradient-avatar'
+import Link from 'next/link'
 
 export function AuthSuccess({
   mode,
@@ -23,7 +24,7 @@ export function AuthSuccess({
     <div className="relative overflow-hidden rounded-3xl border border-border bg-card/80 backdrop-blur-sm">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
       />
       <div
         aria-hidden="true"
@@ -38,11 +39,11 @@ export function AuthSuccess({
         {/* check con anillo gradiente */}
         <div className="relative mt-6">
           <div
-            className={`flex size-24 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent transition-all duration-700 ${
+            className={`flex size-24 items-center justify-center rounded-full bg-linear-to-br from-primary to-accent transition-all duration-700 ${
               mounted ? 'scale-100 opacity-100' : 'scale-75 opacity-0'
             }`}
           >
-            <div className="flex size-[5.25rem] items-center justify-center rounded-full bg-card">
+            <div className="flex size-21 items-center justify-center rounded-full bg-card">
               <Check
                 className="size-10 text-primary"
                 strokeWidth={2.5}
@@ -73,25 +74,25 @@ export function AuthSuccess({
           />
           <div className="min-w-0 flex-1 leading-tight">
             <p className="truncate text-sm text-foreground">{name}</p>
-            <p className="font-mono text-[0.7rem] uppercase tracking-[0.1em] text-muted-foreground">
+            <p className="font-mono text-[0.7rem] uppercase tracking-widest text-muted-foreground">
               {isRegister ? 'Nuevo en la comunidad' : 'Diseño Gráfico · FADU'}
             </p>
           </div>
           {isRegister && (
-            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-[0.1em] text-primary">
+            <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-2.5 py-1 font-mono text-[0.65rem] uppercase tracking-widset text-primary">
               <Sparkles className="size-3" strokeWidth={2} />
               +50 XP
             </span>
           )}
         </div>
 
-        <a
+        <Link
           href="/"
           className="group mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_0_30px_-8px] shadow-primary/60 transition-all hover:shadow-primary/80"
         >
           Ir a mi perfil
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-        </a>
+        </Link>
       </div>
     </div>
   )
