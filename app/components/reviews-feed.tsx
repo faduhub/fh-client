@@ -23,7 +23,6 @@ const orderOptions = [
   { value: "recientes", label: "Más recientes" },
 ]
 
-
 type Periodo = "FIRST" | "SECOND" | "SUMMER"
 // ─── Feed ────────────────────────────────────────────────────────────────────
 
@@ -140,11 +139,26 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
   return (
     <div className="flex items-start gap-8">
       <FilterCard
-        filters={{ query, degree, activeSubject, activeDepartment, period, yearFilter, soloRecomendadas }}
+        filters={{
+          query,
+          degree,
+          activeSubject,
+          activeDepartment,
+          period,
+          yearFilter,
+          soloRecomendadas,
+        }}
         handlers={{
           setQuery,
-          onDegreeChange: (v) => { setDegree(v); setSubject(ALL); setDepartment(ALL) },
-          onSubjectChange: (v) => { setSubject(v); setDepartment(ALL) },
+          onDegreeChange: (v) => {
+            setDegree(v)
+            setSubject(ALL)
+            setDepartment(ALL)
+          },
+          onSubjectChange: (v) => {
+            setSubject(v)
+            setDepartment(ALL)
+          },
           setDepartment,
           setPeriod,
           setYearFilter,

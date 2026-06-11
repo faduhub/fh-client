@@ -1,8 +1,8 @@
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { SiteHeader } from "@/app/components/site-header"
-import { Toast } from '@base-ui/react/toast';
-import { Toaster } from "../components/ui/toast";
+import { Toast } from "@base-ui/react/toast"
+import { Toaster } from "../components/ui/toast"
 import { accountService } from "@/lib/api/services/account.service.server"
 
 export default async function MainLayout({ children }: { children: React.ReactNode }) {
@@ -17,10 +17,10 @@ export default async function MainLayout({ children }: { children: React.ReactNo
 
   return (
     <>
-    <Toast.Provider>
-      <SiteHeader />
-      {children}
-      <Toaster />
+      <Toast.Provider>
+        <SiteHeader />
+        {children}
+        <Toaster />
       </Toast.Provider>
     </>
   )

@@ -29,11 +29,11 @@ export function AuthField({
 }) {
   return (
     <label className="group flex flex-col gap-1.5">
-      <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+      <span className="text-muted-foreground font-mono text-[0.65rem] tracking-[0.18em] uppercase">
         {label}
       </span>
-      <span className="flex items-center gap-3 rounded-xl border border-border bg-secondary/40 px-4 py-3 transition-colors focus-within:border-primary/60 focus-within:bg-secondary/60">
-        <span className="text-muted-foreground transition-colors group-focus-within:text-primary">
+      <span className="border-border bg-secondary/40 focus-within:border-primary/60 focus-within:bg-secondary/60 flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors">
+        <span className="text-muted-foreground group-focus-within:text-primary transition-colors">
           {icon}
         </span>
         {children}

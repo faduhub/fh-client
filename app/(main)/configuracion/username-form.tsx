@@ -47,7 +47,10 @@ export function UsernameForm({ me }: { me: Me }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border-border bg-card flex flex-col gap-4 rounded-md border p-6">
+    <form
+      onSubmit={handleSubmit}
+      className="border-border bg-card flex flex-col gap-4 rounded-md border p-6"
+    >
       <div>
         <h2 className="text-foreground text-base font-semibold">Username</h2>
         <p className="text-muted-foreground mt-0.5 text-sm">
@@ -70,7 +73,9 @@ export function UsernameForm({ me }: { me: Me }) {
             className="h-9 pr-9 pl-8"
           />
           {!locked && (
-            <span className="absolute top-1/2 right-2.5 -translate-y-1/2">{STATUS_ICON[status]}</span>
+            <span className="absolute top-1/2 right-2.5 -translate-y-1/2">
+              {STATUS_ICON[status]}
+            </span>
           )}
         </div>
         {locked ? (

@@ -15,8 +15,8 @@ export default async function OnboardingPage() {
             Elegí tu username
           </h1>
           <p className="text-muted-foreground mt-2 text-sm text-pretty">
-            Es tu identidad pública en faduHub: lo que ven los demás cuando comentás o
-            dejás una reseña. Tu nombre real queda privado.
+            Es tu identidad pública en faduHub: lo que ven los demás cuando comentás o dejás una
+            reseña. Tu nombre real queda privado.
           </p>
         </div>
         <OnboardingForm />

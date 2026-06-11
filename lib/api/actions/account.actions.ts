@@ -37,5 +37,5 @@ export async function checkUsernameAction(username: string) {
  * browser). El guard del layout `(main)` la respeta para no atrapar al usuario.
  */
 export async function dismissOnboardingAction() {
-  ; (await cookies()).set("fh_onboarding_skipped", "1", { sameSite: "lax", path: "/" })
+  ;(await cookies()).set("fh_onboarding_skipped", "1", { sameSite: "lax", path: "/" })
 }

@@ -1,18 +1,12 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import { SlidersHorizontal } from 'lucide-react'
+import { useState } from "react"
+import { SlidersHorizontal } from "lucide-react"
 
-const filters = [
-  'Todas',
-  'Diseño Gráfico',
-  'Morfología',
-  'Tipografía',
-  'Cátedras buenas',
-]
+const filters = ["Todas", "Diseño Gráfico", "Morfología", "Tipografía", "Cátedras buenas"]
 
 export function ReviewFilters() {
-  const [active, setActive] = useState('Todas')
+  const [active, setActive] = useState("Todas")
 
   return (
     <div className="flex flex-wrap items-center gap-2">
@@ -25,8 +19,8 @@ export function ReviewFilters() {
             onClick={() => setActive(filter)}
             className={
               isActive
-                ? 'rounded-full border border-primary/50 bg-primary/15 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.1em] text-primary shadow-[0_0_20px_-6px] shadow-primary/50 transition-colors'
-                : 'rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground'
+                ? "border-primary/50 bg-primary/15 text-primary shadow-primary/50 rounded-full border px-4 py-1.5 font-mono text-xs tracking-[0.1em] uppercase shadow-[0_0_20px_-6px] transition-colors"
+                : "border-border bg-card/60 text-muted-foreground hover:border-primary/40 hover:text-foreground rounded-full border px-4 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
             }
           >
             {filter}
@@ -35,7 +29,7 @@ export function ReviewFilters() {
       })}
       <button
         type="button"
-        className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-4 py-1.5 font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
+        className="border-border bg-card/60 text-muted-foreground hover:border-primary/40 hover:text-foreground inline-flex items-center gap-2 rounded-full border px-4 py-1.5 font-mono text-xs tracking-[0.1em] uppercase transition-colors"
       >
         <SlidersHorizontal className="size-3.5" strokeWidth={1.5} />
         Más filtros

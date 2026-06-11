@@ -8,7 +8,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
   const { slug } = await params
   const catedra = await departmentService.getBySlug(slug)
   if (!catedra) notFound()
-  
+
   const tags = Array.from(new Set(catedra.reviews.flatMap((r) => r.tags)))
 
   return (
