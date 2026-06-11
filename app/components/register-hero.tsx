@@ -1,6 +1,6 @@
 'use client'
 
-import { GradientAvatar } from '@/components/gradient-avatar'
+import { GradientAvatar } from './ui/gradient-avatar'
 import { Star } from 'lucide-react'
 
 // Avatares flotando — los mismos avatares por defecto del sistema, como elemento de marca.

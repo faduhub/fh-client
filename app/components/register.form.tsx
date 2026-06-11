@@ -3,8 +3,8 @@
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { Mail, Lock, User, AtSign, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
-import { AuthSuccess } from '@/components/auth-success'
-import { GoogleIcon, GithubIcon, AuthField } from '@/components/auth-shared'
+import { AuthSuccess } from './ui/auth-success'
+import { GoogleIcon, GithubIcon, AuthField } from './auth-shared'
 
 const CARRERAS = [
   'Diseño Gráfico',
@@ -41,9 +41,6 @@ export function RegisterForm() {
       <h1 className="mt-2 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
         Creá tu cuenta
       </h1>
-      <p className="mt-2 text-pretty text-sm leading-relaxed text-muted-foreground">
-        Sumate a la comunidad y empezá a compartir reseñas honestas.
-      </p>
 
       <div className="mt-8 grid grid-cols-2 gap-3">
         <button
@@ -64,25 +61,14 @@ export function RegisterForm() {
 
       <div className="my-7 flex items-center gap-4">
         <span className="h-px flex-1 bg-border" />
-        <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-          o con tu email
+        <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground font-medium">
+          o
         </span>
         <span className="h-px flex-1 bg-border" />
       </div>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <AuthField icon={<User className="size-4" strokeWidth={1.5} />} label="Nombre">
-            <input
-              type="text"
-              required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Martina Ferreyra"
-              className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
-            />
-          </AuthField>
-
+        
           <AuthField icon={<AtSign className="size-4" strokeWidth={1.5} />} label="Usuario">
             <input
               type="text"
@@ -91,7 +77,7 @@ export function RegisterForm() {
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
             />
           </AuthField>
-        </div>
+        
 
         <AuthField icon={<Mail className="size-4" strokeWidth={1.5} />} label="Email">
           <input
@@ -132,28 +118,6 @@ export function RegisterForm() {
             Al menos 8 caracteres, con un número y una mayúscula.
           </p>
         </div>
-
-        <label className="group flex flex-col gap-1.5">
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
-            Carrera
-          </span>
-          <div className="flex items-center gap-3 rounded-xl border border-border bg-secondary/40 px-4 py-3 transition-colors focus-within:border-primary/60 focus-within:bg-secondary/60">
-            <select
-              required
-              defaultValue=""
-              className="w-full appearance-none bg-transparent text-sm text-foreground outline-none [&>option]:bg-card [&>option]:text-foreground"
-            >
-              <option value="" disabled>
-                Elegí tu carrera
-              </option>
-              {CARRERAS.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </div>
-        </label>
 
         <button
           type="submit"
