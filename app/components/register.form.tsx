@@ -1,37 +1,60 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, SubmitEvent } from 'react'
 import Link from 'next/link'
 import { Mail, Lock, User, AtSign, ArrowRight, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { AuthSuccess } from './ui/auth-success'
 import { GoogleIcon, GithubIcon, AuthField } from './auth-shared'
-
-const CARRERAS = [
-  'Diseño Gráfico',
-  'Diseño Industrial',
-  'Diseño de Indumentaria',
-  'Diseño de Imagen y Sonido',
-  'Arquitectura',
-  'Diseño del Paisaje',
-  'Otra',
-]
+import { useRouter } from "next/navigation"
+import { signIn, signUp } from "@/lib/auth-client"
 
 export function RegisterForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle')
+    const router = useRouter()
   const [showPw, setShowPw] = useState(false)
+    const [email, setEmail] = useState("")
   const [name, setName] = useState('')
+    const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
+  const [password, setPassword] = useState("")
 
-  function handleSubmit(e: FormEvent) {
+  async function handleRegister(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    setStatus('loading')
-    setTimeout(() => setStatus('success'), 1300)
+    setError(null)
+    setLoading(true)
+
+    const { error } = await signUp.email({
+      name,
+      email,
+      password,
+      callbackURL: `${window.location.origin}/`,
+    })
+
+    if (error) {
+      setError(
+        error.code === "USER_ALREADY_EXISTS"
+          ? "Ya existe una cuenta con ese email"
+          : "Ocurrió un error al registrarte",
+      )
+      setLoading(false)
+      return
+    }
+
+    router.push("/")
+  }
+
+    async function handleGoogleLogin() {
+    setGoogleLoading(true)
+    await signIn.social({
+      provider: "google",
+      callbackURL: `${window.location.origin}/`,
+    })
   }
 
   if (status === 'success') {
     return <AuthSuccess mode="register" name={name || 'estudiante'} />
   }
-
-  const loading = status === 'loading'
 
   return (
     <div className="w-full max-w-md">
@@ -42,10 +65,12 @@ export function RegisterForm() {
       <div className="mt-8 grid grid-cols-2 gap-3">
         <button
           type="button"
+          onClick={handleGoogleLogin}
+        disabled={googleLoading}
           className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
         >
           <GoogleIcon />
-          Google
+            {googleLoading ? "Redirigiendo..." : "Google"}
         </button>
         <button
           type="button"
@@ -64,13 +89,16 @@ export function RegisterForm() {
         <span className="h-px flex-1 bg-border" />
       </div>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleRegister} className="flex flex-col gap-4">
         
           <AuthField icon={<AtSign className="size-4" strokeWidth={1.5} />} label="Usuario">
             <input
               type="text"
+              onChange={(e) => setName(e.target.value)}
+              value={name}
               required
               placeholder="martina-ferreyra"
+              autoComplete="name"
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
             />
           </AuthField>
@@ -80,7 +108,10 @@ export function RegisterForm() {
           <input
             type="email"
             required
-            placeholder="vos@fadu.uba.ar"
+                      placeholder="tu@email.com"
+                      autoComplete="email"
+            value={email}
+          onChange={(e) => setEmail(e.target.value)}
             className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
           />
         </AuthField>
@@ -106,6 +137,8 @@ export function RegisterForm() {
           >
             <input
               type={showPw ? 'text' : 'password'}
+              autoComplete="new-password"
+              onChange={(e) => setPassword(e.target.value)}
               required
               placeholder="••••••••"
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
@@ -115,6 +148,8 @@ export function RegisterForm() {
             Al menos 8 caracteres, con un número y una mayúscula.
           </p>
         </div>
+
+                    {error && <p className="text-destructive text-xs">{error}</p>}
 
         <button
           type="submit"

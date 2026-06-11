@@ -12,7 +12,7 @@ import {
   Check,
 } from 'lucide-react'
 import { GradientAvatar } from '../ui/gradient-avatar'
-import { AuthSuccess } from './auth-success'
+// import { AuthSuccess } from './auth-success'
 import { useRouter } from "next/navigation"
 import { signIn } from '@/lib/auth-client'
 
@@ -138,6 +138,7 @@ export function AuthForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vos@fadu.uba.ar"
+              autoComplete="email"
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
             />
           </Field>
@@ -167,6 +168,7 @@ export function AuthForm() {
               required
               placeholder="••••••••"
               onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
             />
           </Field>
