@@ -14,15 +14,15 @@ el mismo que montamos para comments.
 
 ## 0. Resumen de lo que se construye
 
-| Pieza | Estado backend | Construir en FE |
-|---|---|---|
-| `GET /users/me` | ✅ listo | Service + bootstrap de sesión |
-| `PATCH /users/me` | ✅ listo | Action + form de settings |
-| `PATCH /users/me/username` | ✅ listo | Action + onboarding/settings con cooldown |
-| `GET /users/username-available` | ✅ listo | Action + hook con debounce |
-| Onboarding carrera + año | ❌ no existe | **No construir** (Fase 0.5/1) |
-| Perfil público con `username` | ❌ shape viejo | **No atar fuerte** (`/usuario/[slug]` queda como está) |
-| `author` → `username` en reviews/comments | ❌ shape viejo | Esperar aviso de cambio de shape |
+| Pieza                                     | Estado backend | Construir en FE                                        |
+| ----------------------------------------- | -------------- | ------------------------------------------------------ |
+| `GET /users/me`                           | ✅ listo       | Service + bootstrap de sesión                          |
+| `PATCH /users/me`                         | ✅ listo       | Action + form de settings                              |
+| `PATCH /users/me/username`                | ✅ listo       | Action + onboarding/settings con cooldown              |
+| `GET /users/username-available`           | ✅ listo       | Action + hook con debounce                             |
+| Onboarding carrera + año                  | ❌ no existe   | **No construir** (Fase 0.5/1)                          |
+| Perfil público con `username`             | ❌ shape viejo | **No atar fuerte** (`/usuario/[slug]` queda como está) |
+| `author` → `username` en reviews/comments | ❌ shape viejo | Esperar aviso de cambio de shape                       |
 
 ---
 
@@ -33,14 +33,14 @@ el mismo que montamos para comments.
 ```ts
 export type Me = {
   id: string
-  username: string | null            // null => needsOnboarding
+  username: string | null // null => needsOnboarding
   firstName: string | null
   lastName: string | null
   bio: string
   image: string | null
   hideRealName: boolean
-  canChangeUsernameAt: string | null  // ISO; null = puede cambiar ya
-  needsOnboarding: boolean            // true si username == null
+  canChangeUsernameAt: string | null // ISO; null = puede cambiar ya
+  needsOnboarding: boolean // true si username == null
   degrees: { name: string; slug: string; currentYear: number | null }[]
 }
 ```
@@ -66,12 +66,12 @@ Todo viaja bajo `data`. Estandarización confirmada (se entrega en un PR aparte 
 "estandarización de envelope"; hasta entonces hay un par de endpoints con el shape viejo
 y los absorbemos con tolerancia / `getRaw`).
 
-| Caso | Forma |
-|---|---|
-| Recurso único (GET/POST/PATCH) | `{ success, data: <DTO> }` |
-| Lista paginada | `{ success, ...pagination, data: <DTO[]> }` |
-| Sin payload (DELETE / side-effect) | `{ success: true }` |
-| Error | `{ success: false, code, message }` |
+| Caso                               | Forma                                       |
+| ---------------------------------- | ------------------------------------------- |
+| Recurso único (GET/POST/PATCH)     | `{ success, data: <DTO> }`                  |
+| Lista paginada                     | `{ success, ...pagination, data: <DTO[]> }` |
+| Sin payload (DELETE / side-effect) | `{ success: true }`                         |
+| Error                              | `{ success: false, code, message }`         |
 
 - **POST** → `201 { success, data: <DTO creado> }` (con `id`, `createdAt`) → optimista sin refetch.
 - **PATCH** → `200 { success, data: <recurso actualizado> }` → ahorra el `getMe()` extra.
@@ -82,6 +82,7 @@ y los absorbemos con tolerancia / `getRaw`).
   Identidad: `USERNAME_TAKEN` (409), `USERNAME_COOLDOWN` (400), `USERNAME_INVALID` (400).
 
 **Implementado en el client:**
+
 - `ApiError` ahora lleva `code`; `ActionResult` error expone `error` (mensaje) + `code`.
 - `http.getRaw` queda como red de seguridad para respuestas fuera de `data`:
   ```ts

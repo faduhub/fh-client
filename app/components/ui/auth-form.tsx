@@ -1,22 +1,11 @@
-'use client'
+"use client"
 
-import { useState, type SubmitEvent} from 'react'
-import {
-  Mail,
-  Lock,
-  User,
-  ArrowRight,
-  Eye,
-  EyeOff,
-  Loader2,
-  Check,
-} from 'lucide-react'
-import { GradientAvatar } from '../ui/gradient-avatar'
+import { useState, type SubmitEvent } from "react"
+import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react"
+import { GradientAvatar } from "../ui/gradient-avatar"
 // import { AuthSuccess } from './auth-success'
 import { useRouter } from "next/navigation"
-import { signIn } from '@/lib/auth-client'
-
-type Status = 'idle' | 'loading' | 'success'
+import { signIn } from "@/lib/auth-client"
 
 const GoogleIcon = () => (
   <svg viewBox="0 0 24 24" className="size-4" aria-hidden="true">
@@ -39,16 +28,15 @@ const GithubIcon = () => (
 export function AuthForm() {
   const router = useRouter()
   const [showPw, setShowPw] = useState(false)
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [error, setError] = useState<string | null>(null)
+  // const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleEmailLogin(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    setError(null)
+    // setError(null)
     setLoading(true)
 
     const { error } = await signIn.email({
@@ -58,7 +46,7 @@ export function AuthForm() {
     })
 
     if (error) {
-      setError("Email o contraseña incorrectos")
+      // setError(error.message || "Email o contraseña incorrectos")
       setLoading(false)
       return
     }
@@ -66,7 +54,7 @@ export function AuthForm() {
     router.push("/")
   }
 
-    async function handleGoogleLogin() {
+  async function handleGoogleLogin() {
     setGoogleLoading(true)
     await signIn.social({
       provider: "google",
@@ -75,25 +63,25 @@ export function AuthForm() {
   }
 
   return (
-    <div className="relative overflow-hidden rounded-3xl border border-border bg-card/80 backdrop-blur-sm">
+    <div className="border-border bg-card/80 relative overflow-hidden rounded-3xl border backdrop-blur-sm">
       {/* glow superior */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
+        className="via-primary/60 pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent"
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-20 -top-24 size-56 rounded-full bg-primary/20 blur-3xl"
+        className="bg-primary/20 pointer-events-none absolute -top-24 -right-20 size-56 rounded-full blur-3xl"
       />
 
       <div className="relative p-8 sm:p-10">
         {/* encabezado */}
         <div className="flex flex-col items-center text-center">
           <GradientAvatar
-            seed={email || name || 'fadu-reviews'}
-            className="size-16 border border-border"
+            seed={email || name || "fadu-reviews"}
+            className="border-border size-16 border"
           />
-          <h1 className="mt-4 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-2xl">
+          <h1 className="text-foreground mt-4 font-serif text-3xl font-medium tracking-tight text-balance sm:text-2xl">
             Sign in to FaduHub
           </h1>
         </div>
@@ -102,15 +90,15 @@ export function AuthForm() {
         <div className="mt-8 grid grid-cols-2 gap-3">
           <button
             onClick={handleGoogleLogin}
-        disabled={googleLoading}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
+            disabled={googleLoading}
+            className="border-border bg-secondary/50 text-foreground hover:border-primary/40 hover:bg-secondary inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm transition-colors"
           >
             <GoogleIcon />
             {googleLoading ? "Redirigiendo..." : "Google"}
           </button>
           <button
             type="button"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
+            className="border-border bg-secondary/50 text-foreground hover:border-primary/40 hover:bg-secondary inline-flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm transition-colors"
           >
             <GithubIcon />
             GitHub
@@ -119,19 +107,16 @@ export function AuthForm() {
 
         {/* divisor */}
         <div className="my-7 flex items-center gap-4">
-          <span className="h-px flex-1 bg-border" />
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground font-medium">
+          <span className="bg-border h-px flex-1" />
+          <span className="text-muted-foreground font-mono text-[0.65rem] font-medium tracking-[0.2em] uppercase">
             o
           </span>
-          <span className="h-px flex-1 bg-border" />
+          <span className="bg-border h-px flex-1" />
         </div>
 
         {/* formulario */}
         <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
-          <Field
-            icon={<Mail className="size-4" strokeWidth={1.5} />}
-            label="Email"
-          >
+          <Field icon={<Mail className="size-4" strokeWidth={1.5} />} label="Email">
             <input
               type="email"
               required
@@ -139,7 +124,7 @@ export function AuthForm() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vos@fadu.uba.ar"
               autoComplete="email"
-              className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
+              className="text-foreground placeholder:text-muted-foreground/60 w-full bg-transparent text-sm outline-none"
             />
           </Field>
 
@@ -150,10 +135,8 @@ export function AuthForm() {
               <button
                 type="button"
                 onClick={() => setShowPw((s) => !s)}
-                className="text-muted-foreground transition-colors hover:text-foreground"
-                aria-label={
-                  showPw ? 'Ocultar contraseña' : 'Mostrar contraseña'
-                }
+                className="text-muted-foreground hover:text-foreground transition-colors"
+                aria-label={showPw ? "Ocultar contraseña" : "Mostrar contraseña"}
               >
                 {showPw ? (
                   <EyeOff className="size-4" strokeWidth={1.5} />
@@ -164,32 +147,26 @@ export function AuthForm() {
             }
           >
             <input
-              type={showPw ? 'text' : 'password'}
+              type={showPw ? "text" : "password"}
               required
               placeholder="••••••••"
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
-              className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
+              className="text-foreground placeholder:text-muted-foreground/60 w-full bg-transparent text-sm outline-none"
             />
           </Field>
 
-          
-            <div className="flex items-center justify-end text-xs">
-              <a
-                href="#"
-                className="text-muted-foreground transition-colors hover:text-primary"
-              >
-                ¿Olvidaste tu contraseña?
-              </a>
-            </div>
-          
+          <div className="flex items-center justify-end text-xs">
+            <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              ¿Olvidaste tu contraseña?
+            </a>
+          </div>
 
           <button
             type="button"
             disabled={loading}
-            onClick={() =>
-    router.push("/registro")}
-            className="group mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_0_30px_-8px] shadow-primary/60 transition-all hover:shadow-primary/80 disabled:opacity-70"
+            onClick={() => router.push("/registro")}
+            className="group bg-primary text-primary-foreground shadow-primary/60 hover:shadow-primary/80 mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-medium shadow-[0_0_30px_-8px] transition-all disabled:opacity-70"
           >
             {loading ? (
               <>
@@ -206,12 +183,12 @@ export function AuthForm() {
         </form>
 
         {/* cambio de modo */}
-        <p className="mt-7 text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-7 text-center text-sm">
           ¿Sos nuevo?
           <button
             type="button"
             onClick={() => router.push("/registro")}
-            className="font-medium text-primary underline-offset-4 transition-colors hover:underline"
+            className="text-primary font-medium underline-offset-4 transition-colors hover:underline"
           >
             Registrate
           </button>
@@ -234,11 +211,11 @@ function Field({
 }) {
   return (
     <label className="group flex flex-col gap-1.5">
-      <span className="font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground">
+      <span className="text-muted-foreground font-mono text-[0.65rem] tracking-[0.18em] uppercase">
         {label}
       </span>
-      <span className="flex items-center gap-3 rounded-xl border border-border bg-secondary/40 px-4 py-3 transition-colors focus-within:border-primary/60 focus-within:bg-secondary/60">
-        <span className="text-muted-foreground transition-colors group-focus-within:text-primary">
+      <span className="border-border bg-secondary/40 focus-within:border-primary/60 focus-within:bg-secondary/60 flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors">
+        <span className="text-muted-foreground group-focus-within:text-primary transition-colors">
           {icon}
         </span>
         {children}

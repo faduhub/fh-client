@@ -12,6 +12,7 @@ Brief de implementación: `docs/frontend-identity-brief.md`.
 ## Qué entra
 
 ### Capa de datos (boilerplate replicable)
+
 - **`lib/api/dtos/responses/me.ts`** — tipo `Me` (identidad + preferencias).
 - **`lib/api/dtos/payloads/account.ts`** — `UpdateProfilePayload`, `ChangeUsernamePayload`.
 - **`lib/api/services/account.service.server.ts`** — `getMe` (envuelto en `cache()` de React
@@ -21,28 +22,33 @@ Brief de implementación: `docs/frontend-identity-brief.md`.
   (PATCH, devuelven `Me`), `checkUsernameAction`, `dismissOnboardingAction` (cookie de skip).
 
 ### Envelope canónico + manejo de errores
+
 - **`http.server.ts`**: `ApiError` ahora lleva `code`; nuevo `http.getRaw` para respuestas
   fuera de `data` (red de seguridad durante la transición de envelope).
 - **`action.server.ts`**: `ActionResult` en fallo expone `error` (mensaje humano) + `code`
   (estable, para ramificar la UI sin parsear texto).
 
 ### Hook
+
 - **`lib/hooks/use-username-check.ts`** — validación en vivo: regex en cliente
   (`/^[a-z0-9_]{3,20}$/`) + disponibilidad con **debounce 300ms** y **descarte de respuestas
   stale**. Estados: `idle | invalid | checking | available | taken`.
 
 ### Onboarding (`/onboarding`, fuera de `(main)`)
+
 - Server page: si no hay sesión → `/login`; si ya tiene username → `/`.
 - Form con `@`-input, ícono de estado (check / cruz / spinner), submit deshabilitado salvo
   `available`. **Salteable** ("Por ahora no") vía cookie de sesión.
 
 ### Configuración (`/configuracion`, dentro de `(main)`)
+
 - **UsernameForm** — cambio con guardia de **cooldown** (si `canChangeUsernameAt != null`,
   input deshabilitado + "Podés cambiarlo el DD/MM"). Toast en éxito/error.
 - **ProfileForm** — nombre, apellido, bio (contador ≤280) y toggle **"Mostrar mi nombre real"**
   (`hideRealName`). Toast en éxito/error.
 
 ### Guard + UI
+
 - **`(main)/layout.tsx`** ahora es `async`: si el usuario logueado tiene `needsOnboarding`
   (y no salteó) → redirige a `/onboarding`. El browsing público no se ve afectado.
 - **`ui/switch.tsx`** — Switch de Base UI estilado con los tokens del theme.
@@ -87,6 +93,7 @@ Brief de implementación: `docs/frontend-identity-brief.md`.
 ## Archivos
 
 **Nuevos**
+
 - `lib/api/dtos/responses/me.ts`, `lib/api/dtos/payloads/account.ts`
 - `lib/api/services/account.service.server.ts`, `lib/api/actions/account.actions.ts`
 - `lib/hooks/use-username-check.ts`
@@ -96,6 +103,7 @@ Brief de implementación: `docs/frontend-identity-brief.md`.
 - `docs/frontend-identity-brief.md`
 
 **Modificados**
+
 - `lib/api/http.server.ts` (`ApiError.code`, `getRaw`)
 - `lib/api/action.server.ts` (`code` en `ActionResult`)
 - `app/(main)/layout.tsx` (guard de onboarding)

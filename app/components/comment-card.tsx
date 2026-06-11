@@ -61,9 +61,7 @@ export function CommentCard({
     setLiked(next)
     setLikes((n) => n + (next ? 1 : -1))
     startTransition(async () => {
-      const res = next
-        ? await likeCommentAction(comment.id)
-        : await unlikeCommentAction(comment.id)
+      const res = next ? await likeCommentAction(comment.id) : await unlikeCommentAction(comment.id)
       if (!res.success) {
         setLiked(!next)
         setLikes((n) => n + (next ? -1 : 1))

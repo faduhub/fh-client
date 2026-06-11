@@ -72,6 +72,5 @@ export const http = {
    * `data` (ej. `/username-available` → `{ success, available }`). Si el backend
    * normaliza esos endpoints bajo `data`, esto queda como red de seguridad.
    */
-  getRaw: <T>(path: string, opts?: RequestOptions) =>
-    rawRequest("GET", path, opts) as Promise<T>,
+  getRaw: <T>(path: string, opts?: RequestOptions) => rawRequest("GET", path, opts) as Promise<T>,
 }

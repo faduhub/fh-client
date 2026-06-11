@@ -4,7 +4,10 @@ import type { Review } from "@/lib/api/dtos/responses/review"
 import { Badge } from "@/app/components/ui/badge"
 
 type Props = {
-  review: Pick<Review, "subject" | "department" | "departmentSlug" | "head" | "degree" | "recommends">
+  review: Pick<
+    Review,
+    "subject" | "department" | "departmentSlug" | "head" | "degree" | "recommends"
+  >
 }
 
 export function ReviewCardHeader({ review }: Props) {

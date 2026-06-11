@@ -2,11 +2,7 @@ import { Input as InputPrimitive } from "@base-ui/react/input"
 
 import { cn } from "@/lib/utils"
 
-function Textarea({
-  className,
-  rows = 3,
-  ...props
-}: InputPrimitive.Props & { rows?: number }) {
+function Textarea({ className, rows = 3, ...props }: InputPrimitive.Props & { rows?: number }) {
   return (
     <InputPrimitive
       data-slot="textarea"

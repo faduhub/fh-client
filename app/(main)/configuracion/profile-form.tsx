@@ -40,10 +40,15 @@ export function ProfileForm({ me }: { me: Me }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="border-border bg-card flex flex-col gap-5 rounded-md border p-6">
+    <form
+      onSubmit={handleSubmit}
+      className="border-border bg-card flex flex-col gap-5 rounded-md border p-6"
+    >
       <div>
         <h2 className="text-foreground text-base font-semibold">Perfil</h2>
-        <p className="text-muted-foreground mt-0.5 text-sm">Tu nombre real es privado salvo que lo actives.</p>
+        <p className="text-muted-foreground mt-0.5 text-sm">
+          Tu nombre real es privado salvo que lo actives.
+        </p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">

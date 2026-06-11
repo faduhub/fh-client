@@ -47,7 +47,10 @@ export function useCommentList(reviewId: string, initial: Comment[]) {
         ...(parentId ? { parentId } : {}),
       })
       if (res.success) {
-        toast.add({ title: parentId ? "Respuesta publicada" : "Comentario publicado", type: "success" })
+        toast.add({
+          title: parentId ? "Respuesta publicada" : "Comentario publicado",
+          type: "success",
+        })
       } else {
         setComments((prev) => prev.filter((c) => c.id !== optimistic.id))
         toast.add({ title: "Error", description: res.error, type: "error" })
@@ -60,7 +63,11 @@ export function useCommentList(reviewId: string, initial: Comment[]) {
     // Soft delete: si tiene replies se conserva como "[eliminado]"; si no, se saca.
     setComments((prev) =>
       prev.flatMap((c) =>
-        c.id !== comment.id ? [c] : c.repliesCount > 0 ? [{ ...c, deleted: true, body: "[eliminado]" }] : [],
+        c.id !== comment.id
+          ? [c]
+          : c.repliesCount > 0
+            ? [{ ...c, deleted: true, body: "[eliminado]" }]
+            : [],
       ),
     )
 

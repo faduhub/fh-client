@@ -140,12 +140,20 @@ export function ReviewForm({
     setLoading(false)
 
     if (!result.success) {
-      toastManager.add({ title: "Error", description: result.error ?? "Error al crear la reseña", type: "error" })
+      toastManager.add({
+        title: "Error",
+        description: result.error ?? "Error al crear la reseña",
+        type: "error",
+      })
       setError(result.error ?? "Error al crear la reseña")
       return
     }
 
-    toastManager.add({ title: "Reseña publicada", description: "¡Gracias por tu aporte!", type: "success" })
+    toastManager.add({
+      title: "Reseña publicada",
+      description: "¡Gracias por tu aporte!",
+      type: "success",
+    })
     router.push("/")
     router.refresh()
   }

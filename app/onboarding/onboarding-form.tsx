@@ -67,9 +67,7 @@ export function OnboardingForm() {
             aria-invalid={status === "taken" || status === "invalid"}
             className="h-10 pr-9 pl-8"
           />
-          <span className="absolute top-1/2 right-2.5 -translate-y-1/2">
-            {STATUS_ICON[status]}
-          </span>
+          <span className="absolute top-1/2 right-2.5 -translate-y-1/2">{STATUS_ICON[status]}</span>
         </div>
         {(message || error) && (
           <p

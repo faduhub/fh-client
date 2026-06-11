@@ -1,8 +1,6 @@
 import { notFound } from "next/navigation"
-import Link from "next/link"
-import { ArrowLeft, Check, FileIcon, Filter, ThumbsUp } from "lucide-react"
+import { Check, FileIcon, ThumbsUp } from "lucide-react"
 import { departmentService } from "@/lib/api/services/department.service.server"
-import { StarRating } from "@/app/components/star-rating"
 import { ReviewCard } from "@/app/components/review-card"
 import { Badge } from "@/app/components/ui/badge"
 
@@ -11,11 +9,6 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
   const catedra = await departmentService.getBySlug(slug)
   if (!catedra) notFound()
 
-  const dist = [5, 4, 3, 2, 1].map((star) => ({
-    star,
-    count: catedra.reviews.filter((r) => r.rating != null && Math.round(r.rating) === star).length,
-  }))
-  const maxCount = Math.max(1, ...dist.map((d) => d.count))
   const tags = Array.from(new Set(catedra.reviews.flatMap((r) => r.tags)))
 
   return (
