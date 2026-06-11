@@ -81,17 +81,9 @@ export function AuthForm() {
             seed={email || name || 'fadu-reviews'}
             className="size-16 border border-border"
           />
-          <span className="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-primary">
-            {isRegister ? 'USR_NEW / Registro' : 'USR_01 / Acceso'}
-          </span>
-          <h1 className="mt-2 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-            {isRegister ? 'Sumate a FADU Reviews' : 'Bienvenidx de vuelta'}
+          <h1 className="mt-4 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-2xl">
+            Sign in to FaduHub
           </h1>
-          <p className="mt-2 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
-            {isRegister
-              ? 'Compartí experiencias y ayudá a otros a elegir mejor sus cátedras.'
-              : 'Entrá para seguir compartiendo reseñas Orgullo de pertenecer.'}
-          </p>
         </div>
 
         {/* OAuth */}
@@ -182,13 +174,7 @@ export function AuthForm() {
           </Field>
 
           {!isRegister && (
-            <div className="flex items-center justify-between text-xs">
-              <label className="inline-flex cursor-pointer items-center gap-2 text-muted-foreground">
-                <span className="inline-flex size-4 items-center justify-center rounded border border-border bg-secondary/50">
-                  <Check className="size-3 text-primary" strokeWidth={2.5} />
-                </span>
-                Recordarme
-              </label>
+            <div className="flex items-center justify-end text-xs">
               <a
                 href="#"
                 className="text-muted-foreground transition-colors hover:text-primary"
@@ -221,7 +207,7 @@ export function AuthForm() {
 
         {/* cambio de modo */}
         <p className="mt-7 text-center text-sm text-muted-foreground">
-          {isRegister ? '¿Ya tenés cuenta?' : '¿Todavía no tenés cuenta?'}{' '}
+          {isRegister ? '¿Ya tenés cuenta?' : '¿Sos nuevo?'}{' '}
           <button
             type="button"
             onClick={() => setMode(isRegister ? 'login' : 'register')}

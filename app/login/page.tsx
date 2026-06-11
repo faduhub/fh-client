@@ -19,18 +19,7 @@ export default function LoginPage() {
       />
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col justify-center px-5 py-12">
-        {/* logo */}
-        <div className="mb-8 flex items-center justify-center">
-          <span className="font-mono text-sm uppercase tracking-[0.18em] text-muted-foreground">
-            FADU<span className="text-primary"> / </span>REVIEWS
-          </span>
-        </div>
-
         <AuthForm />
-
-        <p className="mt-8 text-center font-mono text-[0.65rem] uppercase tracking-[0.18em] text-muted-foreground/60">
-          Reseñas honestas · FADU · UBA
-        </p>
       </div>
     </main>
   )

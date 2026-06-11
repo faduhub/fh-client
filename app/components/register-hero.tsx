@@ -54,13 +54,6 @@ export function RegisterHero() {
         ))}
       </div>
 
-      {/* contenido */}
-      <div className="relative">
-        <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted-foreground backdrop-blur-sm">
-          FADU<span className="text-primary">/</span>REVIEWS
-        </span>
-      </div>
-
       <div className="relative max-w-md">
         <h2 className="text-balance font-serif text-4xl font-medium leading-[1.05] tracking-tight text-foreground sm:text-5xl">
           Elegí mejor tus cátedras.

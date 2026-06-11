@@ -35,9 +35,6 @@ export function RegisterForm() {
 
   return (
     <div className="w-full max-w-md">
-      <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-primary">
-        USR_NEW / Registro
-      </span>
       <h1 className="mt-2 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
         Creá tu cuenta
       </h1>
