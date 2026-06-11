@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { Check, ArrowRight, Sparkles } from 'lucide-react'
-import { GradientAvatar } from '@/components/gradient-avatar'
+import { GradientAvatar } from './gradient-avatar'
 
 export function AuthSuccess({
   mode,

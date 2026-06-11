@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, type SubmitEvent} from 'react'
 import {
   Mail,
   Lock,
@@ -11,10 +11,11 @@ import {
   Loader2,
   Check,
 } from 'lucide-react'
-import { GradientAvatar } from '@/components/gradient-avatar'
-import { AuthSuccess } from '@/components/auth-success'
+import { GradientAvatar } from '../ui/gradient-avatar'
+// import { AuthSuccess } from './auth-success'
+import { useRouter } from "next/navigation"
+import { signIn } from '@/lib/auth-client'
 
-type Mode = 'login' | 'register'
 type Status = 'idle' | 'loading' | 'success'
 
 const GoogleIcon = () => (
@@ -36,36 +37,49 @@ const GithubIcon = () => (
 )
 
 export function AuthForm() {
-  const [mode, setMode] = useState<Mode>('login')
-  const [status, setStatus] = useState<Status>('idle')
+  const router = useRouter()
   const [showPw, setShowPw] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [googleLoading, setGoogleLoading] = useState(false)
 
-  function handleSubmit(e: FormEvent) {
+  async function handleEmailLogin(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    setStatus('loading')
-    setTimeout(() => setStatus('success'), 1300)
+    setError(null)
+    setLoading(true)
+
+    const { error } = await signIn.email({
+      email,
+      password,
+      callbackURL: `${window.location.origin}/`,
+    })
+
+    if (error) {
+      setError("Email o contraseña incorrectos")
+      setLoading(false)
+      return
+    }
+
+    router.push("/")
   }
 
-  if (status === 'success') {
-    return (
-      <AuthSuccess
-        mode={mode}
-        name={name || email.split('@')[0] || 'estudiante'}
-      />
-    )
+    async function handleGoogleLogin() {
+    setGoogleLoading(true)
+    await signIn.social({
+      provider: "google",
+      callbackURL: `${window.location.origin}/`,
+    })
   }
-
-  const isRegister = mode === 'register'
-  const loading = status === 'loading'
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-border bg-card/80 backdrop-blur-sm">
       {/* glow superior */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/60 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/60 to-transparent"
       />
       <div
         aria-hidden="true"
@@ -79,27 +93,20 @@ export function AuthForm() {
             seed={email || name || 'fadu-reviews'}
             className="size-16 border border-border"
           />
-          <span className="mt-5 font-mono text-[0.7rem] uppercase tracking-[0.2em] text-primary">
-            {isRegister ? 'USR_NEW / Registro' : 'USR_01 / Acceso'}
-          </span>
-          <h1 className="mt-2 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-4xl">
-            {isRegister ? 'Sumate a FADU Reviews' : 'Bienvenida de vuelta'}
+          <h1 className="mt-4 text-balance font-serif text-3xl font-medium tracking-tight text-foreground sm:text-2xl">
+            Sign in to FaduHub
           </h1>
-          <p className="mt-2 max-w-xs text-pretty text-sm leading-relaxed text-muted-foreground">
-            {isRegister
-              ? 'Compartí experiencias y ayudá a otros a elegir mejor sus cátedras.'
-              : 'Entrá para seguir compartiendo reseñas honestas.'}
-          </p>
         </div>
 
         {/* OAuth */}
         <div className="mt-8 grid grid-cols-2 gap-3">
           <button
-            type="button"
+            onClick={handleGoogleLogin}
+        disabled={googleLoading}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-secondary/50 px-4 py-3 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"
           >
             <GoogleIcon />
-            Google
+            {googleLoading ? "Redirigiendo..." : "Google"}
           </button>
           <button
             type="button"
@@ -113,30 +120,14 @@ export function AuthForm() {
         {/* divisor */}
         <div className="my-7 flex items-center gap-4">
           <span className="h-px flex-1 bg-border" />
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground">
-            o con tu email
+          <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-muted-foreground font-medium">
+            o
           </span>
           <span className="h-px flex-1 bg-border" />
         </div>
 
         {/* formulario */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {isRegister && (
-            <Field
-              icon={<User className="size-4" strokeWidth={1.5} />}
-              label="Nombre"
-            >
-              <input
-                type="text"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Martina Ferreyra"
-                className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
-              />
-            </Field>
-          )}
-
+        <form onSubmit={handleEmailLogin} className="flex flex-col gap-4">
           <Field
             icon={<Mail className="size-4" strokeWidth={1.5} />}
             label="Email"
@@ -147,6 +138,7 @@ export function AuthForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="vos@fadu.uba.ar"
+              autoComplete="email"
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
             />
           </Field>
@@ -175,18 +167,14 @@ export function AuthForm() {
               type={showPw ? 'text' : 'password'}
               required
               placeholder="••••••••"
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
               className="w-full bg-transparent text-sm text-foreground outline-none placeholder:text-muted-foreground/60"
             />
           </Field>
 
-          {!isRegister && (
-            <div className="flex items-center justify-between text-xs">
-              <label className="inline-flex cursor-pointer items-center gap-2 text-muted-foreground">
-                <span className="inline-flex size-4 items-center justify-center rounded border border-border bg-secondary/50">
-                  <Check className="size-3 text-primary" strokeWidth={2.5} />
-                </span>
-                Recordarme
-              </label>
+          
+            <div className="flex items-center justify-end text-xs">
               <a
                 href="#"
                 className="text-muted-foreground transition-colors hover:text-primary"
@@ -194,11 +182,13 @@ export function AuthForm() {
                 ¿Olvidaste tu contraseña?
               </a>
             </div>
-          )}
+          
 
           <button
-            type="submit"
+            type="button"
             disabled={loading}
+            onClick={() =>
+    router.push("/registro")}
             className="group mt-2 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-[0_0_30px_-8px] shadow-primary/60 transition-all hover:shadow-primary/80 disabled:opacity-70"
           >
             {loading ? (
@@ -208,7 +198,7 @@ export function AuthForm() {
               </>
             ) : (
               <>
-                {isRegister ? 'Crear cuenta' : 'Ingresar'}
+                Crear cuenta
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </>
             )}
@@ -217,13 +207,13 @@ export function AuthForm() {
 
         {/* cambio de modo */}
         <p className="mt-7 text-center text-sm text-muted-foreground">
-          {isRegister ? '¿Ya tenés cuenta?' : '¿Todavía no tenés cuenta?'}{' '}
+          ¿Sos nuevo?
           <button
             type="button"
-            onClick={() => setMode(isRegister ? 'login' : 'register')}
+            onClick={() => router.push("/registro")}
             className="font-medium text-primary underline-offset-4 transition-colors hover:underline"
           >
-            {isRegister ? 'Iniciá sesión' : 'Registrate'}
+            Registrate
           </button>
         </p>
       </div>
