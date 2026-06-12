@@ -1,13 +1,34 @@
+import { Suspense } from "react"
 import { notFound } from "next/navigation"
 import { Check, FileIcon, ThumbsUp } from "lucide-react"
 import { departmentService } from "@/lib/api/services/department.service.server"
+import { postService } from "@/lib/api/services/post.service.server"
+import { accountService } from "@/lib/api/services/account.service.server"
 import { ReviewCard } from "@/app/components/review-card"
+import { BoardPostsFeed } from "@/app/components/board-posts-feed"
 import { Badge } from "@/app/components/ui/badge"
+import { CatedraTabs } from "./catedra-tabs"
 
-export default async function CatedraPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params
-  const catedra = await departmentService.getBySlug(slug)
+export default async function CatedraPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ tab?: string }>
+}) {
+  const [{ slug }, sp] = await Promise.all([params, searchParams])
+  const tab = sp.tab === "experiencias" ? "experiencias" : "muro"
+
+  const [catedra, me] = await Promise.all([
+    departmentService.getBySlug(slug),
+    accountService.getMe(),
+  ])
   if (!catedra) notFound()
+
+  const posts =
+    tab === "muro"
+      ? await postService.getPosts({ boardType: "CATEDRA", boardId: catedra.id, limit: 20 })
+      : null
 
   const tags = Array.from(new Set(catedra.reviews.flatMap((r) => r.tags)))
 
@@ -26,6 +47,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
 
       <section className="mx-auto max-w-5xl px-6 py-12">
         <div className="grid gap-10 lg:grid-cols-[280px_1fr]">
+          {/* Sidebar de stats */}
           <aside className="bg-card border-border sticky top-6 hidden flex-col gap-5 rounded-md border p-5 lg:flex">
             <div className="text-foreground flex items-center gap-x-1.5 text-sm font-medium">
               <FileIcon className="size-3.5" />
@@ -50,11 +72,11 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
                 {catedra.totalLikes}
               </span>
             </div>
-            <div className="border-border flex flex-col gap-2 border-t pt-4">
-              <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-                Tags
-              </span>
-              {tags.length > 0 && (
+            {tags.length > 0 && (
+              <div className="border-border flex flex-col gap-2 border-t pt-4">
+                <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
+                  Tags
+                </span>
                 <div className="flex flex-wrap gap-2">
                   {tags.map((t) => (
                     <Badge key={t} variant="secondary" className="rounded-full font-normal">
@@ -62,13 +84,12 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
                     </Badge>
                   ))}
                 </div>
-              )}
-            </div>
+              </div>
+            )}
             <div className="border-border flex flex-col gap-2 border-t pt-4">
               <span className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
                 Links
               </span>
-
               <div className="flex flex-wrap gap-2">
                 <Badge variant="secondary" className="rounded-full font-normal">
                   Instagram
@@ -80,15 +101,35 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
             </div>
           </aside>
 
-          <div>
-            <h2 className="border-border text-foreground mb-6 border-b pb-4 font-serif text-2xl">
-              Experiencias de estudiantes
-            </h2>
-            <div className="flex flex-col gap-4">
-              {catedra.reviews.map((r) => (
-                <ReviewCard key={r.id} review={r} />
-              ))}
-            </div>
+          {/* Columna principal con tabs */}
+          <div className="flex flex-col gap-6">
+            <Suspense>
+              <CatedraTabs active={tab} />
+            </Suspense>
+
+            {tab === "muro" && posts && (
+              <BoardPostsFeed
+                result={posts}
+                boardType="CATEDRA"
+                boardId={catedra.id}
+                meSlug={me?.slug ?? null}
+              />
+            )}
+
+            {tab === "experiencias" && (
+              <div className="flex flex-col gap-4">
+                {catedra.reviews.length > 0 ? (
+                  catedra.reviews.map((r) => <ReviewCard key={r.id} review={r} />)
+                ) : (
+                  <div className="border-border border border-dashed py-12 text-center">
+                    <p className="text-foreground font-semibold">Sin experiencias todavía</p>
+                    <p className="text-muted-foreground mt-1 text-sm">
+                      Sé el primero en escribir una.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>

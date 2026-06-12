@@ -43,6 +43,24 @@ export const commentService = {
   },
 
   /**
+   * Comentarios top-level de un post.
+   * GET /v1/comments?sourceType=POST&sourceId=<uuid>
+   */
+  async getByPost(postId: string, params?: GetCommentsParams): Promise<Paginated<Comment>> {
+    const qs = new URLSearchParams({ sourceType: "POST", sourceId: postId })
+    qs.set("orderBy", params?.orderBy ?? "likes")
+    if (params?.page) qs.set("page", String(params.page))
+    if (params?.limit) qs.set("limit", String(params.limit))
+    if (params?.order) qs.set("order", params.order)
+
+    try {
+      return await http.getPaginated<Comment>(`/comments?${qs}`, READ)
+    } catch {
+      return EMPTY
+    }
+  },
+
+  /**
    * Respuestas de un comment top-level (orden cronológico ASC por defecto).
    * GET /v1/comments?parentId=<commentId>
    */

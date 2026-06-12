@@ -11,6 +11,7 @@ function draft(body: string, parentId: string | null): Comment {
   return {
     id: crypto.randomUUID(),
     author: "Vos",
+    authorUsername: null,
     authorSlug: "vos",
     initials: "VO",
     date: "Recién",
@@ -24,25 +25,28 @@ function draft(body: string, parentId: string | null): Comment {
   }
 }
 
+export type CommentSource = {
+  sourceType: "REVIEW" | "POST"
+  sourceId: string
+}
+
 /**
  * Maneja una lista de comentarios con updates optimistas + rollback y toasts.
- * Sirve tanto para los top-level (en la sección) como para las replies de un
- * comment (en la card), porque ambas son `Comment[]`.
+ * Sirve tanto para reviews como para posts.
  */
-export function useCommentList(reviewId: string, initial: Comment[]) {
+export function useCommentList(source: CommentSource, initial: Comment[]) {
   const [comments, setComments] = useState<Comment[]>(initial)
   const [isPending, startTransition] = useTransition()
   const toast = Toast.useToastManager()
 
   function add(text: string, parentId: string | null = null) {
     const optimistic = draft(text, parentId)
-    // top-level: arriba (feedback inmediato); reply: al final (orden cronológico).
     setComments((prev) => (parentId ? [...prev, optimistic] : [optimistic, ...prev]))
 
     startTransition(async () => {
       const res = await createCommentAction({
-        sourceType: "REVIEW",
-        sourceId: reviewId,
+        sourceType: source.sourceType,
+        sourceId: source.sourceId,
         body: text,
         ...(parentId ? { parentId } : {}),
       })
@@ -60,7 +64,6 @@ export function useCommentList(reviewId: string, initial: Comment[]) {
 
   function remove(comment: Comment) {
     const snapshot = comments
-    // Soft delete: si tiene replies se conserva como "[eliminado]"; si no, se saca.
     setComments((prev) =>
       prev.flatMap((c) =>
         c.id !== comment.id

@@ -14,7 +14,6 @@ import {
   ChevronRightIcon,
   SearchIcon,
   StarIcon,
-  Globe,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { signOut } from "@/lib/auth-client"
@@ -55,21 +54,12 @@ const navGroups: NavItem[][] = [
     { label: "Inicio", href: "/", icon: HomeIcon },
     {
       label: "Explorar",
-      href: "/catedrasdas",
+      href: "/catedras",
       icon: SearchIcon,
-      children: [
-        { label: "Materias", href: "/mis-resenasdsad" },
-        { label: "Cátedras", href: "/guardadas/catedrasdasd" },
-        { label: "Cruzadas", href: "/guardadas/resasdenas" },
-      ],
+      children: [{ label: "Cátedras", href: "/catedras" }],
     },
-    {
-      label: "Experiencias",
-      href: "/",
-      icon: StarIcon,
-    },
-    { label: "Comunidad", href: "/comadadunidad", icon: Globe },
-    { label: "Mi FADU", href: "/nuevaddds-resena", icon: StoolIcon },
+    { label: "Experiencias", href: "/experiencias", icon: StarIcon },
+    { label: "Mi FADU", href: "/configuracion", icon: StoolIcon },
   ],
 ]
 
