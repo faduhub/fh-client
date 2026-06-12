@@ -86,7 +86,7 @@ export function AccountPanel() {
           <div className="leading-tight">
             <p className="text-foreground text-sm">Eliminar cuenta</p>
             <p className="text-muted-foreground mt-0.5 text-xs leading-relaxed">
-              Esto borra tu perfil y todas tus reseñas. No se puede deshacer.
+              Esto borra tu perfil y todas tus experiencias. No se puede deshacer.
             </p>
           </div>
           <button
@@ -108,8 +108,8 @@ export function NotificationsPanel() {
       <div className="flex flex-col gap-5">
         <FieldLabel>Por email</FieldLabel>
         <ToggleRow
-          title="Respuestas a tus reseñas"
-          description="Cuando alguien comenta o responde una reseña tuya."
+          title="Respuestas a tus experiencias"
+          description="Cuando alguien comenta o responde una experiencia tuya."
           defaultOn
         />
         <ToggleRow
@@ -119,7 +119,7 @@ export function NotificationsPanel() {
         />
         <ToggleRow
           title="Novedades de cátedras que seguís"
-          description="Nuevas reseñas en materias y cátedras guardadas."
+          description="Nuevas experiencias en materias y cátedras guardadas."
         />
       </div>
       <div className="border-border flex flex-col gap-5 border-t pt-6">
@@ -131,7 +131,7 @@ export function NotificationsPanel() {
         />
         <ToggleRow
           title="Recordatorios"
-          description="Sugerencias para reseñar materias que ya cursaste."
+          description="Sugerencias para compartir tus experiencias sobre materias que ya cursaste."
           defaultOn
         />
       </div>

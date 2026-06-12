@@ -27,7 +27,7 @@ export default async function NuevaResenaPage() {
           </Link>
 
           <h1 className="text-foreground mt-6 font-serif text-4xl leading-tight sm:text-5xl">
-            Nueva reseña
+            Conta tu experiencia
           </h1>
           <p className="text-muted-foreground mt-2">
             Compartí tu experiencia con la comunidad de FaduHub.

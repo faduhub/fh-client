@@ -121,7 +121,7 @@ export function ReviewForm({
     if (!degreeId) return setError("Seleccioná una carrera")
     if (rating === 0) return setError("Seleccioná una calificación")
     if (recommends === null) return setError("Indicá si recomendás la cátedra")
-    if (!body.trim()) return setError("Escribí una reseña")
+    if (!body.trim()) return setError("Escribí una experiencia")
 
     setLoading(true)
     const result = await createReviewAction({
@@ -142,15 +142,15 @@ export function ReviewForm({
     if (!result.success) {
       toastManager.add({
         title: "Error",
-        description: result.error ?? "Error al crear la reseña",
+        description: result.error ?? "Error al crear la experiencia",
         type: "error",
       })
-      setError(result.error ?? "Error al crear la reseña")
+      setError(result.error ?? "Error al crear la experiencia")
       return
     }
 
     toastManager.add({
-      title: "Reseña publicada",
+      title: "Experiencia publicada",
       description: "¡Gracias por tu aporte!",
       type: "success",
     })
@@ -276,7 +276,7 @@ export function ReviewForm({
       {/* Texto */}
       <div className="flex flex-col gap-2">
         <label className="text-muted-foreground text-xs font-medium tracking-wider uppercase">
-          Reseña <span className="text-destructive">*</span>
+          Experiencia <span className="text-destructive">*</span>
         </label>
         <textarea
           value={body}
@@ -348,7 +348,7 @@ export function ReviewForm({
 
       <div className="border-border flex items-center gap-4 border-t pt-6">
         <Button type="submit" disabled={loading} className="px-8">
-          {loading ? "Publicando..." : "Publicar reseña"}
+          {loading ? "Publicando..." : "Publicar experiencia"}
         </Button>
         <button
           type="button"

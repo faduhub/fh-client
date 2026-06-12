@@ -40,13 +40,13 @@ const navGroups: NavItem[][] = [
       href: "/experiencias",
       icon: BookOpenIcon,
       children: [
-        { label: "Mis reseñas", href: "/mis-reseddadnas" },
+        { label: "Mis experiencias", href: "/mis-reseddadnas" },
         {
           label: "Guardadas",
           href: "/guardadas",
           children: [
             { label: "Cátedras", href: "/guardadas/catasdedras" },
-            { label: "Reseñas", href: "/guardadas/resasdadenas" },
+            { label: "Experiencias", href: "/guardadas/resasdadenas" },
           ],
         },
       ],

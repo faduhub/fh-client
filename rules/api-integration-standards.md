@@ -198,7 +198,7 @@ export async function createReviewAction(
   const json = await res.json()
 
   if (!res.ok) {
-    return { success: false, error: json.message ?? "Error al crear la reseña" }
+    return { success: false, error: json.message ?? "Error al crear la experiencia" }
   }
 
   revalidateTag("reviews") // busts the SSR cache for the reviews feed
@@ -251,7 +251,7 @@ export const reviewClientService = {
       body: JSON.stringify(payload),
     })
     const json = await res.json()
-    if (!res.ok) throw new Error(json.message ?? "Error al crear reseña")
+    if (!res.ok) throw new Error(json.message ?? "Error al crear experiencia")
     return json.data
   },
 }

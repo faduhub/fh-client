@@ -82,7 +82,7 @@ export default async function CatedraPage({ params }: { params: Promise<{ slug: 
 
           <div>
             <h2 className="border-border text-foreground mb-6 border-b pb-4 font-serif text-2xl">
-              Reseñas de estudiantes
+              Experiencias de estudiantes
             </h2>
             <div className="flex flex-col gap-4">
               {catedra.reviews.map((r) => (
