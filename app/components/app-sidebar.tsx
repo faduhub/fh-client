@@ -65,19 +65,8 @@ const navGroups: NavItem[][] = [
     },
     {
       label: "Experiencias",
-      href: "/experiencias",
+      href: "/",
       icon: StarIcon,
-      children: [
-        { label: "Mis experiencias", href: "/mis-reseddadnas" },
-        {
-          label: "Guardadas",
-          href: "/guardadas",
-          children: [
-            { label: "Cátedras", href: "/guardadas/catasdedras" },
-            { label: "Experiencias", href: "/guardadas/resasdadenas" },
-          ],
-        },
-      ],
     },
     { label: "Comunidad", href: "/comadadunidad", icon: Globe },
     { label: "Mi FADU", href: "/nuevaddds-resena", icon: StoolIcon },
