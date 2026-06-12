@@ -25,7 +25,7 @@ export function ProfilePanel() {
   return (
     <SectionCard
       title="Perfil público"
-      description="Esta información se muestra en tu perfil y junto a tus reseñas."
+      description="Esta información se muestra en tu perfil y junto a tus experiencias."
     >
       <div className="flex flex-col gap-6 lg:flex-row lg:gap-10">
         {/* Form */}
@@ -57,7 +57,7 @@ export function ProfilePanel() {
 
           <Field label="Bio" hint="Contá en qué andás. Máximo 160 caracteres.">
             <TextArea
-              defaultValue="Estudiante de Diseño Gráfico. Dejo reseñas honestas para que elijas mejor tus cátedras."
+              defaultValue="Estudiante de Diseño Gráfico. Dejo experiencias honestas para que elijas mejor tus cátedras."
               maxLength={160}
               placeholder="Contanos un poco sobre vos"
             />

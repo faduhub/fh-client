@@ -43,7 +43,7 @@ export function SiteHeader({ me }: { me: Me | null }) {
                 href="/nueva-resena"
                 className="bg-foreground text-background rounded-full px-4 py-1.5 transition-opacity hover:opacity-90"
               >
-                Nueva reseña
+                Nueva experiencia
               </Link>
               <AppMenu
                 trigger={

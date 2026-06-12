@@ -52,7 +52,7 @@ export function AuthSuccess({ mode, name }: { mode: "login" | "register"; name: 
         </h1>
         <p className="text-muted-foreground mt-3 max-w-sm text-sm leading-relaxed text-pretty">
           {isRegister
-            ? "Tu perfil ya está activo. Empezá a compartir reseñas y ayudá a la comunidad de la FADU a elegir mejor."
+            ? "Tu perfil ya está activo. Empezá a compartir experiencias y ayudá a la comunidad de la FADU a elegir mejor."
             : "Ingresaste correctamente. Te llevamos a tu perfil para que sigas compartiendo."}
         </p>
 

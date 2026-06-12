@@ -25,7 +25,7 @@ export async function createReviewAction(
   const json = await res.json()
 
   if (!res.ok) {
-    return { success: false, error: json.message ?? "Error al crear la reseña" }
+    return { success: false, error: json.message ?? "Error al crear la experiencia" }
   }
 
   revalidateTag("reviews", "everything")

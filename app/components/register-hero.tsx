@@ -65,12 +65,12 @@ export function RegisterHero() {
           Elegí mejor tus cátedras.
         </h2>
         <p className="text-muted-foreground mt-4 max-w-sm text-sm leading-relaxed text-pretty">
-          Reseñas honestas de estudiantes reales de la FADU. Sumate y compartí tu experiencia para
-          que nadie elija a ciegas.
+          Experiencias honestas de estudiantes reales de la FADU. Sumate y compartí tu experiencia
+          para que nadie elija a ciegas.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <Stat value="2.4k" label="Reseñas" />
+          <Stat value="2.4k" label="Experiencias" />
           <span aria-hidden="true" className="bg-border h-8 w-px" />
           <Stat value="180+" label="Cátedras" />
           <span aria-hidden="true" className="bg-border h-8 w-px" />

@@ -2,7 +2,7 @@ import { ProfileHeader } from "@/app/components/ui/profile-headbar"
 import { SettingsLayout } from "@/app/components/ui/settings-layout"
 
 export const metadata = {
-  title: "Ajustes · FADU Reviews",
+  title: "Ajustes · faduHub",
   description: "Configurá tu perfil, carrera, materias y apariencia.",
 }
 

@@ -25,7 +25,7 @@ export function ReviewCard({ review, linked = true }: { review: Review; linked?:
         <Link
           href={`/resena/${review.id}`}
           className="absolute inset-0 rounded-md"
-          aria-label={`Ver reseña de ${review.department}`}
+          aria-label={`Ver experiencia de ${review.department}`}
         />
       )}
 

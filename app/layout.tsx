@@ -15,8 +15,8 @@ const newsreader = Newsreader({
 })
 
 export const metadata: Metadata = {
-  title: "FADU Reviews — Perfil",
-  description: "Reseñas honestas de cátedras y profesores por estudiantes de la FADU, UBA.",
+  title: "faduHub — Perfil",
+  description: "Encuentro virtual de de cátedras, profesores y estudiantes de la FADU, UBA.",
   generator: "v0.app",
   icons: {
     icon: [
