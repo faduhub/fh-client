@@ -11,14 +11,14 @@ export default async function CatedrasPage() {
       <section className="">
         <div className="mx-auto max-w-5xl px-6 pt-12">
           <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
-            Reseñas de cursadas · escritas por estudiantes
+            Experiencias de cursadas · escritas por estudiantes
           </p>
           <h1 className="text-foreground mt-2.5 text-4xl leading-[1.05] font-bold tracking-tight text-balance sm:text-3xl">
             Cátedras
           </h1>
           <p className="text-muted-foreground mt-4 max-w-xl leading-relaxed text-pretty">
-            Explorá las cátedras reseñadas por estudiantes. Tocá cualquiera para ver su detalle, sus
-            métricas y todas las opiniones.
+            Explorá cátedras. Tocá cualquiera para ver su detalle, sus métricas y todas las
+            opiniones.
           </p>
         </div>
       </section>
@@ -46,7 +46,7 @@ export default async function CatedrasPage() {
                 <div className="flex items-center gap-6">
                   <div className="hidden text-right sm:block">
                     <p className="text-muted-foreground font-mono text-xs tracking-wider uppercase">
-                      Reseñas
+                      Experiencias
                     </p>
                     <p className="text-foreground font-serif text-2xl">{c.reviews.length}</p>
                   </div>

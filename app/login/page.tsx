@@ -2,8 +2,8 @@ import type { Metadata } from "next"
 import { AuthForm } from "../components/ui/auth-form"
 
 export const metadata: Metadata = {
-  title: "FADU Reviews — Acceso",
-  description: "Ingresá o registrate en FADU Reviews.",
+  title: "FADUhub — Acceso",
+  description: "Ingresá o registrate en FADUhub.",
 }
 
 export default function LoginPage() {

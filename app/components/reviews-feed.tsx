@@ -178,7 +178,7 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
         <div className="border-border flex items-center justify-between border-b pb-4">
           <p className="text-muted-foreground text-sm">
             <span className="text-foreground font-medium">{filtered.length}</span>{" "}
-            {filtered.length === 1 ? "reseña" : "reseñas"}
+            {filtered.length === 1 ? "experiencias" : "experiencia"}
           </p>
           <div className="flex">
             <Select value={orden} onValueChange={(v) => v && setOrden(v)}>

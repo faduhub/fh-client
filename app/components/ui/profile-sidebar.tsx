@@ -9,10 +9,10 @@ type Stat = {
 }
 
 const stats: Stat[] = [
-  { icon: Star, value: "1", label: "Reseñas" },
-  { icon: Star, value: "5.0", label: "Puntaje" },
-  { icon: ThumbsUp, value: "142", label: "Likes" },
-  { icon: Check, value: "100%", label: "Recomienda" },
+  { icon: Star, value: "4.200", label: "Karma" },
+  { icon: Star, value: "24", label: "Contribuciones" },
+  { icon: ThumbsUp, value: "6 años", label: "Se unió" },
+  { icon: Check, value: "No", label: "Egresado" },
 ]
 
 type UserBadge = {
@@ -32,13 +32,10 @@ export function ProfileSidebar() {
   return (
     <div className="border-border bg-card/80 overflow-hidden rounded-2xl border backdrop-blur-sm">
       {/* Encabezado con gradiente */}
-      <div className="from-primary/20 via-accent/10 relative flex flex-col items-center gap-4 bg-gradient-to-b to-transparent px-6 pt-8 pb-6 text-center">
-        <span className="text-primary font-mono text-[0.65rem] tracking-[0.2em] uppercase">
-          Estudiante · FADU
-        </span>
+      <div className="from-primary/20 via-accent/10 relative flex flex-col items-center gap-4 bg-linear-to-b to-transparent px-6 pt-8 pb-6 text-center">
         <div className="relative">
           <div
-            className="from-primary to-accent absolute -inset-1 rounded-full bg-gradient-to-tr opacity-70 blur-[6px]"
+            className="from-primary to-accent absolute -inset-1 rounded-full bg-linear-to-tr opacity-70 blur-[6px]"
             aria-hidden="true"
           />
           <GradientAvatar seed={SEED} className="border-border relative size-24 border" />
@@ -67,7 +64,7 @@ export function ProfileSidebar() {
         </div>
 
         <p className="text-foreground/80 text-sm leading-relaxed text-pretty">
-          Estudiante de DG, ciclo superior. Dejo reseñas honestas para los que vienen atrás.
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque nesciunt repellendus ex.
         </p>
       </div>
 
