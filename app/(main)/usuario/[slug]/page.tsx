@@ -2,6 +2,8 @@ import { ProfileSidebar } from "../../../components/ui/profile-sidebar"
 import { ReviewCard, type Review } from "../../../components/ui/review-card"
 import { Achievements } from "../../../components/ui/achievements"
 import { CurrentCourses } from "../../../components/ui/current-courses"
+import { userService } from "@/lib/api/services/user.service.server"
+import { notFound } from "next/navigation"
 
 const reviews: Review[] = [
   {
@@ -51,7 +53,13 @@ const reviews: Review[] = [
   },
 ]
 
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+
+  const user = await userService.getBySlug(slug)
+
+  if (!user) notFound()
+
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
       {/* Gradientes de fondo sutiles */}
@@ -64,7 +72,7 @@ export default function Page() {
         <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-10">
           {/* Sidebar sticky */}
           <aside className="flex flex-col gap-6 lg:sticky lg:top-7 lg:w-[20rem] lg:shrink-0">
-            <ProfileSidebar />
+            <ProfileSidebar user={user} />
             <CurrentCourses />
             <Achievements />
           </aside>
