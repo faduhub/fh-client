@@ -1,5 +1,4 @@
-/** Hoy el único sourceType válido es "REVIEW". */
-export type CommentSourceType = "REVIEW"
+export type CommentSourceType = "REVIEW" | "POST"
 
 export type CreateCommentPayload = {
   sourceType: CommentSourceType

@@ -4,6 +4,7 @@ import { useState, useTransition } from "react"
 import Link from "next/link"
 import { MessageSquare, MoreHorizontal, ThumbsUp } from "lucide-react"
 import type { Comment } from "@/lib/api/dtos/responses/comment"
+import type { CommentSource } from "@/lib/hooks/use-comment-list"
 import {
   getRepliesAction,
   likeCommentAction,
@@ -21,7 +22,7 @@ import { cn } from "@/lib/utils"
 
 type Props = {
   comment: Comment
-  reviewId: string
+  source: CommentSource
   /** Una reply no puede tener su propia reply (cap de un nivel). */
   isReply?: boolean
   onEdit?: (id: string, body: string) => void
@@ -31,7 +32,7 @@ type Props = {
 
 export function CommentCard({
   comment,
-  reviewId,
+  source,
   isReply = false,
   onEdit,
   onReport,
@@ -45,8 +46,7 @@ export function CommentCard({
   const [, startTransition] = useTransition()
   const toast = Toast.useToastManager()
 
-  // Replies (solo top-level): se cargan on-demand y se manejan con su propio hook.
-  const replies = useCommentList(reviewId, [])
+  const replies = useCommentList(source, [])
   const [loaded, setLoaded] = useState(false)
   const [loadingReplies, setLoadingReplies] = useState(false)
   const [showReplies, setShowReplies] = useState(false)
@@ -57,7 +57,6 @@ export function CommentCard({
 
   function toggleLike() {
     const next = !liked
-    // Optimista (like/unlike son idempotentes en el back); revertimos si falla.
     setLiked(next)
     setLikes((n) => n + (next ? 1 : -1))
     startTransition(async () => {
@@ -76,7 +75,6 @@ export function CommentCard({
     setIsEditing(false)
   }
 
-  /** Asegura que las replies estén cargadas antes de mostrarlas o responder. */
   async function ensureLoaded(): Promise<boolean> {
     if (loaded) return true
     if (comment.repliesCount === 0) {
@@ -210,7 +208,6 @@ export function CommentCard({
           </p>
         )}
 
-        {/* Acciones */}
         {(!isDeleted || (!isReply && repliesCount > 0)) && (
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {!isDeleted && (
@@ -274,7 +271,7 @@ export function CommentCard({
               <CommentCard
                 key={r.id}
                 comment={r}
-                reviewId={reviewId}
+                source={source}
                 isReply
                 onEdit={replies.edit}
                 onReport={onReport}

@@ -6,12 +6,13 @@ import { CommentCard } from "@/app/components/comment-card"
 import { CommentComposer } from "@/app/components/comment-composer"
 
 type Props = {
-  reviewId: string
+  postId: string
   initialComments?: Comment[]
+  meSlug?: string | null
 }
 
-export function CommentSection({ reviewId, initialComments = [] }: Props) {
-  const source = { sourceType: "REVIEW" as const, sourceId: reviewId }
+export function PostCommentSection({ postId, initialComments = [], meSlug }: Props) {
+  const source = { sourceType: "POST" as const, sourceId: postId }
   const { comments, isPending, add, remove, edit } = useCommentList(source, initialComments)
   const total = comments.reduce((n, c) => n + 1 + c.repliesCount, 0)
 
@@ -21,7 +22,16 @@ export function CommentSection({ reviewId, initialComments = [] }: Props) {
         Comentarios <span className="text-muted-foreground font-normal">({total})</span>
       </h2>
 
-      <CommentComposer onSubmit={(text) => add(text)} pending={isPending} />
+      {meSlug ? (
+        <CommentComposer onSubmit={(text) => add(text)} pending={isPending} />
+      ) : (
+        <p className="text-muted-foreground border-border rounded-md border border-dashed py-4 text-center text-sm">
+          <a href="/login" className="text-accent font-medium underline underline-offset-4">
+            Iniciá sesión
+          </a>{" "}
+          para dejar un comentario.
+        </p>
+      )}
 
       {comments.length > 0 ? (
         <ul className="flex flex-col gap-3">

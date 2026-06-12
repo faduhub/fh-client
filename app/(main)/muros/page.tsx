@@ -1,9 +1,9 @@
 import { Suspense } from "react"
 import { postService } from "@/lib/api/services/post.service.server"
 import { accountService } from "@/lib/api/services/account.service.server"
-import { PostsFeed } from "@/app/(main)/muros/posts-feed"
+import { PostsFeed } from "./posts-feed"
 
-export default async function Page({
+export default async function MurosPage({
   searchParams,
 }: {
   searchParams: Promise<{ search?: string; order?: string; page?: string }>
