@@ -104,7 +104,7 @@ export function ProfilePanel() {
           <div className="relative">
             <div
               aria-hidden="true"
-              className="from-primary/40 via-accent/30 absolute -inset-2 rounded-full bg-gradient-to-br to-transparent blur-xl"
+              className="from-primary/40 via-accent/30 absolute -inset-2 rounded-full bg-linear-to-br to-transparent blur-xl"
             />
             <GradientAvatar
               seed="Martina Ferreyra"

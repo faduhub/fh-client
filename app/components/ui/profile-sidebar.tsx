@@ -1,6 +1,7 @@
 import { Star, ThumbsUp, Check, BadgeCheck, Flame, Award } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 import { GradientAvatar } from "./gradient-avatar"
+import { UserProfile } from "@/lib/api/dtos/responses/user"
 
 type Stat = {
   icon: LucideIcon
@@ -28,7 +29,7 @@ const badges: UserBadge[] = [
 
 const SEED = "martina-ferreyra"
 
-export function ProfileSidebar() {
+export function ProfileSidebar({ user }: { user: UserProfile }) {
   return (
     <div className="border-border bg-card/80 overflow-hidden rounded-2xl border backdrop-blur-sm">
       {/* Encabezado con gradiente */}
@@ -42,7 +43,7 @@ export function ProfileSidebar() {
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-foreground font-serif text-2xl font-medium tracking-tight">
-            Martina Ferreyra
+            {user.username}
           </h1>
           <p className="text-muted-foreground font-mono text-xs tracking-[0.16em] uppercase">
             Diseño Gráfico

@@ -12,11 +12,11 @@ export default function SettingsPage() {
       {/* Glows de fondo */}
       <div
         aria-hidden="true"
-        className="bg-primary/10 pointer-events-none fixed top-0 -left-40 size-[32rem] rounded-full blur-3xl"
+        className="bg-primary/10 pointer-events-none fixed top-0 -left-40 size-128 rounded-full blur-3xl"
       />
       <div
         aria-hidden="true"
-        className="bg-accent/10 pointer-events-none fixed -right-40 bottom-0 size-[32rem] rounded-full blur-3xl"
+        className="bg-accent/10 pointer-events-none fixed -right-40 bottom-0 size-128 rounded-full blur-3xl"
       />
 
       <div className="relative mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-12">
@@ -29,7 +29,7 @@ export default function SettingsPage() {
           <h1 className="text-foreground mt-1 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
             Configuración
           </h1>
-          <div className="from-primary/60 via-border mt-5 h-px w-full bg-gradient-to-r to-transparent" />
+          <div className="from-primary/60 via-border mt-5 h-px w-full bg-linear-to-r to-transparent" />
         </div>
 
         <div className="mt-8">
