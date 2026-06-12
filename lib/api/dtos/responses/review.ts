@@ -20,4 +20,5 @@ export type Review = {
   likes: number
   date: string
   tags: string[]
+  time: number
 }

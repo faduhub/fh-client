@@ -19,7 +19,7 @@ export default function RegistroPage() {
       <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-5 py-12 sm:px-8">
         <div
           aria-hidden="true"
-          className="bg-primary/10 pointer-events-none absolute top-0 -right-32 size-[28rem] rounded-full blur-3xl lg:hidden"
+          className="bg-primary/10 pointer-events-none absolute top-0 -right-32 size-128 rounded-full blur-3xl lg:hidden"
         />
         <RegisterForm />
       </section>
