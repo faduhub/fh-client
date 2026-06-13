@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useTransition } from "react"
+import { useRouter } from "next/navigation"
 import { Dialog } from "@base-ui/react/dialog"
 import { Plus, X, GraduationCap, Loader2 } from "lucide-react"
 import { SectionCard, SelectInput } from "./settings-fields"
@@ -27,6 +28,7 @@ type EnrolledDegree = Me["degrees"][number]
 
 export function CarreraPanel({ me }: { me: Me }) {
   const toast = Toast.useToastManager()
+  const router = useRouter()
 
   const [enrolledDegrees, setEnrolledDegrees] = useState<EnrolledDegree[]>(me.degrees)
   const [allDegrees, setAllDegrees] = useState<DegreeItem[]>([])
@@ -70,6 +72,7 @@ export function CarreraPanel({ me }: { me: Me }) {
       ])
       handleOpenChange(false)
       toast.add({ title: `Anotado en ${degree.name}`, type: "success" })
+      router.refresh()
     })
   }
 

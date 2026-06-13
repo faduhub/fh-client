@@ -8,7 +8,7 @@ export default async function CarreraPage() {
   return (
     <div className="space-y-5">
       <CarreraPanel me={me} />
-      <MateriasPanel />
+      {me.degrees.length > 0 && <MateriasPanel />}
     </div>
   )
 }
