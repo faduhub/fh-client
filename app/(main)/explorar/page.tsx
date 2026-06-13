@@ -13,25 +13,25 @@ const CATEGORIES = [
     icon: <GraduationCap className="size-5" />,
     title: "Carreras",
     description: "Recorré planes de estudio y materias por año.",
-    href: "/explorar/carreras",
+    href: "carreras",
   },
   {
     icon: <BookOpen className="size-5" />,
     title: "Materias",
     description: "Encontrá materias, cátedras disponibles y experiencias.",
-    href: "/explorar/materias",
+    href: "materias",
   },
   {
     icon: <Layers className="size-5" />,
     title: "Cátedras",
     description: "Compará cátedras, carga, dificultad y recomendaciones.",
-    href: "/explorar/catedras",
+    href: "catedras",
   },
   {
     icon: <Shuffle className="size-5" />,
-    title: "Cruzadas",
-    description: "Descubrí cruzadas, experiencias y alumnos que las cursaron.",
-    href: "/explorar/cruzadas",
+    title: "Cursadas",
+    description: "Descubrí cursadas, experiencias y alumnos que las cursaron.",
+    href: "cursadas",
   },
 ]
 
