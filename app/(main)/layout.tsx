@@ -21,6 +21,14 @@ export default async function MainLayout({ children }: { children: React.ReactNo
       <div className="flex min-h-svh">
         <AppSidebar me={me} />
         <main className="min-w-0 flex-1">{children}</main>
+        <div
+          aria-hidden="true"
+          className="bg-primary/10 pointer-events-none fixed top-0 -left-40 size-128 rounded-full blur-3xl"
+        />
+        <div
+          aria-hidden="true"
+          className="bg-accent/10 pointer-events-none fixed -right-40 bottom-0 size-128 rounded-full blur-3xl"
+        />
       </div>
       <Toaster />
     </Toast.Provider>
