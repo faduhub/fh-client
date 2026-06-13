@@ -59,6 +59,7 @@ export const http = {
   get: <T>(path: string, opts?: RequestOptions) => request<T>("GET", path, opts),
   post: <T>(path: string, opts?: RequestOptions) => request<T>("POST", path, opts),
   patch: <T>(path: string, opts?: RequestOptions) => request<T>("PATCH", path, opts),
+  put: <T>(path: string, opts?: RequestOptions) => request<T>("PUT", path, opts),
   del: <T>(path: string, opts?: RequestOptions) => request<T>("DELETE", path, opts),
 
   /** GET que conserva la metadata de paginación (`total`, `currentPage`, …). */

@@ -10,10 +10,10 @@ type Stat = {
 }
 
 const stats: Stat[] = [
-  { icon: Star, value: "4.200", label: "Karma" },
-  { icon: Star, value: "24", label: "Contribuciones" },
+  { icon: Check, value: "2", label: "Experiencias" },
+  { icon: Star, value: "5", label: "Posteos" },
+  { icon: Star, value: "4", label: "Comentarios" },
   { icon: ThumbsUp, value: "6 años", label: "Se unió" },
-  { icon: Check, value: "No", label: "Egresado" },
 ]
 
 type UserBadge = {
@@ -27,8 +27,6 @@ const badges: UserBadge[] = [
   { icon: Award, label: "Top aporte" },
 ]
 
-const SEED = "martina-ferreyra"
-
 export function ProfileSidebar({ user }: { user: UserProfile }) {
   return (
     <div className="border-border bg-card/80 overflow-hidden rounded-2xl border backdrop-blur-sm">
@@ -39,7 +37,7 @@ export function ProfileSidebar({ user }: { user: UserProfile }) {
             className="from-primary to-accent absolute -inset-1 rounded-full bg-linear-to-tr opacity-70 blur-[6px]"
             aria-hidden="true"
           />
-          <GradientAvatar seed={SEED} className="border-border relative size-24 border" />
+          <GradientAvatar seed={user.username} className="border-border relative size-24 border" />
         </div>
         <div className="flex flex-col gap-1">
           <h1 className="text-foreground font-serif text-2xl font-medium tracking-tight">
@@ -64,9 +62,7 @@ export function ProfileSidebar({ user }: { user: UserProfile }) {
           ))}
         </div>
 
-        <p className="text-foreground/80 text-sm leading-relaxed text-pretty">
-          Lorem ipsum, dolor sit amet consectetur adipisicing elit. Itaque nesciunt repellendus ex.
-        </p>
+        <p className="text-foreground/80 text-sm leading-relaxed text-pretty">{user.bio}</p>
       </div>
 
       {/* Stats grid */}

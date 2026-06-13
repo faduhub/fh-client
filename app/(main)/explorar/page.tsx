@@ -6,31 +6,32 @@ import { CategoryCard } from "@/app/components/ui/category-card"
 import { SubjectCard } from "@/app/components/ui/subject-card"
 import { DepartmentCard } from "@/app/components/ui/department-card"
 import { AppSection } from "@/app/components/ui/app-section"
+import AppHeader from "@/app/components/ui/app-header"
 
 const CATEGORIES = [
   {
     icon: <GraduationCap className="size-5" />,
     title: "Carreras",
     description: "Recorré planes de estudio y materias por año.",
-    href: "/explorar/carreras",
+    href: "carreras",
   },
   {
     icon: <BookOpen className="size-5" />,
     title: "Materias",
     description: "Encontrá materias, cátedras disponibles y experiencias.",
-    href: "/explorar/materias",
+    href: "materias",
   },
   {
     icon: <Layers className="size-5" />,
     title: "Cátedras",
     description: "Compará cátedras, carga, dificultad y recomendaciones.",
-    href: "/explorar/catedras",
+    href: "catedras",
   },
   {
     icon: <Shuffle className="size-5" />,
-    title: "Cruzadas",
-    description: "Descubrí cruzadas, experiencias y alumnos que las cursaron.",
-    href: "/explorar/cruzadas",
+    title: "Cursadas",
+    description: "Descubrí cursadas, experiencias y alumnos que las cursaron.",
+    href: "cursadas",
   },
 ]
 
@@ -47,17 +48,8 @@ export default async function ExplorarPage() {
 
   return (
     <div className="bg-background min-h-screen">
-      <div className="mx-auto max-w-5xl px-6 py-12 sm:px-8">
-        {/* Header */}
-        <header>
-          <span className="text-primary font-mono text-[0.7rem] tracking-[0.2em] uppercase">
-            FADU / UBA
-          </span>
-          <h1 className="text-foreground mt-1 font-serif text-3xl font-medium tracking-tight sm:text-4xl">
-            Explorar
-          </h1>
-          <div className="from-primary/60 via-border mt-5 h-px w-full bg-linear-to-r to-transparent" />
-        </header>
+      <div className="mx-auto max-w-6xl px-6 py-12 sm:px-8">
+        <AppHeader title="Explorar" />
 
         {/* Search */}
         <div className="mt-8 mb-10">

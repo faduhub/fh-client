@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   User,
   Settings,
@@ -10,45 +12,32 @@ import {
   type LucideIcon,
 } from "lucide-react"
 
-export type SettingsSection =
-  | "profile"
-  | "account"
-  | "appearance"
-  | "courses"
-  | "notifications"
-  | "security"
-
 type NavItem = {
-  id: SettingsSection
+  href: string
   label: string
   icon: LucideIcon
 }
 
 const items: NavItem[] = [
-  { id: "profile", label: "Perfil público", icon: User },
-  { id: "account", label: "Cuenta", icon: Settings },
-  { id: "appearance", label: "Apariencia", icon: Palette },
-  { id: "courses", label: "Carrera y materias", icon: GraduationCap },
-  { id: "notifications", label: "Notificaciones", icon: Bell },
-  { id: "security", label: "Seguridad", icon: ShieldCheck },
+  { href: "/configuracion/perfil", label: "Perfil público", icon: User },
+  { href: "/configuracion/cuenta", label: "Cuenta", icon: Settings },
+  { href: "/configuracion/apariencia", label: "Apariencia", icon: Palette },
+  { href: "/configuracion/carrera", label: "Carrera y materias", icon: GraduationCap },
+  { href: "/configuracion/notificaciones", label: "Notificaciones", icon: Bell },
+  { href: "/configuracion/seguridad", label: "Seguridad", icon: ShieldCheck },
 ]
 
-export function SettingsNav({
-  active,
-  onChange,
-}: {
-  active: SettingsSection
-  onChange: (s: SettingsSection) => void
-}) {
+export function SettingsNav() {
+  const pathname = usePathname()
+
   return (
     <nav className="flex gap-1.5 overflow-x-auto lg:flex-col lg:overflow-visible">
       {items.map((item) => {
-        const isActive = item.id === active
+        const isActive = pathname === item.href
         return (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => onChange(item.id)}
+          <Link
+            key={item.href}
+            href={item.href}
             aria-current={isActive ? "page" : undefined}
             className={`group relative inline-flex shrink-0 items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-left text-sm transition-colors ${
               isActive
@@ -67,7 +56,7 @@ export function SettingsNav({
               strokeWidth={1.5}
             />
             <span className="whitespace-nowrap">{item.label}</span>
-          </button>
+          </Link>
         )
       })}
     </nav>

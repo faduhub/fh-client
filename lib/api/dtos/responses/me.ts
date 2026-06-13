@@ -10,5 +10,5 @@ export type Me = {
   hideRealName: boolean
   canChangeUsernameAt: string | null // ISO; null = puede cambiar ya
   needsOnboarding: boolean // true si username == null
-  degrees: Array<{ name: string; slug: string; currentYear: number | null }>
+  degrees: Array<{ id: number; name: string; slug: string; currentYear: number | null }>
 }

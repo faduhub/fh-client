@@ -20,7 +20,7 @@ function ToastList() {
 export function Toaster() {
   return (
     <Toast.Portal>
-      <Toast.Viewport className="fixed right-4 bottom-4 z-50 flex w-80 flex-col gap-2 outline-none">
+      <Toast.Viewport className="fixed top-8 right-8 z-50 mx-auto flex w-80 flex-col gap-2 outline-none">
         <ToastList />
       </Toast.Viewport>
     </Toast.Portal>
