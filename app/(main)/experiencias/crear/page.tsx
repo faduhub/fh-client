@@ -14,14 +14,6 @@ export default async function CrearExperienciaPage() {
 
   return (
     <main className="bg-background relative min-h-screen">
-      <div
-        aria-hidden="true"
-        className="bg-primary/10 pointer-events-none fixed top-0 -left-40 size-128 rounded-full blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="bg-accent/10 pointer-events-none fixed -right-40 bottom-0 size-128 rounded-full blur-3xl"
-      />
       <div className="relative mx-auto w-full max-w-3xl px-5 py-8 sm:px-8 sm:py-12">
         <ReviewForm departments={departments} subjects={subjects} tags={tags} degrees={degrees} />
       </div>
