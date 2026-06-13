@@ -27,13 +27,15 @@ export default async function MurosPage({
 
   return (
     <main className="bg-background min-h-screen">
-      <AppHeader title="Muros" />
+      <div className="relative mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 sm:py-12">
+        <AppHeader title="Muros" />
 
-      <section className="mx-auto max-w-3xl px-6 py-10">
-        <Suspense>
-          <PostsFeed result={result} meSlug={me?.slug ?? null} />
-        </Suspense>
-      </section>
+        <section className="mt-8">
+          <Suspense>
+            <PostsFeed result={result} meSlug={me?.slug ?? null} />
+          </Suspense>
+        </section>
+      </div>
     </main>
   )
 }
