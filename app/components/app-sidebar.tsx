@@ -56,7 +56,6 @@ const navGroups: NavItem[][] = [
       label: "Explorar",
       href: "/catedras",
       icon: SearchIcon,
-      children: [{ label: "Cátedras", href: "/catedras" }],
     },
     { label: "Experiencias", href: "/experiencias", icon: StarIcon },
     { label: "Mi FADU", href: "/configuracion", icon: StoolIcon },

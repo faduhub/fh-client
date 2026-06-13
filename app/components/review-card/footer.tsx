@@ -63,7 +63,7 @@ export function ReviewCardFooter({
           {likes}
         </button>
         <Link
-          href={`/resena/${reviewId}#comentarios`}
+          href={`/experiencias/${reviewId}#comentarios`}
           aria-label="Ver comentarios"
           className={cn(
             "relative z-10 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors",

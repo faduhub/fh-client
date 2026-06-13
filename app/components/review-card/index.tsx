@@ -23,7 +23,7 @@ export function ReviewCard({ review, linked = true }: { review: Review; linked?:
           detail page itself, where it would self-link. */}
       {linked && (
         <Link
-          href={`/resena/${review.id}`}
+          href={`/experiencias/${review.id}`}
           className="absolute inset-0 rounded-md"
           aria-label={`Ver experiencia de ${review.department}`}
         />
