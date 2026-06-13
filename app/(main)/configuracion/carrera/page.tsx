@@ -1,4 +1,5 @@
-import { CarreraPanel, MateriasPanel } from "@/app/components/ui/courses-panels"
+import { CarreraPanel } from "@/app/components/ui/courses-panels"
+import { MateriasPanel } from "@/app/components/ui/materias-panel"
 import { accountService } from "@/lib/api/services/account.service.server"
 
 export default async function CarreraPage() {
