@@ -17,4 +17,16 @@ export const departmentService = {
       return null
     }
   },
+
+  async getByMateriaSlug(slug: string): Promise<DepartmentStats[]> {
+    return fetcher.get<DepartmentStats[]>(`/catedras?materiaSlug=${slug}`, {
+      next: { tags: [`departments-materia-${slug}`], revalidate: 60 },
+    })
+  },
+
+  async getByCarreraSlug(slug: string): Promise<DepartmentStats[]> {
+    return fetcher.get<DepartmentStats[]>(`/catedras?carreraSlug=${slug}`, {
+      next: { tags: [`departments-carrera-${slug}`], revalidate: 60 },
+    })
+  },
 }
