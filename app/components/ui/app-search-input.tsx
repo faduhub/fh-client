@@ -6,7 +6,7 @@ export function AppSearchInput({ placeholder }: { placeholder?: string }) {
       <Search className="text-muted-foreground size-5 shrink-0" />
       <input
         type="search"
-        placeholder={placeholder ?? "Buscar materia, cátedra, carrera o cruzada..."}
+        placeholder={placeholder ?? "Buscar materia, cátedra, carrera o cursada..."}
         className="text-foreground placeholder:text-muted-foreground/50 w-full bg-transparent text-base outline-none"
       />
     </div>
