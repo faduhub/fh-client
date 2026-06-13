@@ -1,7 +1,6 @@
 import Link from "next/link"
 import { ArrowUpRight } from "lucide-react"
 import { departmentService } from "@/lib/api/services/department.service.server"
-import { StarRating } from "@/app//components/star-rating"
 
 export default async function CatedrasPage() {
   const catedras = await departmentService.getAll()
@@ -49,12 +48,6 @@ export default async function CatedrasPage() {
                       Experiencias
                     </p>
                     <p className="text-foreground font-serif text-2xl">{c.reviews.length}</p>
-                  </div>
-                  <div className="flex flex-col items-end gap-1">
-                    <StarRating value={c.rating} size={16} />
-                    <span className="text-muted-foreground font-mono text-xs">
-                      {c.rating.toFixed(1)} / 5
-                    </span>
                   </div>
                 </div>
               </Link>
