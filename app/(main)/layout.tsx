@@ -30,6 +30,7 @@ export default async function MainLayout({ children }: { children: React.ReactNo
           className="bg-accent/10 pointer-events-none fixed -right-40 bottom-0 size-128 rounded-full blur-3xl"
         />
       </div>
+
       <Toaster />
     </Toast.Provider>
   )
