@@ -103,7 +103,6 @@ export function FilterCard({
       <div className="flex flex-col gap-y-5">
         <Combobox
           label="Carrera"
-          placeholder="Filtrar carreras..."
           options={degrees.map((c) => ({ value: c.name, label: c.name }))}
           value={degree}
           onChange={onDegreeChange}
@@ -111,7 +110,6 @@ export function FilterCard({
 
         <Combobox
           label="Materia"
-          placeholder="Filtrar materias..."
           options={filteredSubjects.map((m) => ({ value: m.name, label: m.name }))}
           value={activeSubject}
           onChange={onSubjectChange}
@@ -119,7 +117,6 @@ export function FilterCard({
 
         <Combobox
           label="Cátedra"
-          placeholder="Filtrar cátedras..."
           options={availableDepartments}
           value={activeDepartment}
           onChange={setDepartment}
@@ -127,7 +124,6 @@ export function FilterCard({
 
         <Combobox
           label="Período"
-          placeholder="Filtrar período..."
           options={[...PERIODOS]}
           value={period}
           onChange={(v) => setPeriod(v as Periodo | typeof ALL)}
@@ -136,7 +132,6 @@ export function FilterCard({
         {anosCursados.length > 1 && (
           <Combobox
             label="Año cursado"
-            placeholder="Filtrar año..."
             options={anosCursados}
             value={yearFilter}
             onChange={setYearFilter}
