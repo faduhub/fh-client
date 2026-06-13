@@ -11,9 +11,16 @@ import {
   addCursadaAction,
   deleteCursadaAction,
 } from "@/lib/api/actions/cursada.actions"
+import {
+  getDegreesAction,
+  joinDegreeAction,
+  leaveDegreeAction,
+} from "@/lib/api/actions/degree.actions"
 import type { Cursada, CursadaStatus } from "@/lib/api/dtos/responses/cursada"
 import type { SubjectItem } from "@/lib/api/dtos/responses/subject"
 import type { DepartmentStats } from "@/lib/api/dtos/responses/department"
+import type { DegreeItem } from "@/lib/api/dtos/responses/degree"
+import type { Me } from "@/lib/api/dtos/responses/me"
 
 const STATUS_LABEL: Record<CursadaStatus, string> = {
   CURSANDO: "Cursando",
@@ -29,18 +36,176 @@ const STATUS_CLASS: Record<CursadaStatus, string> = {
   ABANDONADA: "bg-destructive/15 text-destructive",
 }
 
-export function CoursesPanel() {
+const YEAR_LABELS: Record<number, string> = {
+  1: "1er año",
+  2: "2do año",
+  3: "3er año",
+  4: "4to año",
+  5: "5to año",
+  6: "6to año",
+  7: "7mo año",
+}
+
+type EnrolledDegree = Me["degrees"][number]
+
+// ─────────────────────────────────────────────────────────────────────────────
+// CarreraPanel
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function CarreraPanel({ me }: { me: Me }) {
+  const toast = Toast.useToastManager()
+
+  const [enrolledDegrees, setEnrolledDegrees] = useState<EnrolledDegree[]>(me.degrees)
+  const [allDegrees, setAllDegrees] = useState<DegreeItem[]>([])
+  const [loadingDegrees, setLoadingDegrees] = useState(true)
+  const [selectedDegreeId, setSelectedDegreeId] = useState("")
+  const [selectedYear, setSelectedYear] = useState("")
+  const [degreesPending, startDegreeTransition] = useTransition()
+
+  useEffect(() => {
+    getDegreesAction().then((res) => {
+      if (res.success) setAllDegrees(res.data)
+      setLoadingDegrees(false)
+    })
+  }, [])
+
+  const enrolledIds = new Set(enrolledDegrees.map((d) => d.id))
+  const availableToJoin = allDegrees.filter((d) => !enrolledIds.has(d.id))
+
+  function handleJoinDegree() {
+    const degree = allDegrees.find((d) => String(d.id) === selectedDegreeId)
+    if (!degree) return
+    const year = selectedYear ? Number(selectedYear) : null
+    startDegreeTransition(async () => {
+      const res = await joinDegreeAction(selectedDegreeId, year ?? undefined)
+      if (!res.success) {
+        toast.add({ title: "No se pudo anotar", description: res.error, type: "error" })
+        return
+      }
+      setEnrolledDegrees((prev) => [
+        ...prev,
+        { id: degree.id, name: degree.name, slug: degree.slug, currentYear: year ?? null },
+      ])
+      setSelectedDegreeId("")
+      setSelectedYear("")
+      toast.add({ title: `Anotado en ${degree.name}`, type: "success" })
+    })
+  }
+
+  function handleLeaveDegree(degree: EnrolledDegree) {
+    startDegreeTransition(async () => {
+      const res = await leaveDegreeAction(String(degree.id))
+      if (!res.success) {
+        toast.add({ title: "No se pudo salir", description: res.error, type: "error" })
+        return
+      }
+      setEnrolledDegrees((prev) => prev.filter((d) => d.id !== degree.id))
+      toast.add({ title: `Saliste de ${degree.name}`, type: "success" })
+    })
+  }
+
+  return (
+    <SectionCard
+      title="Carrera"
+      description="Las carreras de FADU en las que estás cursando. Podés tener más de una si hacés doble carrera."
+    >
+      <div className="flex flex-col gap-3">
+        {enrolledDegrees.length > 0 && (
+          <ul className="flex flex-col gap-2">
+            {enrolledDegrees.map((d) => (
+              <li
+                key={d.id}
+                className="border-border bg-secondary/40 flex items-center gap-3 rounded-xl border px-4 py-3"
+              >
+                <GraduationCap className="text-primary size-4 shrink-0" strokeWidth={1.5} />
+                <div className="min-w-0 flex-1 leading-tight">
+                  <p className="text-foreground truncate text-sm font-medium">{d.name}</p>
+                </div>
+                {d.currentYear !== null && (
+                  <span className="bg-primary/15 text-primary shrink-0 rounded-md px-2 py-0.5 font-mono text-[0.65rem] font-medium tracking-wide uppercase">
+                    {YEAR_LABELS[d.currentYear] ?? `Año ${d.currentYear}`}
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleLeaveDegree(d)}
+                  disabled={degreesPending}
+                  aria-label={`Salir de ${d.name}`}
+                  className="text-muted-foreground hover:bg-destructive/15 hover:text-destructive flex size-7 shrink-0 items-center justify-center rounded-lg transition-colors disabled:opacity-40"
+                >
+                  <X className="size-4" strokeWidth={1.5} />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="border-border flex flex-col gap-2.5 rounded-xl border border-dashed p-3">
+          <div className="flex gap-2.5">
+            <SelectInput
+              value={selectedDegreeId}
+              onChange={(e) => setSelectedDegreeId(e.target.value)}
+              disabled={loadingDegrees}
+              className="flex-1"
+            >
+              <option value="">
+                {loadingDegrees ? "Cargando carreras…" : "Seleccioná una carrera"}
+              </option>
+              {availableToJoin.map((d) => (
+                <option key={d.id} value={String(d.id)}>
+                  {d.name}
+                </option>
+              ))}
+            </SelectInput>
+
+            <SelectInput
+              value={selectedYear}
+              onChange={(e) => setSelectedYear(e.target.value)}
+              disabled={!selectedDegreeId}
+              className="w-36 shrink-0"
+            >
+              <option value="">Año (opcional)</option>
+              {Object.entries(YEAR_LABELS).map(([val, label]) => (
+                <option key={val} value={val}>
+                  {label}
+                </option>
+              ))}
+            </SelectInput>
+
+            <button
+              type="button"
+              onClick={handleJoinDegree}
+              disabled={!selectedDegreeId || degreesPending || loadingDegrees}
+              className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {degreesPending ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Plus className="size-4" strokeWidth={2} />
+              )}
+              Anotarse
+            </button>
+          </div>
+        </div>
+      </div>
+    </SectionCard>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// MateriasPanel
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function MateriasPanel() {
   const toast = Toast.useToastManager()
 
   const [cursadas, setCursadas] = useState<Cursada[]>([])
   const [subjects, setSubjects] = useState<SubjectItem[]>([])
   const [departments, setDepartments] = useState<DepartmentStats[]>([])
   const [loadingData, setLoadingData] = useState(true)
-
   const [subjectId, setSubjectId] = useState("")
   const [departmentId, setDepartmentId] = useState("")
   const [status, setStatus] = useState<CursadaStatus>("CURSANDO")
-
   const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
@@ -54,7 +219,6 @@ export function CoursesPanel() {
     )
   }, [])
 
-  // Cátedras disponibles para la materia seleccionada
   const selectedSubject = subjects.find((s) => String(s.id) === subjectId)
   const availableDepts = selectedSubject
     ? departments.filter((d) => selectedSubject.departments.some((sd) => sd.slug === d.slug))
@@ -62,10 +226,10 @@ export function CoursesPanel() {
 
   function handleSubjectChange(id: string) {
     setSubjectId(id)
-    setDepartmentId("") // reset cátedra al cambiar materia
+    setDepartmentId("")
   }
 
-  function handleAdd() {
+  function handleAddCursada() {
     if (!subjectId) return
     startTransition(async () => {
       const res = await addCursadaAction({
@@ -89,7 +253,7 @@ export function CoursesPanel() {
     })
   }
 
-  function handleDelete(id: string, name: string) {
+  function handleDeleteCursada(id: string, name: string) {
     startTransition(async () => {
       const res = await deleteCursadaAction(id)
       if (!res.success) {
@@ -102,11 +266,8 @@ export function CoursesPanel() {
   }
 
   return (
-    <SectionCard
-      title="Carrera y materias"
-      description="Registrá las materias que ya cursaste o estás cursando."
-    >
-      <div className="border-border flex flex-col gap-3 border-t pt-6">
+    <SectionCard title="Materias cursadas">
+      <div className="flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <FieldLabel>Materias cursadas</FieldLabel>
           {!loadingData && (
@@ -148,7 +309,7 @@ export function CoursesPanel() {
                 </span>
                 <button
                   type="button"
-                  onClick={() => handleDelete(c.id, c.subject.name)}
+                  onClick={() => handleDeleteCursada(c.id, c.subject.name)}
                   disabled={isPending}
                   aria-label={`Quitar ${c.subject.name}`}
                   className="text-muted-foreground hover:bg-destructive/15 hover:text-destructive flex size-7 shrink-0 items-center justify-center rounded-lg transition-colors disabled:opacity-40"
@@ -160,7 +321,6 @@ export function CoursesPanel() {
           </ul>
         )}
 
-        {/* Agregar materia */}
         <div className="border-border flex flex-col gap-2.5 rounded-xl border border-dashed p-3">
           <div className="grid gap-2.5 sm:grid-cols-2">
             <SelectInput
@@ -211,7 +371,7 @@ export function CoursesPanel() {
 
             <button
               type="button"
-              onClick={handleAdd}
+              onClick={handleAddCursada}
               disabled={!subjectId || isPending || loadingData}
               className="border-primary/40 bg-primary/10 text-primary hover:bg-primary/20 inline-flex shrink-0 items-center justify-center gap-1.5 rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             >
