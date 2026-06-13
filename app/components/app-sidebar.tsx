@@ -6,14 +6,14 @@ import { usePathname, useRouter } from "next/navigation"
 import { Menu } from "@base-ui/react/menu"
 import {
   HomeIcon,
-  BookOpenIcon,
-  PlusIcon,
   PanelLeftIcon,
   PanelRightIcon,
   SettingsIcon,
   LogOutIcon,
   UserIcon,
   ChevronRightIcon,
+  SearchIcon,
+  StarIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { signOut } from "@/lib/auth-client"
@@ -22,37 +22,43 @@ import type { Me } from "@/lib/api/dtos/responses/me"
 type NavChild = { label: string; href: string; children?: Omit<NavChild, "children">[] }
 type NavItem = { label: string; href: string; icon: React.ElementType; children?: NavChild[] }
 
+function StoolIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="M6 5h12l1.5 3H4.5L6 5Z" />
+      <path d="M7 8v11" />
+      <path d="M17 8v11" />
+      <path d="M9.5 8v10" />
+      <path d="M14.5 8v10" />
+      <path d="M7 19h2" />
+      <path d="M15 19h2" />
+      <path d="M7 14h10" />
+      <path d="M8 11h8" />
+    </svg>
+  )
+}
+
 const navGroups: NavItem[][] = [
   [
     { label: "Inicio", href: "/", icon: HomeIcon },
     {
       label: "Explorar",
-      href: "/catedrasdas",
-      icon: BookOpenIcon,
-      children: [
-        { label: "Materias", href: "/mis-resenasdsad" },
-        { label: "Cátedras", href: "/guardadas/catedrasdasd" },
-        { label: "Cruzadas", href: "/guardadas/resasdenas" },
-      ],
+      href: "/explorar",
+      icon: SearchIcon,
     },
-    {
-      label: "Experiencias",
-      href: "/experiencias",
-      icon: BookOpenIcon,
-      children: [
-        { label: "Mis experiencias", href: "/mis-reseddadnas" },
-        {
-          label: "Guardadas",
-          href: "/guardadas",
-          children: [
-            { label: "Cátedras", href: "/guardadas/catasdedras" },
-            { label: "Experiencias", href: "/guardadas/resasdadenas" },
-          ],
-        },
-      ],
-    },
-    { label: "Comunidad", href: "/comadadunidad", icon: BookOpenIcon },
-    { label: "Mi FADU", href: "/nuevaddds-resena", icon: PlusIcon },
+    { label: "Experiencias", href: "/experiencias", icon: StarIcon },
+    { label: "Mi FADU", href: "/configuracion", icon: StoolIcon },
   ],
 ]
 
@@ -119,7 +125,7 @@ export function AppSidebar({ me }: { me: Me | null }) {
                 const isActive =
                   item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
                 const itemClass = cn(
-                  "flex items-center gap-3 rounded-md py-2 text-sm font-medium transition-colors w-full",
+                  "flex items-center text-left gap-3 rounded-md py-2 text-sm font-medium transition-colors w-full",
                   expanded ? "px-3" : "justify-center px-0",
                   isActive
                     ? "bg-sidebar-accent text-sidebar-accent-foreground"

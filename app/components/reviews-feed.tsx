@@ -13,6 +13,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select"
+import { Button } from "./ui/button"
+import Link from "next/link"
 
 const ALL = "todas"
 
@@ -180,7 +182,7 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
             <span className="text-foreground font-medium">{filtered.length}</span>{" "}
             {filtered.length === 1 ? "experiencias" : "experiencia"}
           </p>
-          <div className="flex">
+          <div className="flex gap-2.5">
             <Select value={orden} onValueChange={(v) => v && setOrden(v)}>
               <SelectTrigger>
                 <SelectValue />
@@ -193,6 +195,9 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
                 ))}
               </SelectContent>
             </Select>
+            <Link href="/experiencias/crear">
+              <Button>Crear</Button>
+            </Link>
           </div>
         </div>
 

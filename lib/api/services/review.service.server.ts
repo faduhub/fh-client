@@ -24,7 +24,12 @@ export const reviewService = {
   },
 
   async getById(id: string): Promise<Review | null> {
-    const reviews = await this.getAll()
-    return reviews.find((r) => r.id === id) ?? null
+    try {
+      return await fetcher.get<Review>(`/reviews/${id}`, {
+        next: { tags: [`review-${id}`] },
+      })
+    } catch {
+      return null
+    }
   },
 }

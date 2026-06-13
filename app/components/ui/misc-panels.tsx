@@ -19,7 +19,7 @@ function Toggle({ defaultOn = false, label }: { defaultOn?: boolean; label: stri
     >
       <span
         className={`bg-foreground absolute top-0.5 size-5 rounded-full transition-transform ${
-          on ? "translate-x-[1.375rem]" : "translate-x-0.5"
+          on ? "translate-x-5.5" : "translate-x-0.5"
         }`}
       />
     </button>

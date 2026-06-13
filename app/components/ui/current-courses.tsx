@@ -51,7 +51,7 @@ export function CurrentCourses() {
             </span>
             <div className="min-w-0 flex-1 leading-tight">
               <p className="text-foreground truncate text-sm font-medium">{course.subject}</p>
-              <p className="text-muted-foreground flex items-center gap-1.5 font-mono text-[0.7rem] tracking-[0.1em] uppercase">
+              <p className="text-muted-foreground flex items-center gap-1.5 font-mono text-[0.7rem] tracking-widest uppercase">
                 {course.catedra}
                 <span className="text-border">·</span>
                 <MapPin className="size-3" strokeWidth={1.5} />

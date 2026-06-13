@@ -1,40 +1,50 @@
-import { reviewService } from "@/lib/api/services/review.service.server"
-import { degreeService } from "@/lib/api/services/degree.service.server"
-import { subjectService } from "@/lib/api/services/subject.service.server"
-import { ReviewsFeed } from "@/app/components/reviews-feed"
+import { Suspense } from "react"
+import { postService } from "@/lib/api/services/post.service.server"
+import { accountService } from "@/lib/api/services/account.service.server"
+import { PostsFeed } from "@/app/(main)/muros/posts-feed"
 
-export default async function Page() {
-  const [reviews, degrees, subjects] = await Promise.all([
-    reviewService.getAll(),
-    degreeService.getAll(),
-    subjectService.getAll(),
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string; order?: string; page?: string }>
+}) {
+  const sp = await searchParams
+  const search = sp.search ?? ""
+  const order = sp.order ?? "recent"
+  const page = Math.max(1, Number(sp.page ?? 1))
+
+  const [result, me] = await Promise.all([
+    postService.getPosts({
+      search: search || undefined,
+      orderBy: order === "top" ? "likes" : undefined,
+      order: order === "top" ? "DESC" : undefined,
+      page,
+      limit: 20,
+    }),
+    accountService.getMe(),
   ])
 
   return (
     <main className="bg-background min-h-screen">
       <section className="">
-        <div className="mx-auto max-w-5xl px-6 pt-12">
+        <div className="mx-auto max-w-3xl px-6 pt-12">
           <p className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
-            Experiencias de cursadas · escritas por estudiantes
+            Comunidad · FADU
           </p>
           <h1 className="text-foreground mt-2.5 text-4xl leading-[1.05] font-bold tracking-tight text-balance sm:text-3xl">
-            Home
+            Muros
           </h1>
-        </div>
-      </section>
-
-      <section id="experiencias" className="mx-auto max-w-5xl px-6 py-12">
-        <ReviewsFeed reviews={reviews} degrees={degrees} subjects={subjects} />
-      </section>
-
-      <footer className="border-border border-t">
-        <div className="text-muted-foreground mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 py-8 text-xs sm:flex-row">
-          <p>Experiencias de Cátedras · FADU — proyecto de ejemplo.</p>
-          <p className="font-mono tracking-wider uppercase">
-            Hecho por estudiantes, para estudiantes
+          <p className="text-muted-foreground mt-2 text-sm">
+            Posts de la comunidad: preguntas, debates y novedades de materias y cátedras.
           </p>
         </div>
-      </footer>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-6 py-10">
+        <Suspense>
+          <PostsFeed result={result} meSlug={me?.slug ?? null} />
+        </Suspense>
+      </section>
     </main>
   )
 }

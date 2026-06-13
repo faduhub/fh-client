@@ -1,72 +1,59 @@
-import { Star, ThumbsUp, MessageSquareQuote } from "lucide-react"
+import { ThumbsUp, MessageSquareQuote, ArrowUpRight } from "lucide-react"
 import { GradientAvatar } from "./gradient-avatar"
+import Link from "next/link"
 
 export type Review = {
   id: string
   subject: string
-  catedra: string
-  professor: string
-  career: string
-  rating: number
   body: string
+  department: string
   tags: string[]
-  recommended: boolean
+  recommends: boolean
   author: string
+  term: string
   period: string
-  time: string
+  departmentSlug: string
   likes: number
-}
-
-function RatingStars({ rating }: { rating: number }) {
-  return (
-    <span className="inline-flex items-center gap-0.5" aria-label={`${rating} de 5`}>
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={
-            i < Math.round(rating)
-              ? "fill-primary text-primary size-3.5"
-              : "text-muted-foreground size-3.5"
-          }
-          strokeWidth={1.5}
-        />
-      ))}
-    </span>
-  )
+  date: string
 }
 
 export function ReviewCard({ review }: { review: Review }) {
   return (
-    <article className="group border-border bg-card/80 hover:border-primary/40 relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm transition-colors sm:p-8">
+    <article className="border-border bg-card/80 hover:border-primary/40 relative overflow-hidden rounded-2xl border p-6 backdrop-blur-sm transition-colors sm:p-8">
       <div
         aria-hidden="true"
-        className="via-primary/50 pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100"
+        className="via-primary/50 pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100"
       />
       <div className="flex items-start justify-between gap-4">
-        <span className="text-primary font-mono text-xs tracking-[0.16em] uppercase">
-          {review.subject}
-        </span>
-        {review.recommended && (
-          <span className="border-primary/40 bg-primary/10 text-primary inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.7rem] tracking-[0.1em] uppercase">
+        <Link
+          href={`/catedras/${review.departmentSlug}`}
+          className="group text-foreground hover:text-accent relative z-10 mt-1 inline-flex items-center gap-1.5 text-2xl leading-tight font-semibold tracking-tight transition-colors"
+        >
+          <span className="text-accent text-xs font-medium tracking-wider uppercase">
+            {review.department}
+          </span>
+          <ArrowUpRight className="text-muted-foreground size-4 opacity-0 transition-opacity group-hover:opacity-100" />
+        </Link>
+        {review.recommends && (
+          <span className="border-primary/40 bg-primary/10 text-primary inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.7rem] tracking-widest uppercase">
             <ThumbsUp className="size-3" strokeWidth={2} />
             Recomendada
           </span>
         )}
       </div>
 
-      <h3 className="text-foreground mt-3 font-serif text-2xl font-medium tracking-tight">
-        {review.catedra}
-      </h3>
-      <p className="text-muted-foreground mt-1 text-sm">
-        {review.professor} · {review.career}
-      </p>
+      <Link
+        href={`/catedras/${review.departmentSlug}`}
+        className="text-foreground hover:text-accent group relative z-10 mt-1 inline-flex items-center gap-1.5 text-2xl leading-tight font-semibold tracking-tight transition-colors"
+      >
+        <h3 className="text-foreground hover:text-accent relative z-10 mt-1 inline-flex items-center gap-1.5 text-2xl leading-tight font-semibold tracking-tight transition-colors">
+          {review.subject}
+        </h3>
+        <ArrowUpRight className="text-muted-foreground size-4 opacity-0 transition-opacity group-hover:opacity-100" />
+      </Link>
+      <p className="text-muted-foreground mt-0.5 text-sm">{review.term}</p>
 
-      <div className="mt-4 flex items-center gap-3">
-        <RatingStars rating={review.rating} />
-        <span className="text-foreground font-mono text-sm">{review.rating.toFixed(1)}</span>
-      </div>
-
-      <p className="text-foreground/90 mt-5 leading-relaxed text-pretty">{review.body}</p>
+      <p className="text-foreground/90 mt-5 text-sm leading-relaxed text-pretty">{review.body}</p>
 
       <div className="mt-5 flex flex-wrap gap-2">
         {review.tags.map((tag) => (
@@ -76,7 +63,7 @@ export function ReviewCard({ review }: { review: Review }) {
           >
             <span
               aria-hidden="true"
-              className="from-primary to-accent size-1.5 rounded-full bg-gradient-to-br"
+              className="from-primary to-accent size-1.5 rounded-full bg-linear-to-br"
             />
             {tag}
           </span>
@@ -88,8 +75,8 @@ export function ReviewCard({ review }: { review: Review }) {
           <GradientAvatar seed={review.author} className="border-border size-9 border" />
           <div className="leading-tight">
             <p className="text-foreground text-sm">{review.author}</p>
-            <p className="text-muted-foreground font-mono text-[0.7rem] tracking-[0.1em] uppercase">
-              {review.period} · {review.time}
+            <p className="text-muted-foreground font-mono text-[0.7rem] tracking-widest uppercase">
+              {review.date}
             </p>
           </div>
         </div>
