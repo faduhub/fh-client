@@ -54,7 +54,7 @@ const navGroups: NavItem[][] = [
     { label: "Inicio", href: "/", icon: HomeIcon },
     {
       label: "Explorar",
-      href: "/catedras",
+      href: "/explorar",
       icon: SearchIcon,
     },
     { label: "Experiencias", href: "/experiencias", icon: StarIcon },

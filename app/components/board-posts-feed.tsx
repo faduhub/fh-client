@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { PlusIcon } from "lucide-react"
 import type { BoardType } from "@/lib/api/dtos/responses/post"
 import type { Paginated } from "@/lib/api/dtos/responses/pagination"
 import type { Post } from "@/lib/api/dtos/responses/post"
@@ -15,19 +14,6 @@ type Props = {
 export function BoardPostsFeed({ result, boardType, boardId, meSlug }: Props) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-foreground font-serif text-2xl">Muro</h2>
-        {meSlug && (
-          <Link
-            href={`/muros/nuevo?boardType=${boardType}&boardId=${boardId}`}
-            className="border-border text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
-          >
-            <PlusIcon className="size-3.5" />
-            Nuevo post
-          </Link>
-        )}
-      </div>
-
       {result.data.length > 0 ? (
         <div className="flex flex-col gap-4">
           {result.data.map((p) => (

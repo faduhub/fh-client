@@ -26,7 +26,7 @@ export function ReviewCard({ review }: { review: Review }) {
       />
       <div className="flex items-start justify-between gap-4">
         <Link
-          href={`/catedra/${review.departmentSlug}`}
+          href={`/catedras/${review.departmentSlug}`}
           className="group text-foreground hover:text-accent relative z-10 mt-1 inline-flex items-center gap-1.5 text-2xl leading-tight font-semibold tracking-tight transition-colors"
         >
           <span className="text-accent text-xs font-medium tracking-wider uppercase">
@@ -43,7 +43,7 @@ export function ReviewCard({ review }: { review: Review }) {
       </div>
 
       <Link
-        href={`/catedra/${review.departmentSlug}`}
+        href={`/catedras/${review.departmentSlug}`}
         className="text-foreground hover:text-accent group relative z-10 mt-1 inline-flex items-center gap-1.5 text-2xl leading-tight font-semibold tracking-tight transition-colors"
       >
         <h3 className="text-foreground hover:text-accent relative z-10 mt-1 inline-flex items-center gap-1.5 text-2xl leading-tight font-semibold tracking-tight transition-colors">
