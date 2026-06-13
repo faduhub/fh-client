@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidateTag } from "next/cache"
+import { updateTag } from "next/cache"
 import { headers } from "next/headers"
 import { BASE } from "@/lib/api/fetcher.server"
 import type { CreateReviewPayload } from "@/lib/api/dtos/payloads/review"
@@ -28,8 +28,8 @@ export async function createReviewAction(
     return { success: false, error: json.message ?? "Error al crear la experiencia" }
   }
 
-  revalidateTag("reviews", "everything")
-  revalidateTag(`department-${payload.departmentId}`, "everything")
+  updateTag("reviews")
+  updateTag(`department-${payload.departmentId}`)
 
   return { success: true, data: json.data }
 }
