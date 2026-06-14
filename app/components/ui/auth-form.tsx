@@ -3,7 +3,7 @@
 import { useState, type SubmitEvent } from "react"
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react"
 import { GradientAvatar } from "../ui/gradient-avatar"
-// import { AuthSuccess } from './auth-success'
+import { Toast } from "@base-ui/react/toast"
 import { useRouter } from "next/navigation"
 import { signIn } from "@/lib/auth-client"
 
@@ -27,16 +27,15 @@ const GithubIcon = () => (
 
 export function AuthForm() {
   const router = useRouter()
+  const toasts = Toast.useToastManager()
   const [showPw, setShowPw] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  // const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleEmailLogin(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    // setError(null)
     setLoading(true)
 
     const { error } = await signIn.email({
@@ -46,7 +45,19 @@ export function AuthForm() {
     })
 
     if (error) {
-      // setError(error.message || "Email o contraseña incorrectos")
+      if (error.code === "EMAIL_NOT_VERIFIED") {
+        toasts.add({
+          type: "error",
+          title: "Email no verificado",
+          description: "Revisá tu casilla y hacé click en el enlace que te enviamos.",
+        })
+      } else {
+        toasts.add({
+          type: "error",
+          title: "Error",
+          description: "Email o contraseña incorrectos",
+        })
+      }
       setLoading(false)
       return
     }
@@ -77,10 +88,7 @@ export function AuthForm() {
       <div className="relative p-8 sm:p-10">
         {/* encabezado */}
         <div className="flex flex-col items-center text-center">
-          <GradientAvatar
-            seed={email || name || "fadu-reviews"}
-            className="border-border size-16 border"
-          />
+          <GradientAvatar seed="fadu-reviews" className="border-border size-16 border" />
           <h1 className="text-foreground mt-4 font-serif text-3xl font-medium tracking-tight text-balance sm:text-2xl">
             Sign in to FaduHub
           </h1>
@@ -163,9 +171,8 @@ export function AuthForm() {
           </div>
 
           <button
-            type="button"
+            type="submit"
             disabled={loading}
-            onClick={() => router.push("/registro")}
             className="group bg-primary text-primary-foreground shadow-primary/60 hover:shadow-primary/80 mt-2 inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-medium shadow-[0_0_30px_-8px] transition-all disabled:opacity-70"
           >
             {loading ? (
@@ -175,7 +182,7 @@ export function AuthForm() {
               </>
             ) : (
               <>
-                Crear cuenta
+                Ingresar
                 <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
               </>
             )}
