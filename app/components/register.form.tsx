@@ -3,24 +3,31 @@
 import { useState, SubmitEvent } from "react"
 import Link from "next/link"
 import { Mail, Lock, AtSign, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react"
-// import { AuthSuccess } from './ui/auth-success'
+import { Toast } from "@base-ui/react/toast"
 import { GoogleIcon, GithubIcon, AuthField } from "./auth-shared"
 import { useRouter } from "next/navigation"
 import { signIn, signUp } from "@/lib/auth-client"
 
+const ERROR_MESSAGES: Record<string, string> = {
+  INVALID_EMAIL: "El email no es válido.",
+  PASSWORD_TOO_SHORT: "La contraseña debe tener al menos 8 caracteres.",
+  PASSWORD_TOO_LONG: "La contraseña es demasiado larga.",
+  USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL: "Ya existe una cuenta con ese email.",
+  FAILED_TO_CREATE_USER: "El nombre de usuario ya está en uso.",
+}
+
 export function RegisterForm() {
   const router = useRouter()
+  const toasts = Toast.useToastManager()
   const [showPw, setShowPw] = useState(false)
   const [email, setEmail] = useState("")
   const [username, setUsername] = useState("")
-  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
   const [password, setPassword] = useState("")
 
   async function handleRegister(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    setError(null)
     setLoading(true)
 
     const { error } = await signUp.email({
@@ -32,18 +39,15 @@ export function RegisterForm() {
     })
 
     if (error) {
-      setError(
-        error.code === "USER_ALREADY_EXISTS"
-          ? "Ya existe una cuenta con ese email"
-          : "Ocurrió un error al registrarte",
-      )
+      toasts.add({
+        type: "error",
+        title: ERROR_MESSAGES[error.code ?? ""] ?? "Ocurrió un error al registrarte.",
+      })
       setLoading(false)
       return
     }
 
-    // return <AuthSuccess mode="register" name={name || 'estudiante'} />
-
-    router.push("/")
+    router.push(`/registro/bienvenida?u=${encodeURIComponent(username)}`)
   }
 
   async function handleGoogleLogin() {
@@ -144,8 +148,6 @@ export function RegisterForm() {
             Al menos 8 caracteres, con un número y una mayúscula.
           </p>
         </div>
-
-        {error && <p className="text-destructive text-xs">{error}</p>}
 
         <button
           type="submit"

@@ -3,7 +3,7 @@
 import { useState, type SubmitEvent } from "react"
 import { Mail, Lock, ArrowRight, Eye, EyeOff, Loader2 } from "lucide-react"
 import { GradientAvatar } from "../ui/gradient-avatar"
-// import { AuthSuccess } from './auth-success'
+import { Toast } from "@base-ui/react/toast"
 import { useRouter } from "next/navigation"
 import { signIn } from "@/lib/auth-client"
 
@@ -27,16 +27,15 @@ const GithubIcon = () => (
 
 export function AuthForm() {
   const router = useRouter()
+  const toasts = Toast.useToastManager()
   const [showPw, setShowPw] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  // const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
   async function handleEmailLogin(e: SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    // setError(null)
     setLoading(true)
 
     const { error } = await signIn.email({
@@ -46,7 +45,19 @@ export function AuthForm() {
     })
 
     if (error) {
-      // setError(error.message || "Email o contraseña incorrectos")
+      if (error.code === "EMAIL_NOT_VERIFIED") {
+        toasts.add({
+          type: "error",
+          title: "Email no verificado",
+          description: "Revisá tu casilla y hacé click en el enlace que te enviamos.",
+        })
+      } else {
+        toasts.add({
+          type: "error",
+          title: "Error",
+          description: "Email o contraseña incorrectos",
+        })
+      }
       setLoading(false)
       return
     }

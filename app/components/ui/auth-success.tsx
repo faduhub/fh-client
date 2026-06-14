@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Check, ArrowRight, Sparkles } from "lucide-react"
+import { Check, ArrowRight, Mail } from "lucide-react"
 import { GradientAvatar } from "./gradient-avatar"
 import Link from "next/link"
 
@@ -48,11 +48,11 @@ export function AuthSuccess({ mode, name }: { mode: "login" | "register"; name: 
         </div>
 
         <h1 className="text-foreground mt-7 font-serif text-3xl font-medium tracking-tight text-balance sm:text-4xl">
-          {isRegister ? "¡Cuenta creada!" : "¡Hola de nuevo!"}
+          {isRegister ? "¡Ya casi!" : "¡Hola de nuevo!"}
         </h1>
         <p className="text-muted-foreground mt-3 max-w-sm text-sm leading-relaxed text-pretty">
           {isRegister
-            ? "Tu perfil ya está activo. Empezá a compartir experiencias y ayudá a la comunidad de la FADU a elegir mejor."
+            ? "Te mandamos un email de verificación. Revisá tu casilla y hacé click en el enlace para activar tu cuenta."
             : "Ingresaste correctamente. Te llevamos a tu perfil para que sigas compartiendo."}
         </p>
 
@@ -62,22 +62,22 @@ export function AuthSuccess({ mode, name }: { mode: "login" | "register"; name: 
           <div className="min-w-0 flex-1 leading-tight">
             <p className="text-foreground truncate text-sm">{name}</p>
             <p className="text-muted-foreground font-mono text-[0.7rem] tracking-widest uppercase">
-              {isRegister ? "Nuevo en la comunidad" : "Diseño Gráfico · FADU"}
+              {isRegister ? "Verificación pendiente" : "Diseño Gráfico · FADU"}
             </p>
           </div>
           {isRegister && (
-            <span className="border-primary/40 bg-primary/10 tracking-widset text-primary inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.65rem] uppercase">
-              <Sparkles className="size-3" strokeWidth={2} />
-              +50 XP
+            <span className="border-primary/40 bg-primary/10 text-primary inline-flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[0.65rem] uppercase">
+              <Mail className="size-3" strokeWidth={2} />
+              Email
             </span>
           )}
         </div>
 
         <Link
-          href="/"
+          href={isRegister ? "/login" : "/"}
           className="group bg-primary text-primary-foreground shadow-primary/60 hover:shadow-primary/80 mt-8 inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-medium shadow-[0_0_30px_-8px] transition-all"
         >
-          Ir a mi perfil
+          {isRegister ? "Ir al login" : "Ir a mi perfil"}
           <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
         </Link>
       </div>
