@@ -12,7 +12,7 @@ export function RegisterForm() {
   const router = useRouter()
   const [showPw, setShowPw] = useState(false)
   const [email, setEmail] = useState("")
-  const [name, setName] = useState("")
+  const [username, setUsername] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
@@ -24,7 +24,8 @@ export function RegisterForm() {
     setLoading(true)
 
     const { error } = await signUp.email({
-      name,
+      username,
+      name: username,
       email,
       password,
       callbackURL: `${window.location.origin}/`,
@@ -90,8 +91,8 @@ export function RegisterForm() {
         <AuthField icon={<AtSign className="size-4" strokeWidth={1.5} />} label="Usuario">
           <input
             type="text"
-            onChange={(e) => setName(e.target.value)}
-            value={name}
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
             required
             placeholder="martina-ferreyra"
             autoComplete="name"
