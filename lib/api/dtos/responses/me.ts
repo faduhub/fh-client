@@ -1,6 +1,7 @@
 /** Identidad + preferencias del usuario logueado (`GET /users/me`). */
 export type Me = {
   id: string
+  email: string | null
   username: string | null // null => needsOnboarding
   slug: string | null
   firstName: string | null
