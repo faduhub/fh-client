@@ -14,10 +14,11 @@ import {
   GraduationCap,
   Settings2,
 } from "lucide-react"
-import { SectionCard, SelectInput } from "./settings-fields"
+import { SectionCard, SelectInput, ToggleOptions } from "./settings-fields"
 import { Button } from "./button"
 import { Combobox } from "./combobox"
 import { GradientAvatar } from "./gradient-avatar"
+import { ConfirmDialog } from "./confirm-dialog"
 import { Toast } from "./toast"
 import {
   getDegreesAction,
@@ -89,6 +90,7 @@ export function CursadasPanel({ me }: { me: Me }) {
   const [subjectId, setSubjectId] = useState("")
   const [departmentId, setDepartmentId] = useState("")
   const [status, setStatus] = useState<CursadaStatus>("CURSANDO")
+  const [cursadaToDelete, setCursadaToDelete] = useState<Cursada | null>(null)
   const [isPending, startTransition] = useTransition()
 
   useEffect(() => {
@@ -409,7 +411,7 @@ export function CursadasPanel({ me }: { me: Me }) {
                       </div>
                       <button
                         type="button"
-                        onClick={() => handleDeleteCursada(c.id, c.subject.name)}
+                        onClick={() => setCursadaToDelete(c)}
                         disabled={isPending}
                         aria-label={`Quitar ${c.subject.name}`}
                         className="text-muted-foreground hover:bg-destructive/15 hover:text-destructive flex size-7 shrink-0 items-center justify-center rounded-lg transition-colors disabled:opacity-40"
@@ -422,19 +424,37 @@ export function CursadasPanel({ me }: { me: Me }) {
               </ul>
             )}
 
-            <Button
+            <button
+              type="button"
               onClick={() => setMateriaDialogOpen(true)}
               disabled={loadingData}
-              className="self-end rounded-full"
+              className={`${pillButtonClass} self-end`}
             >
-              <Plus />
+              <Plus className="size-4" strokeWidth={2} />
               Agregar
-            </Button>
+            </button>
           </SectionCard>
         </div>
       </div>
 
       {carreraDialog}
+
+      {/* Confirmación: quitar materia */}
+      <ConfirmDialog
+        open={cursadaToDelete !== null}
+        onOpenChange={(open) => !open && setCursadaToDelete(null)}
+        title="Quitar materia"
+        description={
+          cursadaToDelete
+            ? `¿Seguro que querés quitar "${cursadaToDelete.subject.name}" de tus cursadas?`
+            : undefined
+        }
+        confirmLabel="Quitar"
+        destructive
+        onConfirm={() => {
+          if (cursadaToDelete) handleDeleteCursada(cursadaToDelete.id, cursadaToDelete.subject.name)
+        }}
+      />
 
       {/* Diálogo: agregar materia */}
       <Dialog.Root open={materiaDialogOpen} onOpenChange={handleMateriaOpenChange}>
@@ -458,35 +478,30 @@ export function CursadasPanel({ me }: { me: Me }) {
                 options={subjects.map((s) => ({ value: String(s.id), label: s.name }))}
               />
 
-              <SelectInput
-                value={departmentId}
-                onChange={(e) => setDepartmentId(e.target.value)}
-                disabled={!subjectId || availableDepts.length === 0}
-              >
-                <option value="">
-                  {!subjectId
+              <Combobox
+                label={
+                  !subjectId
                     ? "Cátedra (elegí una materia primero)"
                     : availableDepts.length === 0
                       ? "Sin cátedras disponibles"
-                      : "Cátedra (opcional)"}
-                </option>
-                {availableDepts.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.name}
-                  </option>
-                ))}
-              </SelectInput>
+                      : "Cátedra (opcional)"
+                }
+                value={departmentId}
+                onChange={setDepartmentId}
+                options={availableDepts.map((d) => ({ value: String(d.id), label: d.name }))}
+                disabled={!subjectId || availableDepts.length === 0}
+              />
 
-              <SelectInput
+              <ToggleOptions
+                size="sm"
+                variant="outline"
+                options={(Object.keys(STATUS_LABEL) as CursadaStatus[]).map((s) => ({
+                  value: s,
+                  label: STATUS_LABEL[s],
+                }))}
                 value={status}
-                onChange={(e) => setStatus(e.target.value as CursadaStatus)}
-              >
-                {(Object.keys(STATUS_LABEL) as CursadaStatus[]).map((s) => (
-                  <option key={s} value={s}>
-                    {STATUS_LABEL[s]}
-                  </option>
-                ))}
-              </SelectInput>
+                onChange={setStatus}
+              />
             </div>
 
             <div className="flex justify-end gap-2">
