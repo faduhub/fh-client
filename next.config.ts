@@ -8,6 +8,15 @@ const API_ORIGIN = process.env.API_URL || "http://localhost:4000"
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: "/mi-fadu",
+        destination: "/mi-fadu/resumen",
+        permanent: false,
+      },
+    ]
+  },
   async rewrites() {
     return [
       {

@@ -6,6 +6,7 @@ export type Cursada = {
   status: CursadaStatus
   year: number | null
   period: AcademicPeriod | null
+  hasExperience: boolean
   subject: { name: string; slug: string }
   department: { name: string; slug: string } | null
   degree: { name: string; slug: string } | null

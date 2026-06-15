@@ -76,7 +76,7 @@ export function GradientAvatar({
       {/* brillo sutil superior para dar volumen */}
       <span
         aria-hidden="true"
-        className="absolute inset-0 rounded-full bg-gradient-to-b from-white/15 to-transparent"
+        className="absolute inset-0 rounded-full bg-linear-to-b from-white/15 to-transparent"
       />
     </div>
   )

@@ -12,12 +12,14 @@ export function Combobox({
   value,
   onChange,
   className,
+  disabled = false,
 }: {
   label: string
   options: ComboboxOption[]
   value: string
   onChange: (v: string) => void
   className?: string
+  disabled?: boolean
 }) {
   const ALL = ""
   const selected = value ? (options.find((o) => o.value === value) ?? null) : null
@@ -27,17 +29,19 @@ export function Combobox({
       items={options}
       value={selected}
       onValueChange={(item) => onChange(item ? item.value : ALL)}
+      disabled={disabled}
     >
       <BaseCombobox.InputGroup
         className={cn(
           "flex cursor-pointer items-center gap-1 rounded-md border px-2.5 py-1.5 text-sm font-medium transition-colors",
           selected && "bg-muted text-muted-foreground",
+          disabled && "cursor-not-allowed opacity-50",
           className,
         )}
       >
         <BaseCombobox.Input
           placeholder={selected ? selected.label : label}
-          className="placeholder:text-muted-foreground w-full cursor-pointer truncate bg-transparent outline-none"
+          className="placeholder:text-muted-foreground w-full cursor-pointer truncate bg-transparent outline-none disabled:cursor-not-allowed"
         />
         {selected ? (
           <BaseCombobox.Clear
