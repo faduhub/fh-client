@@ -55,7 +55,7 @@ export function SiteHeader({ me }: { me: Me | null }) {
                 }
                 options={[
                   { label: "Perfil", onClick: () => router.push("/usuario/" + me.slug) },
-                  { label: "Configuración", onClick: () => router.push("/configuracion") },
+                  { label: "Configuración", onClick: () => router.push("/configuracion/perfil") },
                   { label: "Logout", onClick: handleSignOut, separator: true },
                 ]}
               />
