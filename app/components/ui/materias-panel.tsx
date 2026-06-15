@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from "react"
 import { Dialog } from "@base-ui/react/dialog"
 import { Plus, X, GraduationCap, Loader2 } from "lucide-react"
 import { SectionCard, SelectInput } from "./settings-fields"
+import { Combobox } from "./combobox"
 import { Toast } from "./toast"
 import {
   getCursadasAction,
@@ -176,17 +177,15 @@ export function MateriasPanel() {
               </div>
 
               <div className="flex flex-col gap-3">
-                <SelectInput
+                <Combobox
+                  label="Seleccioná una materia"
                   value={subjectId}
-                  onChange={(e) => handleSubjectChange(e.target.value)}
-                >
-                  <option value="">Seleccioná una materia</option>
-                  {subjects.map((s) => (
-                    <option key={s.id} value={String(s.id)}>
-                      {s.name}
-                    </option>
-                  ))}
-                </SelectInput>
+                  onChange={handleSubjectChange}
+                  options={subjects.map((s) => ({
+                    value: String(s.id),
+                    label: s.name,
+                  }))}
+                />
 
                 <SelectInput
                   value={departmentId}

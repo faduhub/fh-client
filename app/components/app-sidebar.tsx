@@ -14,6 +14,7 @@ import {
   ChevronRightIcon,
   SearchIcon,
   StarIcon,
+  MoreHorizontalIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { signOut } from "@/lib/auth-client"
@@ -58,7 +59,7 @@ const navGroups: NavItem[][] = [
       icon: SearchIcon,
     },
     { label: "Experiencias", href: "/experiencias", icon: StarIcon },
-    { label: "Mi FADU", href: "/configuracion", icon: StoolIcon },
+    { label: "Mi FADU", href: "/mi-fadu", icon: StoolIcon },
   ],
 ]
 
@@ -218,14 +219,20 @@ export function AppSidebar({ me }: { me: Me | null }) {
           <Menu.Root>
             <Menu.Trigger
               className={cn(
-                "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex w-full items-center gap-3 rounded-md py-2 text-sm font-medium",
-                expanded ? "px-3" : "justify-center px-0",
+                "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground flex w-full items-center rounded-md text-sm font-medium",
+                expanded ? "gap-3 px-3 py-2" : "justify-center px-0 py-2",
               )}
+              aria-label="Más opciones"
             >
               <div className="bg-sidebar-primary text-sidebar-primary-foreground flex size-6 shrink-0 items-center justify-center rounded-full text-xs font-medium">
                 {avatarInitial}
               </div>
-              {expanded && <span className="truncate">{me.username}</span>}
+              {expanded && (
+                <>
+                  <span className="min-w-0 flex-1 truncate text-left">{me.username}</span>
+                  <MoreHorizontalIcon className="text-sidebar-foreground/60 size-4 shrink-0" />
+                </>
+              )}
             </Menu.Trigger>
             <Menu.Portal>
               <Menu.Positioner className="z-50" side="right" align="end" sideOffset={8}>
@@ -237,7 +244,7 @@ export function AppSidebar({ me }: { me: Me | null }) {
                     </Link>
                   </Menu.Item>
                   <Menu.Item className="overflow-hidden rounded-sm p-0">
-                    <Link href="/configuracion" className={menuItemLinkClass}>
+                    <Link href="/configuracion/perfil" className={menuItemLinkClass}>
                       <SettingsIcon className="size-3.5" />
                       Configuración
                     </Link>
