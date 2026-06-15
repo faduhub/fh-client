@@ -1,4 +1,4 @@
-import { CursadasPanel } from "@/app/components/ui/cursadas-panel"
+import { CursadasPanel } from "@/components/features/cursadas-panel"
 import { accountService } from "@/lib/api/services/account.service.server"
 
 export default async function CursadasPage() {
