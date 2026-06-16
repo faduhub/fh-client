@@ -1,17 +1,17 @@
 import { ProfileSidebar } from "../../../components/ui/profile-sidebar"
-import { ReviewCard } from "../../../components/ui/review-card"
+import { ReviewCard } from "@/components/features/review-card"
 import { Achievements } from "../../../components/ui/achievements"
 import { CurrentCourses } from "../../../components/ui/current-courses"
 import { userService } from "@/lib/api/services/user.service.server"
+import { accountService } from "@/lib/api/services/account.service.server"
 import { notFound } from "next/navigation"
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
 
-  const user = await userService.getBySlug(slug)
+  const [user, me] = await Promise.all([userService.getBySlug(slug), accountService.getMe()])
 
   if (!user) notFound()
-  console.log(user)
   return (
     <div className="relative min-h-screen w-full overflow-x-hidden">
       <main className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:py-12">
@@ -26,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <section className="min-w-0 flex-1">
             <div className="flex flex-col gap-5">
               {user.reviews.map((review) => (
-                <ReviewCard key={review.id} review={review} />
+                <ReviewCard key={review.id} review={review} currentUserSlug={me?.slug ?? null} />
               ))}
             </div>
           </section>

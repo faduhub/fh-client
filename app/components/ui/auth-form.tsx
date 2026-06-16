@@ -191,7 +191,7 @@ export function AuthForm() {
 
         {/* cambio de modo */}
         <p className="text-muted-foreground mt-7 text-center text-sm">
-          ¿Sos nuevo?
+          ¿Sos nuevo?{" "}
           <button
             type="button"
             onClick={() => router.push("/registro")}

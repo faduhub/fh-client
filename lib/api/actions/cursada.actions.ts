@@ -7,7 +7,7 @@ import { departmentService } from "@/lib/api/services/department.service.server"
 import type { Cursada, CursadaStatus } from "@/lib/api/dtos/responses/cursada"
 
 export async function getCursadasAction() {
-  return action(() => http.get<Cursada[]>("/users/me/cursadas", { auth: true }))
+  return action(() => http.get<Cursada[]>("/cursadas", { auth: true }))
 }
 
 export async function getSubjectsAction() {
@@ -23,9 +23,16 @@ export async function addCursadaAction(payload: {
   status: CursadaStatus
   departmentId?: string
 }) {
-  return action(() => http.post<Cursada>("/users/me/cursadas", { body: payload, auth: true }))
+  return action(() => http.post<Cursada>("/cursadas", { body: payload, auth: true }))
+}
+
+export async function editCursadaAction(
+  id: string,
+  payload: { status?: CursadaStatus; departmentId?: string; degreeId?: string },
+) {
+  return action(() => http.patch<Cursada>(`/cursadas/${id}`, { body: payload, auth: true }))
 }
 
 export async function deleteCursadaAction(id: string) {
-  return action(() => http.del<void>(`/users/me/cursadas/${id}`, { auth: true }))
+  return action(() => http.del<void>(`/cursadas/${id}`, { auth: true }))
 }

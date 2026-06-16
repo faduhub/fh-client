@@ -4,8 +4,8 @@ import { useMemo, useState } from "react"
 import type { Review } from "@/lib/api/dtos/responses/review"
 import type { DegreeItem } from "@/lib/api/dtos/responses/degree"
 import type { SubjectItem } from "@/lib/api/dtos/responses/subject"
-import { ReviewCard } from "@/app/components/review-card"
-import { FilterCard } from "@/app/components/filter-card"
+import { ReviewCard } from "@/components/features/review-card"
+import { FilterCard } from "@/components/features/filter-card"
 import {
   Select,
   SelectContent,
@@ -13,7 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select"
-import { Button } from "./ui/button"
+import { Button } from "@/app/components/ui/button"
 import Link from "next/link"
 
 const ALL = "todas"
@@ -32,9 +32,10 @@ type Props = {
   reviews: Review[]
   degrees: DegreeItem[]
   subjects: SubjectItem[]
+  currentUserSlug?: string | null
 }
 
-export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
+export function ReviewsFeed({ reviews, degrees, subjects, currentUserSlug = null }: Props) {
   const [query, setQuery] = useState("")
   const [degree, setDegree] = useState<string>(ALL)
   const [subject, setSubject] = useState<string>(ALL)
@@ -204,7 +205,7 @@ export function ReviewsFeed({ reviews, degrees, subjects }: Props) {
         {filtered.length > 0 ? (
           <div className="flex flex-col gap-4">
             {filtered.map((r) => (
-              <ReviewCard key={r.id} review={r} />
+              <ReviewCard key={r.id} review={r} currentUserSlug={currentUserSlug} />
             ))}
           </div>
         ) : (

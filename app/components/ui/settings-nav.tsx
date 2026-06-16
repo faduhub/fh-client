@@ -2,15 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import {
-  User,
-  Settings,
-  Palette,
-  GraduationCap,
-  Bell,
-  ShieldCheck,
-  type LucideIcon,
-} from "lucide-react"
+import { User, Palette, ShieldCheck, type LucideIcon } from "lucide-react"
 
 type NavItem = {
   href: string
@@ -20,10 +12,7 @@ type NavItem = {
 
 const items: NavItem[] = [
   { href: "/configuracion/perfil", label: "Perfil público", icon: User },
-  { href: "/configuracion/cuenta", label: "Cuenta", icon: Settings },
   { href: "/configuracion/apariencia", label: "Apariencia", icon: Palette },
-  { href: "/configuracion/carrera", label: "Carrera y materias", icon: GraduationCap },
-  { href: "/configuracion/notificaciones", label: "Notificaciones", icon: Bell },
   { href: "/configuracion/seguridad", label: "Seguridad", icon: ShieldCheck },
 ]
 

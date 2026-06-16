@@ -26,11 +26,17 @@ export function ReviewForm({
   subjects,
   tags,
   degrees,
+  initialSubjectId = null,
+  initialCatedraSlug = null,
+  initialDegreeId = null,
 }: {
   departments: DepartmentStats[]
   subjects: SubjectItem[]
   tags: TagItem[]
   degrees: DegreeItem[]
+  initialSubjectId?: string | null
+  initialCatedraSlug?: string | null
+  initialDegreeId?: string | null
 }) {
   const router = useRouter()
   const { data: session, isPending } = useSession()
@@ -39,10 +45,14 @@ export function ReviewForm({
     if (!isPending && !session) router.replace("/login")
   }, [session, isPending, router])
 
-  const [catedraSlug, setCatedraSlug] = useState("")
-  const [departmentId, setDepartmentId] = useState<string | null>(null)
-  const [subjectId, setSubjectId] = useState<string | null>(null)
-  const [degreeId, setDegreeId] = useState<string | null>(null)
+  const [catedraSlug, setCatedraSlug] = useState(initialCatedraSlug ?? "")
+  const [departmentId, setDepartmentId] = useState<string | null>(
+    initialCatedraSlug
+      ? (departments.find((d) => d.slug === initialCatedraSlug)?.id ?? null)
+      : null,
+  )
+  const [subjectId, setSubjectId] = useState<string | null>(initialSubjectId)
+  const [degreeId, setDegreeId] = useState<string | null>(initialDegreeId)
   const [recommends, setRecommends] = useState<boolean | null>(null)
   const [body, setBody] = useState("")
   const [year, setYear] = useState(new Date().getFullYear())

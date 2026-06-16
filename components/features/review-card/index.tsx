@@ -6,10 +6,22 @@ import type { Review } from "@/lib/api/dtos/responses/review"
 import { Badge } from "@/app/components/ui/badge"
 import { ReviewCardHeader } from "./header"
 import { ReviewCardFooter } from "./footer"
+import { OwnerMenu } from "./owner-menu"
 
-export function ReviewCard({ review, linked = true }: { review: Review; linked?: boolean }) {
+export function ReviewCard({
+  review,
+  linked = true,
+  currentUserSlug = null,
+}: {
+  review: Review
+  linked?: boolean
+  /** Slug del usuario logueado. Si coincide con el autor, se muestra el menú de editar/eliminar. */
+  currentUserSlug?: string | null
+}) {
   const [likes, setLikes] = useState(review.likes)
   const [liked, setLiked] = useState(false)
+
+  const isOwner = currentUserSlug != null && currentUserSlug === review.authorSlug
 
   function toggleLike() {
     setLikes((n) => (liked ? n - 1 : n + 1))
@@ -53,6 +65,7 @@ export function ReviewCard({ review, linked = true }: { review: Review; linked?:
         likes={likes}
         liked={liked}
         onToggleLike={toggleLike}
+        ownerMenu={isOwner ? <OwnerMenu reviewId={review.id} subject={review.subject} /> : null}
       />
     </article>
   )
