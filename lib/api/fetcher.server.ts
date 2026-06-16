@@ -1,3 +1,5 @@
+import "server-only"
+
 const getBase = () => {
   const url = process.env.API_URL
   if (!url) throw new Error("API_URL env var is not set")

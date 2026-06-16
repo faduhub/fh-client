@@ -3,14 +3,16 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { reviewService } from "@/lib/api/services/review.service.server"
 import { commentService } from "@/lib/api/services/comment.service.server"
-import { ReviewCard } from "@/app/components/review-card"
+import { accountService } from "@/lib/api/services/account.service.server"
+import { ReviewCard } from "@/components/features/review-card"
 import { CommentSection } from "./comment-section"
 
 export default async function ReviewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const [review, comments] = await Promise.all([
+  const [review, comments, me] = await Promise.all([
     reviewService.getById(id),
     commentService.getByReview(id),
+    accountService.getMe(),
   ])
   if (!review) notFound()
 
@@ -27,7 +29,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ id: str
       </section>
 
       <section className="mx-auto flex max-w-3xl flex-col gap-10 px-6 py-8">
-        <ReviewCard review={review} linked={false} />
+        <ReviewCard review={review} linked={false} currentUserSlug={me?.slug ?? null} />
         <CommentSection reviewId={id} initialComments={comments.data} />
       </section>
     </main>

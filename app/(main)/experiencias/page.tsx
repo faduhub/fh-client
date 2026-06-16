@@ -1,14 +1,16 @@
 import { reviewService } from "@/lib/api/services/review.service.server"
 import { degreeService } from "@/lib/api/services/degree.service.server"
 import { subjectService } from "@/lib/api/services/subject.service.server"
-import { ReviewsFeed } from "@/app/components/reviews-feed"
+import { accountService } from "@/lib/api/services/account.service.server"
+import { ReviewsFeed } from "@/components/features/reviews-feed"
 import AppHeader from "@/app/components/ui/app-header"
 
 export default async function ExperienciasPage() {
-  const [reviews, degrees, subjects] = await Promise.all([
+  const [reviews, degrees, subjects, me] = await Promise.all([
     reviewService.getAll(),
     degreeService.getAll(),
     subjectService.getAll(),
+    accountService.getMe(),
   ])
 
   return (
@@ -17,7 +19,12 @@ export default async function ExperienciasPage() {
         <AppHeader title="Experiencias" />
 
         <section id="experiencias" className="mx-auto py-8">
-          <ReviewsFeed reviews={reviews} degrees={degrees} subjects={subjects} />
+          <ReviewsFeed
+            reviews={reviews}
+            degrees={degrees}
+            subjects={subjects}
+            currentUserSlug={me?.slug ?? null}
+          />
         </section>
       </div>
     </main>

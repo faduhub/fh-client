@@ -1,3 +1,4 @@
+import "server-only"
 import { headers } from "next/headers"
 import type { Paginated } from "@/lib/api/dtos/responses/pagination"
 

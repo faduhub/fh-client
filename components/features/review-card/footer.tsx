@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import type { ReactNode } from "react"
 import { ThumbsUp, MessageSquareQuoteIcon } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/app/components/ui/avatar"
 import { cn } from "@/lib/utils"
@@ -15,6 +16,7 @@ type Props = {
   likes: number
   liked: boolean
   onToggleLike: () => void
+  ownerMenu?: ReactNode
 }
 
 export function ReviewCardFooter({
@@ -27,6 +29,7 @@ export function ReviewCardFooter({
   likes,
   liked,
   onToggleLike,
+  ownerMenu,
 }: Props) {
   return (
     <footer className="border-boder flex items-center justify-between gap-4 border-t pt-4">
@@ -48,7 +51,7 @@ export function ReviewCardFooter({
           </p>
         </div>
       </div>
-      <div className="space-x-3">
+      <div className="flex items-center gap-3">
         <button
           onClick={onToggleLike}
           className={cn(
@@ -72,6 +75,7 @@ export function ReviewCardFooter({
         >
           <MessageSquareQuoteIcon className="size-3.5" />
         </Link>
+        {ownerMenu}
       </div>
     </footer>
   )
