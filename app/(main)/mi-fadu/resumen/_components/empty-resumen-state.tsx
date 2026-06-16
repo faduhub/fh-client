@@ -1,4 +1,4 @@
-"use-client"
+"use client"
 
 import { Button } from "@/app/components/ui/button"
 import { GraduationCap, Plus } from "lucide-react"
@@ -10,7 +10,7 @@ type EmptyDegreeStateProps = {
   carreraDialog: ReactNode
 }
 
-export function EmptyDegreeState({
+export function EmptyRecorridoState({
   loadingDegrees,
   onAddDegree,
   carreraDialog,
