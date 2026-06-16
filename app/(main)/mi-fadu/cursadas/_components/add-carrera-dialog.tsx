@@ -86,7 +86,12 @@ export function CarreraDialog({
                 </option>
               ))}
             </SelectInput>
+          </div>
 
+          <div className="flex justify-end gap-2.5">
+            <Dialog.Close className="text-muted-foreground hover:bg-secondary hover:text-foreground inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm transition-colors">
+              Cancelar
+            </Dialog.Close>
             <button
               type="button"
               onClick={onJoinDegree}
@@ -98,14 +103,8 @@ export function CarreraDialog({
               ) : (
                 <Plus className="size-4" strokeWidth={2} />
               )}
-              Anotarse
+              Guardar
             </button>
-          </div>
-
-          <div className="flex justify-end">
-            <Dialog.Close className="text-muted-foreground hover:bg-secondary hover:text-foreground inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm transition-colors">
-              Listo
-            </Dialog.Close>
           </div>
         </Dialog.Popup>
       </Dialog.Portal>

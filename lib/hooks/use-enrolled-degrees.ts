@@ -81,6 +81,7 @@ export function useEnrolledDegrees(me: Me, toast: ToastManager) {
 
       setActiveDegreeId((prev) => prev ?? degree.id)
       setSelectedDegreeId("")
+      setCarreraDialogOpen(false)
 
       toast.add({
         title: `Anotado en ${degree.name}`,

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import type { Cursada, AcademicPeriod, CursadaStatus } from "@/lib/api/dtos/responses/cursada"
-import { BookOpen, Loader2, PenLine, Pencil, X } from "lucide-react"
+import { BookOpen, Check, Loader2, PenLine, Pencil, X } from "lucide-react"
 
 const eyebrowClass = "text-muted-foreground font-mono text-[0.7rem] tracking-widest uppercase"
 
@@ -66,7 +66,10 @@ export function CursadasList({
           cursada.period ? PERIOD_LABEL[cursada.period] : null,
         ].filter(Boolean)
 
-        const experienciaParams = new URLSearchParams({ materia: cursada.subject.slug })
+        const experienciaParams = new URLSearchParams({
+          cursadaId: cursada.id,
+          materia: cursada.subject.slug,
+        })
         if (cursada.department) experienciaParams.set("catedra", cursada.department.slug)
         if (cursada.degree) experienciaParams.set("carrera", cursada.degree.slug)
 
@@ -89,7 +92,15 @@ export function CursadasList({
                 <p className={`mt-1 truncate ${eyebrowClass}`}>{meta.join(" · ")}</p>
               )}
             </div>
-            {!cursada.hasExperience && (
+            {cursada.hasExperience ? (
+              <span
+                className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-emerald-500/40 px-2.5 py-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+                title="Ya compartiste tu experiencia"
+              >
+                <Check className="size-3.5" strokeWidth={2.5} />
+                Experiencia compartida
+              </span>
+            ) : (
               <Link
                 href={`/experiencias/crear?${experienciaParams.toString()}`}
                 className="border-primary/40 text-primary hover:bg-primary/10 inline-flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium transition-colors"

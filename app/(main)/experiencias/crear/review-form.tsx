@@ -26,6 +26,8 @@ export function ReviewForm({
   subjects,
   tags,
   degrees,
+  cursadaId = null,
+  locked = false,
   initialSubjectId = null,
   initialCatedraSlug = null,
   initialDegreeId = null,
@@ -34,6 +36,8 @@ export function ReviewForm({
   subjects: SubjectItem[]
   tags: TagItem[]
   degrees: DegreeItem[]
+  cursadaId?: string | null
+  locked?: boolean
   initialSubjectId?: string | null
   initialCatedraSlug?: string | null
   initialDegreeId?: string | null
@@ -85,6 +89,7 @@ export function ReviewForm({
       departmentId,
       subjectId,
       degreeId,
+      ...(cursadaId ? { cursadaId } : {}),
       recommends,
       body: body.trim(),
       year,
@@ -122,6 +127,7 @@ export function ReviewForm({
           <Field label="Cátedra" required>
             <SelectInput
               value={catedraSlug}
+              disabled={locked && Boolean(catedraSlug)}
               onChange={(e) => {
                 const slug = e.target.value
                 setCatedraSlug(slug)
@@ -141,6 +147,7 @@ export function ReviewForm({
           <Field label="Materia" required>
             <SelectInput
               value={subjectId ?? ""}
+              disabled={locked}
               onChange={(e) => setSubjectId(e.target.value || null)}
             >
               <option value="">Seleccioná una materia</option>
@@ -155,6 +162,7 @@ export function ReviewForm({
           <Field label="Carrera" required>
             <SelectInput
               value={degreeId ?? ""}
+              disabled={locked}
               onChange={(e) => setDegreeId(e.target.value || null)}
             >
               <option value="">Seleccioná una carrera</option>

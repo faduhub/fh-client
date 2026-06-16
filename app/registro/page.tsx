@@ -3,8 +3,8 @@ import { RegisterForm } from "../components/register.form"
 import { RegisterHero } from "../components/register-hero"
 
 export const metadata: Metadata = {
-  title: "FADUhub — Creá tu cuenta",
-  description: "Registrate en FADUhub.",
+  title: "faduhub — Creá tu cuenta",
+  description: "Registrate en faduhub.",
 }
 
 export default function RegistroPage() {
