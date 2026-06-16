@@ -10,10 +10,10 @@ import { AddCursadaDialog } from "@/app/(main)/mi-fadu/cursadas/_components/add-
 import { EditCursadaDialog } from "@/app/(main)/mi-fadu/cursadas/_components/edit-cursada-dialog"
 import { CarreraDialog } from "@/app/(main)/mi-fadu/cursadas/_components/add-carrera-dialog"
 import { DegreeSidebar } from "@/app/(main)/mi-fadu/cursadas/_components/degree-sidebar"
-import { EmptyDegreeState } from "@/app/(main)/mi-fadu/cursadas/_components/empty-degree-state"
 import { useEnrolledDegrees } from "@/lib/hooks/use-enrolled-degrees"
 import { useCursadas } from "@/lib/hooks/use-cursadas"
 import { filterCursadasByDegree } from "@/lib/cursadas/filter-cursadas"
+import { AppEmptyState } from "@/app/components/ui/empty-state"
 
 const eyebrowClass = "text-muted-foreground font-mono text-[0.7rem] tracking-widest uppercase"
 const pillButtonClass =
@@ -56,11 +56,25 @@ export function CursadasPanel({ me }: { me: Me }) {
 
   if (!degrees.hasEnrolledDegrees) {
     return (
-      <EmptyDegreeState
-        loadingDegrees={degrees.loadingDegrees}
-        onAddDegree={() => degrees.setCarreraDialogOpen(true)}
-        carreraDialog={carreraDialog}
-      />
+      <AppEmptyState
+        onPrimaryClick={() => degrees.setCarreraDialogOpen(true)}
+        isLoading={degrees.loadingDegrees}
+        title="Todavía no cargaste tu carrera"
+        text="Agregá tu carrera para empezar a registrar las materias que cursás."
+        label="Agregar carrera"
+      >
+        <CarreraDialog
+          open={degrees.carreraDialogOpen}
+          onOpenChange={degrees.setCarreraDialogOpen}
+          enrolledDegrees={degrees.enrolledDegrees}
+          availableToJoin={degrees.availableToJoin}
+          selectedDegreeId={degrees.selectedDegreeId}
+          onSelectedDegreeIdChange={degrees.setSelectedDegreeId}
+          pending={degrees.degreesPending}
+          onJoinDegree={degrees.handleJoinDegree}
+          onLeaveDegree={degrees.handleLeaveDegree}
+        />
+      </AppEmptyState>
     )
   }
 
