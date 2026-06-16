@@ -1,4 +1,4 @@
-"use-client"
+"use client"
 
 import type { SubjectItem } from "@/lib/api/dtos/responses/subject"
 import { CursadaStatus } from "@/lib/api/dtos/responses/cursada"

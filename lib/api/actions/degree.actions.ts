@@ -10,7 +10,7 @@ export async function getDegreesAction() {
 
 export async function joinDegreeAction(degreeId: string, currentYear?: number) {
   return action(() =>
-    http.put<void>(`/users/me/degrees/${degreeId}`, {
+    http.put<void>(`/carreras/me/${degreeId}`, {
       body: currentYear !== undefined ? { currentYear } : {},
       auth: true,
     }),
@@ -18,5 +18,5 @@ export async function joinDegreeAction(degreeId: string, currentYear?: number) {
 }
 
 export async function leaveDegreeAction(degreeId: string) {
-  return action(() => http.del<void>(`/users/me/degrees/${degreeId}`, { auth: true }))
+  return action(() => http.del<void>(`/carreras/me/${degreeId}`, { auth: true }))
 }
