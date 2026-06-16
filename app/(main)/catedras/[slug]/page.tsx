@@ -3,7 +3,7 @@ import { notFound } from "next/navigation"
 import { departmentService } from "@/lib/api/services/department.service.server"
 import { postService } from "@/lib/api/services/post.service.server"
 import { accountService } from "@/lib/api/services/account.service.server"
-import { ReviewCard } from "@/app/components/review-card"
+import { ReviewCard } from "@/components/features/review-card"
 import { BoardPostsFeed } from "@/app/components/board-posts-feed"
 import { Badge } from "@/app/components/ui/badge"
 import { CatedraTabs } from "./catedra-tabs"
@@ -134,7 +134,9 @@ export default async function CatedraPage({
             {tab === "experiencias" && (
               <div className="flex flex-col gap-4">
                 {catedra.reviews.length > 0 ? (
-                  catedra.reviews.map((r) => <ReviewCard key={r.id} review={r} />)
+                  catedra.reviews.map((r) => (
+                    <ReviewCard key={r.id} review={r} currentUserSlug={me?.slug ?? null} />
+                  ))
                 ) : (
                   <div className="border-border border border-dashed py-12 text-center">
                     <p className="text-foreground font-semibold">Sin experiencias todavía</p>
