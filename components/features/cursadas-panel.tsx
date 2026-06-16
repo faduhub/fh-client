@@ -33,6 +33,13 @@ export function CursadasPanel({ me }: { me: Me }) {
     enrolledDegreesCount: degrees.enrolledDegrees.length,
   })
 
+  const activeDegree = degrees.activeDegree
+  const availableSubjects = activeDegree
+    ? cursadas.subjects.filter((subject) =>
+        subject.degrees.some((degree) => degree.slug === activeDegree.slug),
+      )
+    : cursadas.subjects
+
   const carreraDialog = (
     <CarreraDialog
       open={degrees.carreraDialogOpen}
@@ -123,7 +130,7 @@ export function CursadasPanel({ me }: { me: Me }) {
         subjectId={cursadas.subjectId}
         departmentId={cursadas.departmentId}
         status={cursadas.status}
-        subjects={cursadas.subjects}
+        subjects={availableSubjects}
         availableDepts={cursadas.availableDepts}
         pending={cursadas.isPending}
         onSubjectChange={cursadas.handleSubjectChange}
